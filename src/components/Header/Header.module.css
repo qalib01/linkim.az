@@ -1,0 +1,20 @@
+/*-- Top Header Menu --*/
+.primary_nav {
+	height: 80px;
+}
+.navbar_brand img {
+	max-width: 120px;
+}
+.primary_nav .navbar_nav .nav_link {
+	color: #212529;
+	font-weight: 500;
+	padding-right: 1.2rem;
+	padding-left: 1.2rem;
+}
+.primary_nav .navbar_nav .nav_link.active,
+.primary_nav .navbar_nav .nav_link:hover{
+    color:#ffc107;
+}
+.dropdown_item {
+	padding: .5rem 1rem;
+}
