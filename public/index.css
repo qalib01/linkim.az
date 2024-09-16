@@ -1,11 +1,3 @@
-/*
-Keep these credits intact if you want to use this theme
-Theme - Pika
-Framework - Bootstrap 5
-Theme URL - https://angrystudio.com/themes/pika-free-bootstrap-5-website-template/
-Designer Name - Angry Studio
-Designer Website - https://angrystudio.com
-*/
 body {
 	color: #3d4852;
 	font-family: 'Montserrat', sans-serif;
@@ -44,7 +36,14 @@ h1,h2,h3,h4,h5,h6 {
 .bg-main {
 	background: #ffc107;
 }
-
+li, ul, ol {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+a {
+	text-decoration: none;
+}
 .pre-title:after {
 	content: '';
 	background: #ffc107;
@@ -83,27 +82,6 @@ h1,h2,h3,h4,h5,h6 {
 	bottom: -3px;
 	transform: rotate(-3deg);
 	z-index: 1;
-}
-
-/*-- Top Header Menu --*/
-.primary-nav {
-	height: 80px;
-}
-.navbar-brand img {
-	max-width: 120px;
-}
-.primary-nav .navbar-nav .nav-link {
-	color: #212529;
-	font-weight: 500;
-	padding-right: 1.2rem;
-	padding-left: 1.2rem;
-}
-.primary-nav .navbar-nav .nav-link.active,
-.primary-nav .navbar-nav .nav-link:hover{
-    color:#ffc107;
-}
-.dropdown-item {
-	padding: .5rem 1rem;
 }
 
 /*--Off Canvas menu --*/
@@ -377,9 +355,6 @@ h1,h2,h3,h4,h5,h6 {
 	.cta-title {
 		font-size: 2rem;
 	}
-	.footer-title {
-		font-size: 1.125rem;
-	}
 }
 
 @media (max-width: 575.98px) {
@@ -402,8 +377,5 @@ h1,h2,h3,h4,h5,h6 {
 		top: -20px;
 		right: 0;
 		width: 80px;
-	}
-	.footer-logo {
-		max-width: 120px;
 	}
 }

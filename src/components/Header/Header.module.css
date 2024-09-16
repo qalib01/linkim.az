@@ -1,0 +1,19 @@
+.primaryNav {
+	height: 80px;
+}
+.navbarBrand img {
+	max-width: 120px;
+}
+.primaryNav .navbarNav .navLink {
+	color: #212529;
+	font-weight: 500;
+	padding-right: 1.2rem;
+	padding-left: 1.2rem;
+}
+.primaryNav .navbarNav .navLink.active,
+.primaryNav .navbarNav .navLink:hover{
+    color:#ffc107;
+}
+.dropdownItem {
+	padding: .5rem 1rem;
+}
