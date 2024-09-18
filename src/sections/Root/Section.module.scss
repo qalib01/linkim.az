@@ -1,0 +1,96 @@
+.section {
+	height: 100vh;
+    display: flex;
+    align-items: center;
+
+	a, button {
+		outline: none;
+		text-decoration: none;
+		border: none;
+		padding: 12px 36px;
+		border-radius: 28px;
+		font-size: 16px;
+		color: #FFFFFF;
+		margin-top: 20px;
+		display: inline-block;
+		cursor: pointer;
+		transition: all .4s ease-in-out;
+		font-weight: 500;
+	}
+}
+.bgPastelGreen {
+	background-color: #E3F1D5;
+	color: #507829;
+	
+	h1, h2, h3, h4, h5, h6 {
+		color: #507829;
+	}
+
+	a, button {
+		background-color: #507829;
+		color: #FFFFFF;
+
+		&:hover {
+			background-color: lighten(#507829, 5%); /* Hover zamanı rəngi 20% açıq edəcək */
+		}
+	}
+}
+.bgElectricViolet {
+	background-color: #C091ED;
+	color: #4F0299;
+	
+	h1, h2, h3, h4, h5, h6 {
+		color: #4F0299	;
+	}
+
+	a, button {
+		background-color: #4F0299;
+		color: #FFFFFF;
+
+		&:hover {
+			background-color: lighten(#4F0299, 5%); /* Hover zamanı rəngi 20% açıq edəcək */
+		}
+	}
+}
+.bgSkyBlue {
+	background-color: #88D2FC;
+	color: #006DAB;
+	
+	h1, h2, h3, h4, h5, h6 {
+		color: #006DAB	;
+	}
+
+	a, button {
+		background-color: #006DAB;
+		color: #FFFFFF;
+
+		&:hover {
+			background-color: lighten(#006DAB, 5%); /* Hover zamanı rəngi 20% açıq edəcək */
+		}
+	}
+}
+.sectionTitle {
+	font-size: 2.9rem;
+	font-weight: 900
+}
+@media (max-width: 1399.98px) {
+	.section {
+		padding: 80px 0;
+	}
+	.sectionTitle {
+		font-size: 2.4rem;
+	}
+}
+@media (max-width: 767.98px) {
+	.sectionTitle {
+		font-size: 1.5rem;
+	}
+}
+@media (max-width: 575.98px) {
+	.section {
+		padding: 50px 0;
+	}
+	.sectionTitle {
+		font-size: 1.4rem;
+	}
+}

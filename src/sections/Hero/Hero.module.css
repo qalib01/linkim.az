@@ -1,0 +1,41 @@
+.title {
+	font-weight: 900;
+	line-height: 1
+}
+.image img {
+	transform: rotate(-1.5deg);
+	transition: transform .3s;
+	z-index: 3;
+}
+.image img:hover {
+	transform: rotate(0deg) scale(1.1)
+}
+@media (min-width: 1400px) {
+	.title {
+		font-size: 4.5rem;
+	}
+}
+@media (max-width: 1399.98px) {
+	.title {
+		font-size: 3.5rem;
+	}
+}
+@media (max-width: 991.98px) {
+	.image img {
+		transform: rotate(0deg);
+	}
+	.content {
+		text-align: center
+	}
+	.title {
+		font-size: 1.8rem;
+	}
+	.hero {
+		margin-top: 140px;
+	}
+}
+@media (max-width: 575.98px) {
+	.hero {
+		margin-top: 110px;
+	}
+}

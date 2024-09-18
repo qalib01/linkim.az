@@ -1,5 +1,6 @@
 body {
-	color: #3d4852;
+	color: #333333;
+	background-color: #F5F7FA;
 	font-family: 'Montserrat', sans-serif;
 	font-weight: 500;
 	line-height: 1.8rem;
@@ -54,8 +55,8 @@ a {
 	bottom: -5px;
 	left: 0;
 }
-.section {
-	padding: 120px 0;
+/* .section {
+	height: 100vh;
 }
 .section-bg {
 	background: linear-gradient(to right, rgb(250 250 250), rgb(219 219 219 / 35%)), url(../images/dot-bg.png);
@@ -63,7 +64,7 @@ a {
 .section-title {
 	font-size: 2.9rem;
 	font-weight: 900
-}
+} */
 .check-list li {
 	background: url(../images/check.svg);
 	background-repeat: no-repeat;
@@ -150,23 +151,6 @@ a {
 	opacity: 1
 }
 
-/*-- Hero Section --*/
-.hero {
-	margin-top: 130px;
-}
-.hero-title {
-	font-weight: 900;
-	line-height: 1
-}
-.hero-image img {
-	transform: rotate(-1.5deg);
-	transition: transform .3s;
-	z-index: 3;
-}
-.hero-image img:hover {
-	transform: rotate(0deg) scale(1.1)
-}
-
 /*-- Portfolio --*/
 .portfolio {
 	margin-top: 120px;
@@ -189,14 +173,6 @@ a {
 }
 .project-title {
 	font-size: 1.325rem
-}
-
-/*-- Services --*/
-.service-box-icon {
-	height: 60px;
-}
-.service-box-title {
-	font-size: 1.225rem;
 }
 
 /*-- Content Section --*/
@@ -286,9 +262,6 @@ a {
 	.primary-nav .navbar-nav .nav-link {
 		font-size: 1.125rem;
 	}
-	.hero-title {
-		font-size: 4.5rem;
-	}
 }
 
 /*-- Max Width Media Queries --*/
@@ -296,44 +269,23 @@ a {
 	.portfolio {
 		margin-top: 80px;
 	}
-	.section {
+	/* .section {
 		padding: 80px 0;
-	}
-	.hero-title {
-		font-size: 3.5rem;
-	}
+	} */
 	.project-title {
 		font-size: 1.125rem;
 	}
-	.section-title {
+	/* .section-title {
 		font-size: 2.4rem;
-	}
-	.service-box-title {
-		font-size: 1.3rem;
-	}
-	.service-box-icon {
-		height: 50px;
-	}
+	} */
 	.blog-post-title {
 		font-size: 1.2rem;
 	}
 }
 
 @media (max-width: 991.98px) {
-	.hero-image img {
-		transform: rotate(0deg);
-	}
-	.hero-content {
-		text-align: center
-	}
-	.hero-title {
-		font-size: 1.8rem;
-	}
 	.primary-nav .navbar-brand img {
 		max-width: 90px
-	}
-	.hero {
-		margin-top: 140px;
 	}
 	.team-member .card-title {
 		font-size: .925rem !important;
@@ -349,27 +301,21 @@ a {
 }
 
 @media (max-width: 767.98px) {
-	.section-title {
+	/* .section-title {
 		font-size: 1.5rem;
-	}
+	} */
 	.cta-title {
 		font-size: 2rem;
 	}
 }
 
 @media (max-width: 575.98px) {
-	.hero {
-		margin-top: 110px;
-	}
-	.section {
+	/* .section {
 		padding: 50px 0;
 	}
 	.section-title {
 		font-size: 1.4rem;
-	}
-	.service-box-title {
-		font-size: 1.2rem;
-	}
+	} */
 	.cta-title {
 		font-size: 1.5rem;
 	}
