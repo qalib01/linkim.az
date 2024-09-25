@@ -8,8 +8,8 @@ function ShareSection() {
             <div className="row align-items-center">
                 <div className="col-md-12 col-lg-6 order-1 order-lg-1 mt-4 mt-lg-0 pt-4 pt-lg-0">
                     <div className={`${classes.content} pe-md-0 pe-lg-5`}>
-                        <h3 className={`${classes.title} mt-3`}> Linklərinizi daha rahat paylaşın </h3>
-                        <p className={`mt-3 mb-0`}> Bütün linklərinizi linkim.az platformasından qeydiyyatdan keçirin, sosial şəbəkələrinizin bio hissəsinə əlavə edin və rahatlıqdan faydalanın. </p>
+                        <h3 className={`${classes.title} mt-3`}> Linklərini daha rahat paylaş </h3>
+                        <p className={`mt-3 mb-0`}> Bütün linklərini linkim.az platformasından qeydiyyatdan keçir, sosial şəbəkələrinin bio hissəsinə əlavə et və rahatlıqdan faydalan </p>
                         <Link to="/register"> İndi başla </Link>
                     </div>
                 </div>

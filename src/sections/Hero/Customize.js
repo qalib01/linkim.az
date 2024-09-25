@@ -8,8 +8,8 @@ function CustomizeSection() {
             <div className="row align-items-center">
                 <div className="col-md-12 col-lg-6 order-2 order-lg-2 mt-4 mt-lg-0 pt-4 pt-lg-0">
                     <div className={`${classes.content} pe-md-0 pe-lg-5`}>
-                        <h2 className={` ${classes.title} mt-3`}> Linkinizi dəqiqələr içində yaradın </h2>
-                        <p className={`${classes.text} mt-3 mb-0`}> Tiktok, Instagram, X, web sayt, mağaza, canlı yayım, musiqi və daha çoxunu 1 linkdə toplayın və paylaşın. </p>
+                        <h2 className={` ${classes.title} mt-3`}> Linkini dəqiqələr içində yarat </h2>
+                        <p className={`${classes.text} mt-3 mb-0`}> Tiktok, Instagram, X, web sayt, mağaza, canlı yayım, musiqi və daha çoxunu 1 linkdə topla və paylaş </p>
                         <Link to="/register"> İndi başla </Link>
                     </div>
                 </div>

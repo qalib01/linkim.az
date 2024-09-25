@@ -1,0 +1,76 @@
+.title {
+	font-weight: 900;
+	line-height: 1
+}
+.serviceBox {
+	background-color: #FFFFFF;
+	padding: 40px;
+	border-radius: 30px;
+
+	.serviceBoxImage {
+		width: 100%;
+
+		img {
+			width: 100%;
+			padding: 20px;
+			aspect-ratio: 1;
+		}
+	}
+
+	.serviceBoxText {
+		text-align: center;
+		margin-top: 24px;
+
+		p {
+			font-weight: bold;
+		}
+	}
+}
+@media (min-width: 1400px) {
+	.title {
+		font-size: 4.5rem;
+	}
+}
+@media (max-width: 1399.98px) {
+	.title {
+		font-size: 3.5rem;
+	}
+}
+@media (max-width: 991.98px) {
+	.title {
+		font-size: 1.8rem;
+	}
+
+	.serviceBox {
+		padding: 30px;
+		
+		.serviceBoxText {
+			margin-top: 20px;
+	
+			p {
+				font-size: 14px;
+				line-height: 20px;
+			}
+		}
+	}
+}
+
+@media (max-width: 767.98px) {
+	.serviceBox {
+		.serviceBoxImage {
+	
+			img {
+				padding: 20px;
+			}
+		}
+		
+		.serviceBoxText {
+			margin-top: 20px;
+	
+			p {
+				font-size: 16px;
+				line-height: 20px;
+			}
+		}
+	}
+}

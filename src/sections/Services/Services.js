@@ -1,37 +1,60 @@
 import SectionLayout from '../Root/SectionLayout';
-import classes from './Services.module.css';
-import socialTwitter from './social_twitter.jpg'
+import classes from './Services.module.scss';
+import codeSvgFile from './code.svg'
+
+
+const SERVICE_DATA = [
+    {
+        id: 1,
+        name: '',
+        description: 'Duis vulputate neque sed justo varius, vel lobortis sed lacus.',
+        image: codeSvgFile,
+    },
+    {
+        id: 2,
+        name: '',
+        description: 'Duis vulputate neque sed justo varius, vel lobortis sed lacus.',
+        image: codeSvgFile,
+    },
+    {
+        id: 3,
+        name: '',
+        description: 'Duis vulputate neque sed justo varius, vel lobortis sed lacus.',
+        image: codeSvgFile,
+    },
+    {
+        id: 4,
+        name: '',
+        description: 'Duis vulputate neque sed justo varius, vel lobortis sed lacus.',
+        image: codeSvgFile,
+    }
+]
 
 function ServicesSection() {
     return (
         <SectionLayout sectionName='services'>
-            <div className="row">
+            <div className="row flex-column" style={{ margin: '100px 0px' }}>
                 <div className="col">
                     <div className="text-center mb-3">
-                        <h4 className={ classes.title }> Üstünlüklərimiz </h4>
+                        <h4 className={classes.title}> Servislərimiz </h4>
                     </div>
                 </div>
-            </div>
-            <div className="row">
-                <div className="col-12 col-md-6 col-lg-4">
-                    <div className="service-box text-center mt-5">
-                        <div>
-                            <img className={ classes.serviceBoxIcon } src={socialTwitter} />
-                        </div>
-                        <p className={`${ classes.serviceBoxText } mt-3 mb-0`}> Duis vulputate neque sed justo varius, vel lobortis sed lacus. </p>
-                    </div>
-                </div>
-                <div className="col-12 col-md-6 col-lg-4">
-                    <div className="service-box text-center mt-5">
-                        <img className={ classes.serviceBoxIcon } src="assets/images/dev.svg" />
-                        <p className={`${ classes.serviceBoxText } mt-3 mb-0`}> Duis vulputate neque sed justo varius, vel lobortis sed lacus. </p>
-                    </div>
-                </div>
-                <div className="col-12 col-md-6 col-lg-4">
-                    <div className="service-box text-center mt-5">
-                        <img className={ classes.serviceBoxIcon } src="assets/images/marketing.svg" />
-                        <p className={`${ classes.serviceBoxText } mt-3 mb-0`}> Duis vulputate neque sed justo varius, vel lobortis sed lacus. </p>
-                    </div>
+
+                <div className="row mt-4 flex-row-scroll">
+                    {
+                        SERVICE_DATA.map((data) => (
+                            <div key={data.id} className={`col-1 col-sm-8 col-md-6 ${SERVICE_DATA.length >= 4 ? 'col-lg-3' : 'col-lg-4'} mb-4`}>
+                                <div className={classes.serviceBox}>
+                                    <div className={classes.serviceBoxImage}>
+                                        <img src={data.image} />
+                                    </div>
+                                    <div className={classes.serviceBoxText}>
+                                        <p> {data.description} </p>
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    }
                 </div>
             </div>
         </SectionLayout>

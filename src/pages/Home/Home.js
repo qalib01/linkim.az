@@ -1,3 +1,4 @@
+import Faq from "../../sections/Faq/Faq";
 import CustomizeSection from "../../sections/Hero/Customize";
 import HeroSection from "../../sections/Hero/Hero";
 import ShareSection from "../../sections/Hero/Share";
@@ -10,6 +11,7 @@ function HomePage() {
             <CustomizeSection />
             <ShareSection />
             <ServicesSection />
+            <Faq />
         </>
     )
 }
