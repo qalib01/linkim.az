@@ -86,6 +86,19 @@
 		}
 	}
 }
+.bgTransparent {
+	background-color: transparent;
+	color: #333333;
+	
+	a, button {
+		background-color: #333333;
+		color: #FFFFFF;
+
+		&:hover {
+			background-color: lighten(#333333, 5%); /* Hover zamanı rəngi 20% açıq edəcək */
+		}
+	}
+}
 .sectionTitle {
 	font-size: 2.9rem;
 	font-weight: 900

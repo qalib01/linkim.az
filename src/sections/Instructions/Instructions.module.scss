@@ -1,0 +1,41 @@
+.title {
+	font-weight: 900;
+	line-height: 1
+}
+.instructionsBox {
+	box-shadow: 0 0 2rem rgb(0 0 0 / 0.1);
+}
+.instructionsIcon {
+	width: 60px;
+	height: 60px;
+}
+.instructionsTitle {
+	font-weight: 800;
+}
+.instructionsBoxLink {
+	margin-bottom: 20px;
+}
+
+@media (min-width: 1400px) {
+	.title {
+		font-size: 4.5rem;
+	}
+}
+@media (max-width: 1399.98px) {
+	.title {
+		font-size: 3.5rem;
+	}
+}
+@media (max-width: 991.98px) {
+	.title {
+		font-size: 1.8rem;
+	}
+	.instructionsBoxText {
+		text-align: center;
+	}
+
+}
+
+@media (max-width: 767.98px) {
+
+}

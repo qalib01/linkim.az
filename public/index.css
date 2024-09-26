@@ -181,18 +181,6 @@ a {
 .progress {
 	height: 10px;
 }
-
-/*-- Stats --*/
-.stats-box {
-	box-shadow: 0 0 2rem rgb(0 0 0 / 0.1);
-}
-.stats-icon {
-	height: 40px;
-}
-.stats-title {
-	font-weight: 800;
-}
-
 /*-- Blog --*/
 .blog-thumb {
 	max-height: 230px;
@@ -205,8 +193,6 @@ a {
 .blog-post-title a {
 	text-decoration: none
 }
-
-
 
 /*-- Min Width Media Queries --*/
 @media (min-width: 992px) {
