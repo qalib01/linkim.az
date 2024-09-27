@@ -1,0 +1,80 @@
+.title {
+	font-weight: 900;
+	line-height: 1
+}
+
+.infoItem {
+    background: #FFFFFF;
+    padding: 30px;
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.1);
+
+    h3 {
+        font-size: 20px;
+        font-weight: 700;
+        margin: 20px 0 10px 0;
+    }
+
+    p {
+        padding: 0;
+        line-height: 24px;
+        font-size: 14px;
+        margin-bottom: 0;
+    }
+
+    img {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+.emailForm {
+    background: #FFFFFF;
+    padding: 30px;
+    height: 100%;
+}
+
+.emailForm input[type=text],
+.emailForm input[type=email],
+.emailForm textarea {
+    font-size: 14px;
+    padding: 10px 15px;
+    box-shadow: none !important;
+    border-radius: 0;
+    overflow: auto;
+    outline: none;
+    resize: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+}
+
+.emailForm input[type=text]:focus,
+.emailForm input[type=email]:focus,
+.emailForm textarea:focus {
+    border-color: var(--accent-color);
+}
+
+.emailForm input[type=text]::placeholder,
+.emailForm input[type=email]::placeholder,
+.emailForm textarea::placeholder {
+    color: color-mix(in srgb, var(--default-color), transparent 70%);
+}
+@media (min-width: 1400px) {
+	.title {
+		font-size: 4.5rem;
+	}
+}
+@media (max-width: 1399.98px) {
+	.title {
+		font-size: 3.5rem;
+	}
+}
+@media (max-width: 991.98px) {
+	.title {
+		font-size: 1.8rem;
+	}
+}
+@media (max-width: 575.98px) {
+    .emailForm {
+        padding: 30px 20px;
+    }
+}

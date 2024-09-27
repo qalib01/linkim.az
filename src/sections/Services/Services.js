@@ -34,10 +34,8 @@ function ServicesSection() {
     return (
         <SectionLayout sectionName='services'>
             <div className="row flex-column" style={{ margin: '100px 0px' }}>
-                <div className="col">
-                    <div className="text-center mb-5">
-                        <h4 className={classes.title}> Servislərimiz </h4>
-                    </div>
+                <div className="text-center mb-5">
+                    <h4 className={classes.title}> Servislərimiz </h4>
                 </div>
 
                 <div className="row mt-4 flex-row-scroll">
