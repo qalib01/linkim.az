@@ -13,7 +13,7 @@ function GetInTouch() {
                         <div className={classes.ctaContent}>
                             <h3 className={`${classes.ctaTitle} text-white`}> Bizimlə əlaqə saxla </h3>
                             <p className="cta-text text-muted mt-3"> Əlavə sualın və ya aramıza qatılmaq üçün bizimlə əlaqə saxla, komandamız bütün suallarını cavablamağa hazırdır </p>
-                            <Link to="/contact"> İndi başla </Link>
+                            <Link to="/contact"> Əlaqə </Link>
                         </div>
                     </div>
                 </div>

@@ -16,14 +16,17 @@ export default function Footer() {
                                     <li className="mb-2">
                                         <Link to="/about"> Haqqımızda </Link>
                                     </li>
-                                    <li className="mb-2">
+                                    {/* <li className="mb-2">
                                         <Link to="/team"> Komandamız </Link>
+                                    </li> */}
+                                    {/* <li className="mb-2">
+                                        <Link to="/updates"> Yeniliklər </Link>
+                                    </li> */}
+                                    <li className="mb-2">
+                                        <Link to="/contact"> Əlaqə </Link>
                                     </li>
                                     <li className="mb-2">
-                                        <Link to="/updates"> Yeniliklər </Link>
-                                    </li>
-                                    <li className="mb-0">
-                                        <Link to="/contact"> Əlaqə </Link>
+                                        <Link to="/register"> Qeydiyyat </Link>
                                     </li>
                                 </ul>
                             </div>
@@ -32,12 +35,12 @@ export default function Footer() {
                             <div className="footer-col mt-5">
                                 <h3 className={`${classes.footerTitle} text-white mb-4`}> Dəstək </h3>
                                 <ul className="list-unstyled mb-0">
-                                    <li className="mb-2">
+                                    {/* <li className="mb-2">
                                         <Link to="/support"> Kömək </Link>
-                                    </li>
-                                    <li className="mb-2">
+                                    </li> */}
+                                    {/* <li className="mb-2">
                                         <Link to="/faq"> FAQ </Link>
-                                    </li>
+                                    </li> */}
                                     <li className="mb-2">
                                         <Link to="/goal"> Məqsəd </Link>
                                     </li>

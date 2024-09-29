@@ -51,20 +51,17 @@ function Contact() {
                     </div>
                 </div>
                 <div className="col-lg-6">
-                    <form method="post" className={classes.emailForm}>
+                    <form method="post" className={classes.form}>
                         <div className="row gy-4">
                             <div className="col-sm-6">
-                                <input type="text" name="name" className="form-control" placeholder="Tam adın" required={true} />
+                                <input type="text" name="fullName" className="form-control" placeholder="Tam adın" required={true} />
                             </div>
-
                             <div className="col-sm-6">
                                 <input type="email" className="form-control" name="email" placeholder="Email adresin" required={true} />
                             </div>
-
                             <div className="col-12">
-                                <input type="text" className="form-control" name="subject" placeholder="Mövzu" required={true} />
+                                <input type="subject" className="form-control" name="subject" placeholder="Mövzu" required={true} />
                             </div>
-
                             <div className="col-12">
                                 <textarea className="form-control" name="message" rows="6" placeholder="Mesajın" required={true}></textarea>
                             </div>

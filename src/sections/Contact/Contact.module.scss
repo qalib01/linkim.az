@@ -27,15 +27,13 @@
     }
 }
 
-.emailForm {
+.form {
     background: #FFFFFF;
     padding: 30px;
     height: 100%;
 }
 
-.emailForm input[type=text],
-.emailForm input[type=email],
-.emailForm textarea {
+.form input, .form textarea {
     font-size: 14px;
     padding: 10px 15px;
     box-shadow: none !important;
@@ -47,15 +45,11 @@
     -moz-box-shadow: none;
 }
 
-.emailForm input[type=text]:focus,
-.emailForm input[type=email]:focus,
-.emailForm textarea:focus {
+.form input:focus, .form textarea:focus {
     border-color: var(--accent-color);
 }
 
-.emailForm input[type=text]::placeholder,
-.emailForm input[type=email]::placeholder,
-.emailForm textarea::placeholder {
+.form input::placeholder, .form textarea::placeholder {
     color: color-mix(in srgb, var(--default-color), transparent 70%);
 }
 @media (min-width: 1400px) {
@@ -74,7 +68,7 @@
 	}
 }
 @media (max-width: 575.98px) {
-    .emailForm {
+    .form {
         padding: 30px 20px;
     }
 }

@@ -46,13 +46,13 @@
 	.ctaTitle {
 		font-size: 2rem;
 	}
+	.ctaImage {
+        display: none;
+	}
 }
 
 @media (max-width: 575.98px) {
 	.ctaTitle {
 		font-size: 1.5rem;
-	}
-	.ctaImage {
-        display: none;
 	}
 }

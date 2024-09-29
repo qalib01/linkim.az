@@ -30,7 +30,7 @@ const SERVICE_DATA = [
     }
 ]
 
-function ServicesSection() {
+function Services() {
     return (
         <SectionLayout sectionName='services'>
             <div className="row flex-column" style={{ margin: '100px 0px' }}>
@@ -44,7 +44,7 @@ function ServicesSection() {
                             <div key={data.id} className={`col-1 col-sm-8 col-md-6 ${SERVICE_DATA.length >= 4 ? 'col-lg-3' : 'col-lg-4'} mb-4`}>
                                 <div className={classes.serviceBox}>
                                     <div className={classes.serviceBoxImage}>
-                                        <img src={data.image} />
+                                        <img src={data.image} alt='Data' />
                                     </div>
                                     <div className={classes.serviceBoxText}>
                                         <p> {data.description} </p>
@@ -59,4 +59,4 @@ function ServicesSection() {
     )
 }
 
-export default ServicesSection;
+export default Services;
