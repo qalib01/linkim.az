@@ -4,7 +4,7 @@ import classes from './Register.module.scss';
 
 function Register() {
     return (
-        <SectionLayout sectionBg='bgTransparent'>
+        <SectionLayout sectionName='register' sectionBg='bgTransparent'>
             <div className="row gy-4">
                 <div className="col-lg-6 m-auto">
                     <div className="row text-center">

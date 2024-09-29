@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import SectionLayout from "../Root/SectionLayout";
 import classes from './About.module.scss';
 import WhyUs from "../WhyUs/WhyUs";
+import Team from "../Team/Team";
 
 function About() {
     return (
@@ -51,13 +52,14 @@ function About() {
                         <p class="lead">
                             Biz, texnologiyanın həyatımızı necə sadələşdirə biləcəyinə inanırıq və məhz bu səbəbdən istifadəçilərimiz üçün hər gün inkişaf etməyə çalışırıq.
                         </p>
-                        <p class="mb-5">
+                        <p class="mb-2">
                             Misiyamız, həm fərdi istifadəçilərin, həm də bizneslərin onlayn varlığını gücləndirəcək yenilikçi həllər təqdim etməkdir.
                         </p>
                     </div>
                 </div>
             </SectionLayout>
             <WhyUs />
+            <Team />
         </>
     )
 }

@@ -35,7 +35,7 @@ const TEAM_DATA = [
 
 function Team() {
     return (
-        <SectionLayout sectionName='team'>
+        <SectionLayout sectionName='team'  sectionBg='bgTransparent'>
             <div className="row">
                 <div className="col">
                     <div className="section-head text-center mx-auto narrow">

@@ -1,5 +1,11 @@
 import SectionLayout from "../Root/SectionLayout";
 import classes from './WhyUs.module.scss';
+import userFriendly from './userFriendly.svg';
+import mediaPlayer from './mediaPlayer.svg';
+import easyShare from './easyShare.svg';
+import suitableEveryone from './suitableEveryone.svg';
+
+
 
 function WhyUs() {
     return (
@@ -11,37 +17,52 @@ function WhyUs() {
                     </div>
                 </div>
                 <div className="col-12">
-                    <div className="row gy-4 flex-wrap">
+                    <div className="row gy-4 flex-wrap justify-content-between">
                         <div className="col-lg-3">
-                            <div className="services-item">
-                                <div className="services-icon">
-                                    <i className="bi bi-bullseye"></i>
+                            <div className={classes.item}>
+                                <div className={classes.icon}>
+                                    {/* <i className="bi bi-bullseye"></i> */}
+                                    <img src={userFriendly} alt='Sadə və Effektiv' />
                                 </div>
-                                <div>
-                                    <h3>Technology</h3>
-                                    <p>Separated they live in Bookmarksgrove right at the coast</p>
+                                <div className={classes.content}>
+                                    <h3>Sadə və Effektiv</h3>
+                                    <p>Bütün sosial media və şəxsi hesablarını bir platformada toplamaq yalnız bir neçə dəqiqə lazımdır</p>
                                 </div>
                             </div>
                         </div>
                         <div className="col-lg-3">
-                            <div className="services-item" data-aos="fade-up" data-aos-delay="100">
-                                <div className="services-icon">
-                                    <i className="bi bi-command"></i>
+                            <div className={classes.item}>
+                                <div className={classes.icon}>
+                                    {/* <i className="bi bi-command"></i> */}
+                                    <img src={mediaPlayer} alt='Hamısı Bir Yerdə' />
                                 </div>
-                                <div>
-                                    <h3>Web Design</h3>
-                                    <p>Separated they live in Bookmarksgrove right at the coast</p>
+                                <div className={classes.content}>
+                                    <h3>Hamısı Bir Yerdə</h3>
+                                    <p>Facebook, Instagram, X və digər platformalardakı hesablarını bir keçiddə topla və hər şeyi bir kliklə təqdim et</p>
                                 </div>
                             </div>
                         </div>
                         <div className="col-lg-3">
-                            <div className="services-item" data-aos="fade-up" data-aos-delay="200">
-                                <div className="services-icon">
-                                    <i className="bi bi-bar-chart"></i>
+                            <div className={classes.item}>
+                                <div className={classes.icon}>
+                                    {/* <i className="bi bi-bar-chart"></i> */}
+                                    <img src={easyShare} alt='Rahat Paylaşım' />
                                 </div>
-                                <div>
-                                    <h3>Branding</h3>
-                                    <p>Separated they live in Bookmarksgrove right at the coast</p>
+                                <div className={classes.content}>
+                                    <h3>Rahat Paylaşım</h3>
+                                    <p>Öz şəxsiyyətini və işlərini həm sosial mediada, həm də iş və şəxsi həyatında asanlıqla paylaş</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-lg-3">
+                            <div className={classes.item}>
+                                <div className={classes.icon}>
+                                    {/* <i className="bi bi-bar-chart"></i> */}
+                                    <img src={suitableEveryone} alt='Hərkəsə uyğun' />
+                                </div>
+                                <div className={classes.content}>
+                                    <h3>Hərkəsə uyğun</h3>
+                                    <p>İstər influencer ol, istərsə də kiçik bir biznes sahibi, "linkim.az" hər kəs üçün ideal bir həll olacaq</p>
                                 </div>
                             </div>
                         </div>
