@@ -49,7 +49,7 @@ function Team() {
                         <div key={data.id} className="col-6 col-md-6 col-lg-3">
                             <div className={`${classes.teamMember} mt-3 mt-md-5`}>
                                 <div className="card border-0 shadow-sm">
-                                    <img src={data.image} className="card-img-top rounded" />
+                                    <img src={data.image} className="card-img-top rounded" alt={data.name} />
                                     <div className="card-body py-4 text-center">
                                         <p className={`${classes.cardTitle} fs-6 fw-bold text-uppercase`}>{data.name}</p>
                                         <p className="card-subtitle mb-0 text-muted small">{data.profession}</p>

@@ -40,7 +40,7 @@ function Faq() {
                         <div key={data.id} className={classes.faqItem}>
                             <div className={classes.faqQuestion}>
                                 <p>{data.question}</p>
-                                <img src={DownArrowSvgFile} />
+                                <img src={DownArrowSvgFile} alt={data.question} />
                             </div>
                             <div className={classes.faqAnswer}>
                                 <p>{data.answer}</p>
