@@ -1,4 +1,4 @@
-import Faq from "../../sections/Faq/Faq";
+import Faqs from "../../sections/Faq/Faqs";
 import CustomizeSection from "../../sections/Hero/Customize";
 import HeroSection from "../../sections/Hero/Hero";
 import ShareSection from "../../sections/Hero/Share";
@@ -18,7 +18,7 @@ function HomePage() {
             <ShareSection />
             <Instructions />
             <Services />
-            <Faq />
+            <Faqs />
         </>
     )
 }

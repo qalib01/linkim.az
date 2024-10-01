@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import Login from "../../sections/Login/StateLogin";
+import Login from "../../sections/Login/Login";
 
 function LoginPage() {
     useEffect(() => {

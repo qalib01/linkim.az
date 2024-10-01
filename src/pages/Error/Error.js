@@ -1,6 +1,4 @@
 import { useEffect } from "react";
-import Footer from "../../components/Footer/Footer";
-import Header from "../../components/Header/Header";
 import Error from "../../sections/Error/Error";
 
 function ErrorPage() {
@@ -10,9 +8,7 @@ function ErrorPage() {
 
     return (
         <>
-            <Header />
             <Error />
-            <Footer />
         </>
     )
 }
