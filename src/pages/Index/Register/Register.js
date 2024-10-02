@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import Register from "../../sections/Register/Register";
+import Register from "../../../sections/Register/Register";
 
 function RegisterPage() {
     useEffect(() => {

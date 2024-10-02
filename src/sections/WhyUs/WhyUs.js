@@ -21,7 +21,6 @@ function WhyUs() {
                         <div className="col-lg-3">
                             <div className={classes.item}>
                                 <div className={classes.icon}>
-                                    {/* <i className="bi bi-bullseye"></i> */}
                                     <img src={userFriendly} alt='Sadə və Effektiv' />
                                 </div>
                                 <div className={classes.content}>
@@ -33,7 +32,6 @@ function WhyUs() {
                         <div className="col-lg-3">
                             <div className={classes.item}>
                                 <div className={classes.icon}>
-                                    {/* <i className="bi bi-command"></i> */}
                                     <img src={mediaPlayer} alt='Hamısı Bir Yerdə' />
                                 </div>
                                 <div className={classes.content}>
@@ -45,7 +43,6 @@ function WhyUs() {
                         <div className="col-lg-3">
                             <div className={classes.item}>
                                 <div className={classes.icon}>
-                                    {/* <i className="bi bi-bar-chart"></i> */}
                                     <img src={easyShare} alt='Rahat Paylaşım' />
                                 </div>
                                 <div className={classes.content}>
@@ -57,7 +54,6 @@ function WhyUs() {
                         <div className="col-lg-3">
                             <div className={classes.item}>
                                 <div className={classes.icon}>
-                                    {/* <i className="bi bi-bar-chart"></i> */}
                                     <img src={suitableEveryone} alt='Hərkəsə uyğun' />
                                 </div>
                                 <div className={classes.content}>

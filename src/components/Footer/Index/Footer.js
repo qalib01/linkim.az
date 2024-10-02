@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import classes from './Footer.module.css';
-import GetInTouch from '../GetInTouch/GetInTouch';
+import classes from './Footer.module.scss';
+import GetInTouch from '../../../sections/GetInTouch/GetInTouch';
 
 export default function Footer() {
     return (

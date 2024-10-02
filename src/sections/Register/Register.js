@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import SectionLayout from "../Root/SectionLayout";
 import classes from './Register.module.scss';
 import { useState } from "react";
 import { hasMinLength, isEmail, isEqualsToOtherValue, isNotEmpty } from "../../utils/validation";
 import Input from "../../components/Form/Input";
+import SectionLayout from "../Root/SectionLayout";
 
 function Register() {
     const [enteredValues, setEnteredValues] = useState({
@@ -57,7 +57,7 @@ function Register() {
                 <div className="col-lg-6 m-auto">
                     <div className="row text-center">
                         <div className={`${classes.content} pe-md-0 pe-lg-5  mb-5`}>
-                            <h2 className={` ${classes.title} mt-3`}> Qeydiyyat </h2>
+                            <h2 className={`title mt-3`}> Qeydiyyat </h2>
                         </div>
                     </div>
                     <form method="post" className={classes.form} onSubmit={handleSubmit}>

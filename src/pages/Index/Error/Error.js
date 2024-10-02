@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import Error from "../../sections/Error/Error";
+import Error from "../../../sections/Error/Error";
 
-function ErrorPage() {
+function IndexErrorPage() {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -13,4 +13,4 @@ function ErrorPage() {
     )
 }
 
-export default ErrorPage;
+export default IndexErrorPage;

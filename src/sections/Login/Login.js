@@ -48,7 +48,7 @@ function Login() {
                 <div className="col-lg-6 m-auto">
                     <div className="row text-center">
                         <div className={`${classes.content} pe-md-0 pe-lg-5  mb-5`}>
-                            <h2 className={` ${classes.title} mt-3`}> Giriş </h2>
+                            <h2 className={`title mt-3`}> Giriş </h2>
                         </div>
                     </div>
                     <form method="post" className={classes.form} onSubmit={handleSubmit}>

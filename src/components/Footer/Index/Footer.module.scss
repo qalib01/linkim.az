@@ -1,0 +1,100 @@
+.footer {
+
+    a {
+        color: #8e98a2;
+        text-decoration: none;
+
+
+        &:hover {
+            color: #fff;
+        }
+    }
+
+    .footerTitle {
+        font-size: 1.225rem;
+    }
+
+    .footerCredits {
+        border-top: 1px solid rgba(255, 255, 255, .1);
+    }
+
+    .footerSocial {
+
+        ul {
+
+            li {
+
+                img {
+                    max-width: 18px;
+                }
+            }
+        }
+    }
+	
+}
+
+.cta {
+
+    .ctaImage {
+        position: absolute;
+        top: -40px;
+        right: 120px;
+        width: 280px;
+    }
+
+    .ctaContent {
+        margin-top: 30px;
+
+        .ctaTitle {
+            font-size: 3rem
+        }
+    }
+
+    a, button {
+        outline: none;
+        text-decoration: none;
+        border: none;
+        padding: 12px 36px;
+        border-radius: 28px;
+        font-size: 16px;
+        background-color: #FFFFFF;
+        color: #0e1d2c;
+        margin-top: 20px;
+        display: inline-block;
+        cursor: pointer;
+        transition: all .4s ease-in-out;
+        font-weight: bold;
+    }
+}
+
+@media (max-width: 991.98px) {
+	.ctaTitle {
+		font-size: 2.5rem;
+	}
+	.ctaImage {
+		top: -27px;
+		right: 20px;
+		width: 200px;
+	}
+}
+
+@media (max-width: 767.98px) {
+	.ctaTitle {
+		font-size: 2rem;
+	}
+	.ctaImage {
+        display: none;
+	}
+    .footerTitle {
+		font-size: 1.125rem;
+	}
+}
+
+@media (max-width: 575.98px) {
+	.ctaTitle {
+		font-size: 1.5rem;
+	}
+    .footerLogo {
+		max-width: 120px;
+	}
+}

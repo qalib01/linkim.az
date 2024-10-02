@@ -33,25 +33,6 @@
     height: 100%;
 }
 
-.form input, .form textarea {
-    font-size: 14px;
-    padding: 10px 15px;
-    box-shadow: none !important;
-    border-radius: 0;
-    overflow: auto;
-    outline: none;
-    resize: none;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-}
-
-.form input:focus, .form textarea:focus {
-    border-color: var(--accent-color);
-}
-
-.form input::placeholder, .form textarea::placeholder {
-    color: color-mix(in srgb, var(--default-color), transparent 70%);
-}
 @media (min-width: 1400px) {
 	.title {
 		font-size: 4.5rem;

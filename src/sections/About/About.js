@@ -9,10 +9,10 @@ function About() {
         <>
             <SectionLayout sectionName='about' sectionBg='bgTransparent'>
                 <div className="row">
-                    <div className={`${classes.content} pe-md-0 pe-lg-5  mb-5`}>
+                    <div className={`${classes.content} pe-md-0 pe-lg-5`}>
                         <div class="content">
                             <div class="row">
-                                <div class="col-12 col-lg-6 order-lg-2 offset-xl-1 mb-4">
+                                <div class="col-12 col-lg-6 order-lg-2 offset-xl-1">
                                     <div class="img-wrap text-md-left">
                                         <div class="img">
                                             {/* <img src="assets/img/img_v_3.jpg" alt="circle image" class="img-fluid" /> */}
@@ -22,7 +22,7 @@ function About() {
                                 <div class="col-12 col-lg-6">
                                     <div class="px-3">
                                         <h1 class={`${classes.title} mb-4`}>
-                                            Proyektin məqsədi
+                                            Məqsədimiz
                                         </h1>
                                         <p class="lead">
                                             "linkim.az" olaraq, istifadəçilərimizin onlayn kimliklərini daha sadə və effektiv bir şəkildə paylaşmalarına kömək edirik. Fərqli sosial media platformalarında olan hesablarını və şəxsi keçidlərini tək bir yerdə toplamağa imkan verən bir platforma olaraq, istifadəçilərə zaman və rahatlıq qazandırırıq.
@@ -48,7 +48,6 @@ function About() {
                         </div>
                     </div>
                     <div class="col-lg-4 ps-lg-5">
-                        {/* <h2 class="content-title text-start mb-4">Nə üçün linkim.az?</h2> */}
                         <p class="lead">
                             Biz, texnologiyanın həyatımızı necə sadələşdirə biləcəyinə inanırıq və məhz bu səbəbdən istifadəçilərimiz üçün hər gün inkişaf etməyə çalışırıq.
                         </p>

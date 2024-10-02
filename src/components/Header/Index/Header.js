@@ -1,13 +1,14 @@
 import { Link, NavLink } from 'react-router-dom';
-import classes from './Header.module.css';
-import logoSvg from './logo.svg';
+import classes from './Header.module.scss';
+import Logo from '../../Icons/Logo';
 
 function Header() {
    return (
       <nav id="primary-navbar" className={`${ classes.primaryNav } navbar navbar-expand-lg navbar-light bg-white font-nunito`}>
          <div className="container px-4 px-sm-0">
             <Link to='/' className={ classes.navbarBrand }>
-               <img src={logoSvg} alt='LinkimAz Logo' />
+               {/* <img src={logoSvg} alt='LinkimAz Logo' /> */}
+               <Logo />
             </Link>
             <div className="collapse navbar-collapse" id="navbarNavDropdown">
                <ul className={`${ classes.navbarNav } ms-auto d-flex`}>

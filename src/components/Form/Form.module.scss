@@ -6,6 +6,25 @@
     aspect-ratio: 1 / 1;
     padding: 10px;
     cursor: pointer;
-    // background-color: #fff;
     border-left: 1px solid #bbb;
+}
+
+.input, .textarea {
+    font-size: 14px;
+    padding: 10px 15px;
+    box-shadow: none !important;
+    border-radius: 0;
+    overflow: auto;
+    outline: none;
+    resize: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+}
+
+.input:focus, .textarea:focus {
+    border-color: var(--accent-color);
+}
+
+.input::placeholder, .textarea::placeholder {
+    color: color-mix(in srgb, var(--default-color), transparent 70%);
 }

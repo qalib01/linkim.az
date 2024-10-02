@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import Contact from "../../sections/Contact/Contact";
+import Contact from "../../../sections/Contact/Contact";
 
 function ContactPage() {
   useEffect(() => {

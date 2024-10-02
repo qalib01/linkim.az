@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import About from "../../sections/About/About";
+import About from "../../../sections/About/About";
 
 function AboutPage() {
     useEffect(() => {
