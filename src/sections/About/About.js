@@ -1,15 +1,14 @@
 import { Link } from "react-router-dom";
-import SectionLayout from "../Root/SectionLayout";
-import classes from './About.module.scss';
+import Section from "../../components/Section/Section";
 import WhyUs from "../WhyUs/WhyUs";
 import Team from "../Team/Team";
 
 function About() {
     return (
         <>
-            <SectionLayout sectionName='about' sectionBg='bgTransparent'>
+            <Section sectionName='about' sectionBg='bgTransparent'>
                 <div className="row">
-                    <div className={`${classes.content} pe-md-0 pe-lg-5`}>
+                    <div className={`content pe-md-0 pe-lg-5`}>
                         <div class="content">
                             <div class="row">
                                 <div class="col-12 col-lg-6 order-lg-2 offset-xl-1">
@@ -21,7 +20,7 @@ function About() {
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <div class="px-3">
-                                        <h1 class={`${classes.title} mb-4`}>
+                                        <h1 class={`title mb-4`}>
                                             Məqsədimiz
                                         </h1>
                                         <p class="lead">
@@ -39,8 +38,8 @@ function About() {
                         </div>
                     </div>
                 </div>
-            </SectionLayout>
-            <SectionLayout sectionName='' sectionBg='bgWhite'>
+            </Section>
+            <Section sectionName='' sectionBg='bgWhite'>
                 <div class="row gy-4 justify-content-center">
                     <div class="col-lg-5">
                         <div class="images-overlap">
@@ -56,7 +55,7 @@ function About() {
                         </p>
                     </div>
                 </div>
-            </SectionLayout>
+            </Section>
             <WhyUs />
             <Team />
         </>

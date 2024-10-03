@@ -1,4 +1,4 @@
-function Logo() {
+function LogoSvg() {
     return (
         <svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 396.000000 67.000000" preserveAspectRatio="xMidYMid meet">
             <g transform="translate(0.000000,67.000000) scale(0.100000,-0.100000)" fill="#212529" stroke="none">
@@ -8,4 +8,4 @@ function Logo() {
     )
 }
 
-export default Logo;
+export default LogoSvg;

@@ -13,7 +13,7 @@ function WhyUs() {
             <div className="row">
                 <div className="col-12 pt-4" >
                     <div className='pe-md-0 pe-lg-5' style={{marginBottom: '100px'}}>
-                        <h3 className={` ${classes.title} mt-3 text-center`}> Nə üçün linkim.az? </h3>
+                        <h3 className={`title mt-3 text-center`}> Nə üçün linkim.az? </h3>
                     </div>
                 </div>
                 <div className="col-12">

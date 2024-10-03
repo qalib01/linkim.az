@@ -1,4 +1,4 @@
-import SectionLayout from "../Root/SectionLayout";
+import Section from '../../components/Section/Section';
 import classes from './Contact.module.scss';
 import emailSvg from './email.svg';
 import phoneSvg from './phone.svg';
@@ -54,11 +54,11 @@ function Contact() {
 
 
     return (
-        <SectionLayout sectionBg='bgTransparent'>
+        <Section sectionBg='bgTransparent'>
             <div style={{ margin: '100px 0' }}>
                 <div className="row text-center">
-                    <div className={`${classes.content} pe-md-0 pe-lg-5  mb-5`}>
-                        <h2 className={` ${classes.title} mt-3`}> Əlaqə </h2>
+                    <div className={`content pe-md-0 pe-lg-5  mb-5`}>
+                        <h2 className={`title mt-3`}> Əlaqə </h2>
                     </div>
                 </div>
                 <div className="row gy-4">
@@ -152,7 +152,7 @@ function Contact() {
                     </div>
                 </div>
             </div>
-        </SectionLayout>
+        </Section>
     )
 }
 
