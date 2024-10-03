@@ -43,6 +43,10 @@ li, ul, ol {
 a {
 	text-decoration: none;
 }
+.title {
+	font-weight: 900;
+	line-height: 1
+}
 .pre-title:after {
 	content: '';
 	background: #212529;
@@ -213,6 +217,9 @@ a {
 	.primary-nav .navbar-nav .nav-link {
 		font-size: 1.125rem;
 	}
+	.title {
+		font-size: 4.5rem;
+	}
 }
 
 /*-- Max Width Media Queries --*/
@@ -226,11 +233,23 @@ a {
 	.blog-post-title {
 		font-size: 1.2rem;
 	}
+	.title {
+		font-size: 3.5rem;
+	}
 }
 
 @media (max-width: 991.98px) {
 	.primary-nav .navbar-brand img {
 		max-width: 90px
+	}
+	.content {
+		text-align: center
+	}
+	.hero {
+		margin-top: 140px;
+	}
+	.title {
+		font-size: 1.8rem;
 	}
 }
 
@@ -244,50 +263,4 @@ a {
 
 .flex-row-scroll::-webkit-scrollbar {
     display: none;
-}
-
-.col-12, .col-md-6, .col-lg-4 {
-    min-width: 300px;
-    flex: 0 0 auto;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.title {
-	font-weight: 900;
-	line-height: 1
-}
-
-@media (min-width: 1400px) {
-	.title {
-		font-size: 4.5rem;
-	}
-}
-@media (max-width: 1399.98px) {
-	.title {
-		font-size: 3.5rem;
-	}
-}
-@media (max-width: 991.98px) {
-	.title {
-		font-size: 1.8rem;
-	}
 }

@@ -1,0 +1,17 @@
+.item {
+    .icon {
+        width: 80px;
+        margin: auto;
+        margin-bottom: 20px;
+
+        svg {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+        }
+    }
+
+    .content {
+        text-align: center;
+        padding: 10px;
+    }
+}

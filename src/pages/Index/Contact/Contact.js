@@ -6,6 +6,8 @@ import { isEmail, isNotEmpty } from "../../../utils/validation";
 import Section from "../../../components/Section/Section";
 import EmailIconSvg from "../../../components/Icons/EmailIconSvg";
 import LocationIconSvg from "../../../components/Icons/LocationIconSvg";
+import PhoneIconSvg from "../../../components/Icons/PhoneIconSvg";
+import WorkHoursIconSvg from "../../../components/Icons/WorkHoursIconSvg";
 
 function ContactPage() {
   useEffect(() => {
@@ -67,7 +69,6 @@ function ContactPage() {
             <div className="row gy-4">
               <div className="col-md-6">
                 <div className={classes.infoItem}>
-                  {/* <img src={locationSvg} alt="Location" /> */}
                   <LocationIconSvg />
                   <h3>Ofisimiz</h3>
                   <p>Bakı şəhəri</p>
@@ -76,7 +77,7 @@ function ContactPage() {
               </div>
               <div className="col-md-6">
                 <div className={classes.infoItem}>
-                  {/* <img src={phoneSvg} alt="Phone" /> */}
+                  <PhoneIconSvg />
                   <h3>Mobil nömrərlərimiz</h3>
                   <p>+1 5589 55488 55</p>
                   <p>+1 6678 254445 41</p>
@@ -92,7 +93,7 @@ function ContactPage() {
               </div>
               <div className="col-md-6">
                 <div className={classes.infoItem}>
-                  {/* <img src={workSvg} alt="Work" /> */}
+                  <WorkHoursIconSvg />
                   <h3>İş saatları</h3>
                   <p>Hərgün</p>
                   <p>9:00 - 18:00</p>

@@ -1,0 +1,21 @@
+.instructionsBox {
+    box-shadow: 0 0 2rem rgb(0 0 0 / 0.1);
+
+    svg {
+        width: 60px;
+        height: 60px;
+    }
+}
+.instructionsTitle {
+    font-weight: 800;
+}
+
+.instructionsBoxLink {
+    margin-bottom: 20px;
+}
+
+@media (max-width: 991.98px) {
+    .instructionsBoxText {
+        text-align: center;
+    }
+}
