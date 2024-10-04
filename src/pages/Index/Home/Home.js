@@ -33,7 +33,7 @@ function Hero() {
                     <div className={`content pe-md-0 pe-lg-5`}>
                         <h1 className={`title mt-3`}> Bütün linklər indi sadəcə 1 yerdə </h1>
                         <p className={`mt-3 mb-0`}> İndi sən də bizim inkişaf etməkdə olan platformamıza qoşularaq bütün Facebook, Instagram, Tiktok, X və digər linklərini sadəcə bir link üzərindən paylaş </p>
-                        <Link to="/register"> İndi başla </Link>
+                        <Link to="/p/register"> İndi başla </Link>
                     </div>
                 </div>
                 <div className="col-md-12 col-lg-6 order-2">
@@ -55,7 +55,7 @@ function Customize() {
                     <div className={`content pe-md-0 pe-lg-5`}>
                         <h2 className={`title mt-3`}> Linkini dəqiqələr içində yarat </h2>
                         <p className={`mt-3 mb-0`}> Tiktok, Instagram, X, web sayt, mağaza, canlı yayım, musiqi və daha çoxunu 1 linkdə topla və paylaş </p>
-                        <Link to="/register"> İndi başla </Link>
+                        <Link to="/p/register"> İndi başla </Link>
                     </div>
                 </div>
                 <div className="col-md-12 col-lg-6 order-1">
@@ -77,7 +77,7 @@ function Share() {
                     <div className={`content pe-md-0 pe-lg-5`}>
                         <h3 className={`title mt-3`}> Linklərini daha rahat paylaş </h3>
                         <p className={`mt-3 mb-0`}> Bütün linklərini linkim.az platformasından qeydiyyatdan keçir, sosial şəbəkələrinin bio hissəsinə əlavə et və rahatlıqdan faydalan </p>
-                        <Link to="/register"> İndi başla </Link>
+                        <Link to="/p/register"> İndi başla </Link>
                     </div>
                 </div>
                 <div className="col-md-12 col-lg-6 order-2">
@@ -101,7 +101,7 @@ function Instructions() {
                         <p>LinkimAz ilə şəxsi və sosial media hesablarını tək bir platformada birləşdirmək çox asandır. Bir neçə sadə addımla bütün əlaqələrini idarə edə və izləyicilərinə bir kliklə təqdim edə bilərsən.</p>
                         <p>Ən sevdiyin sosial media platformalarını bir araya gətirərək, izləyicilərin və dostların üçün aydın və rahat keçid nöqtəsi yaradacaqsan. İndi addım-addım öz linkini hazırla və paylaş!</p>
                         <div className={classes.instructionsBoxLink}>
-                            <Link to="/register"> İndi başla </Link>
+                            <Link to="/p/register"> İndi başla </Link>
                         </div>
                     </div>
                 </div>

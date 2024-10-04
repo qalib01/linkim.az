@@ -69,7 +69,7 @@ function AboutPage() {
                                             Məqsədimiz, hər kəsin öz şəxsiyyətini və brendini bir kliklə göstərməsini asanlaşdırmaqdır. İstifadəsi sadə, funksional və hər kəsin ehtiyaclarına uyğun olan "linkim.az" ilə rəqəmsal izlərini bir araya gətir və dünyaya öz unikal profilini paylaş!
                                         </p>
                                         <p>
-                                            <Link to='/register'> İndi başla </Link>
+                                            <Link to='/p/register'> İndi başla </Link>
                                         </p>
                                     </div>
                                 </div>

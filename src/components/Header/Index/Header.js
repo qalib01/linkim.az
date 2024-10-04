@@ -15,10 +15,10 @@ function Header() {
                      <NavLink className={({ isActive }) => isActive ? `${classes.navLink} ${classes.active}` : classes.navLink } to="/" end> Əsas səhifə </NavLink>
                   </li>
                   <li className="nav-item">
-                     <NavLink className={({ isActive }) => isActive ? `${classes.navLink} ${classes.active}` : classes.navLink } to="/about" end> Haqqımızda </NavLink>
+                     <NavLink className={({ isActive }) => isActive ? `${classes.navLink} ${classes.active}` : classes.navLink } to="/p/about" end> Haqqımızda </NavLink>
                   </li>
                   <li className="nav-item">
-                     <NavLink className={({ isActive }) => isActive ? `${classes.navLink} ${classes.active}` : classes.navLink } to="/contact" end> Əlaqə </NavLink>
+                     <NavLink className={({ isActive }) => isActive ? `${classes.navLink} ${classes.active}` : classes.navLink } to="/p/contact" end> Əlaqə </NavLink>
                   </li>
                </ul>
             </div>

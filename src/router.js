@@ -6,14 +6,28 @@ import IndexPageLayout from './layouts/IndexPageLayout';
 import ContactPage from './pages/Index/Contact/Contact';
 import RegisterPage from './pages/Index/Auth/Register';
 import LoginPage from './pages/Index/Auth/Login';
+import UserLinks from './pages/Index/UserLinks/UserLinks';
 
 const router = createBrowserRouter([
     {
         path: '/',
+        errorElement: <IndexErrorPage />,
+        children: [
+            { 
+                path: '/', 
+                element: <IndexPageLayout />, 
+                children: [ 
+                    { index: true, element: <HomePage /> }, 
+                ] 
+            },
+            { path: ':username', element: <UserLinks /> },
+        ]
+    },
+    {
+        path: '/p/',
         element: <IndexPageLayout />,
         errorElement: <IndexErrorPage />,
         children: [
-            { index: true, element: <HomePage /> },
             { path: 'about', element: <AboutPage /> },
             { path: 'contact', element: <ContactPage /> },
             { path: 'register', element: <RegisterPage /> },

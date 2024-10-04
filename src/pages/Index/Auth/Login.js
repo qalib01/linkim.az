@@ -85,7 +85,7 @@ function LoginPage() {
                         </div>
                     </form>
                     <div className={classes.hasAccount}>
-                        <p> Hesabın yoxdursa, yeni hesabını <Link to='/register'> buradan </Link> yarada edə bilərsən. </p>
+                        <p> Hesabın yoxdursa, yeni hesabını <Link to='/p/register'> buradan </Link> yarada edə bilərsən. </p>
                     </div>
                 </div>
             </div>

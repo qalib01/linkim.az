@@ -128,7 +128,7 @@ function RegisterPage() {
                         </div>
                     </form>
                     <div className={classes.hasAccount}>
-                        <p> Artıq hesabın varsa, hesabına <Link to='/login'> buradan </Link> giriş edə bilərsən. </p>
+                        <p> Artıq hesabın varsa, hesabına <Link to='/p/login'> buradan </Link> giriş edə bilərsən. </p>
                     </div>
                 </div>
             </div>

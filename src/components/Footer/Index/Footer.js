@@ -16,13 +16,13 @@ export default function Footer() {
                                 <h3 className={`${classes.footerTitle} text-white mb-4`}> Şirkət </h3>
                                 <ul className="list-unstyled mb-0">
                                     <li className="mb-2">
-                                        <Link to="/about"> Haqqımızda </Link>
+                                        <Link to="/p/about"> Haqqımızda </Link>
                                     </li>
                                     <li className="mb-2">
-                                        <Link to="/contact"> Əlaqə </Link>
+                                        <Link to="/p/contact"> Əlaqə </Link>
                                     </li>
                                     <li className="mb-2">
-                                        <Link to="/register"> Qeydiyyat </Link>
+                                        <Link to="/p/register"> Qeydiyyat </Link>
                                     </li>
                                 </ul>
                             </div>
@@ -32,7 +32,7 @@ export default function Footer() {
                                 <h3 className={`${classes.footerTitle} text-white mb-4`}> Dəstək </h3>
                                 <ul className="list-unstyled mb-0">
                                     <li className="mb-2">
-                                        <Link to="/goal"> Məqsəd </Link>
+                                        <Link to="/p/goal"> Məqsəd </Link>
                                     </li>
                                 </ul>
                             </div>
