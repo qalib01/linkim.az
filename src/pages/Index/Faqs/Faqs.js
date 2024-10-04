@@ -2,6 +2,7 @@ import classes from './Faqs.module.scss';
 import ArrowDownIconSvg from "../../../components/Icons/ArrowDownIconSvg";
 import { useState } from "react";
 import Section from "../../../components/Section/Section";
+import ArrowUpIconSvg from '../../../components/Icons/ArrowUpIconSvg';
 
 
 const FAQ_DATA = [
@@ -39,7 +40,7 @@ function Faqs() {
                 <div className={classes.faqBody}>
                     {
                         FAQ_DATA.map((data) => (
-                            <Faq data={data} />
+                            <Faq key={data.id} data={data} />
                         ))
                     }
                 </div>
@@ -57,10 +58,10 @@ function Faq({data}) {
 
 
     return (
-        <div key={data.id} className={classes.faqItem}>
+        <div className={classes.faqItem}>
             <div className={classes.faqQuestion} onClick={toggleShowFaq}>
                 <p>{data.question}</p>
-                <ArrowDownIconSvg color='#F5ADA6' />
+                { showFaq ? <ArrowUpIconSvg color='#F5ADA6' /> : <ArrowDownIconSvg color='#F5ADA6' /> }
             </div>
             {
                 showFaq && <div className={classes.faqAnswer}>

@@ -14,10 +14,10 @@ const router = createBrowserRouter([
         errorElement: <IndexErrorPage />,
         children: [
             { index: true, element: <HomePage /> },
-            { path: '/about', element: <AboutPage /> },
-            { path: '/contact', element: <ContactPage /> },
-            { path: '/register', element: <RegisterPage /> },
-            { path: '/login', element: <LoginPage /> },
+            { path: 'about', element: <AboutPage /> },
+            { path: 'contact', element: <ContactPage /> },
+            { path: 'register', element: <RegisterPage /> },
+            { path: 'login', element: <LoginPage /> },
         ]
     },
 ])

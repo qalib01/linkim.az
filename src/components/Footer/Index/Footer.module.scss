@@ -1,5 +1,4 @@
 .footer {
-
     a {
         color: #8e98a2;
         text-decoration: none;
@@ -30,7 +29,25 @@
             }
         }
     }
-	
+}
+
+.toTop {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    bottom: 80px;
+    right: 80px;
+    background-color: #333333;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 10px;
+
+    svg {
+        width: 50%;
+    }
 }
 
 .cta {

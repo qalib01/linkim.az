@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import classes from './Footer.module.scss';
 import GetInTouch from './GetInTouch';
+import ToTop from './ToTop';
 
 
 export default function Footer() {
@@ -63,6 +64,7 @@ export default function Footer() {
                     </div>
                 </div>
             </footer>
+            <ToTop />
         </>
     )
 }
