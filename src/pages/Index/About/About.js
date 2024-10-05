@@ -15,24 +15,28 @@ const TEAM_DATA = [
     {
         id: 1,
         name: 'Jimmy Jones',
+        username: 'username',
         profession: 'CEO',
         image: team1,
     },
     {
         id: 2,
         name: 'Piwy Powell',
+        username: 'username',
         profession: 'CTO',
         image: team2,
     },
     {
         id: 3,
         name: 'Siko Simpson',
+        username: 'username',
         profession: 'COO',
         image: team3,
     },
     {
         id: 4,
         name: 'Gina Griffin',
+        username: 'username',
         profession: 'Creative Director',
         image: team4,
     }
@@ -48,24 +52,24 @@ function AboutPage() {
             <Section sectionName='about' sectionBg='bgTransparent'>
                 <div className="row">
                     <div className={`content pe-md-0 pe-lg-5`}>
-                        <div class="content">
-                            <div class="row">
-                                <div class="col-12 col-lg-6 order-lg-2 offset-xl-1">
-                                    <div class="img-wrap text-md-left">
-                                        <div class="img">
-                                            {/* <img src="assets/img/img_v_3.jpg" alt="circle image" class="img-fluid" /> */}
+                        <div className="content">
+                            <div className="row">
+                                <div className="col-12 col-lg-6 order-lg-2 offset-xl-1">
+                                    <div className="img-wrap text-md-left">
+                                        <div className="img">
+                                            {/* <img src="assets/img/img_v_3.jpg" alt="circle image" className="img-fluid" /> */}
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12 col-lg-6">
-                                    <div class="px-3">
-                                        <h1 class={`title mb-4`}>
+                                <div className="col-12 col-lg-6">
+                                    <div className="px-3">
+                                        <h1 className={`title mb-4`}>
                                             Məqsədimiz
                                         </h1>
-                                        <p class="lead">
+                                        <p className="lead">
                                             "linkim.az" olaraq, istifadəçilərimizin onlayn kimliklərini daha sadə və effektiv bir şəkildə paylaşmalarına kömək edirik. Fərqli sosial media platformalarında olan hesablarını və şəxsi keçidlərini tək bir yerdə toplamağa imkan verən bir platforma olaraq, istifadəçilərə zaman və rahatlıq qazandırırıq.
                                         </p>
-                                        <p class="mb-2">
+                                        <p className="mb-2">
                                             Məqsədimiz, hər kəsin öz şəxsiyyətini və brendini bir kliklə göstərməsini asanlaşdırmaqdır. İstifadəsi sadə, funksional və hər kəsin ehtiyaclarına uyğun olan "linkim.az" ilə rəqəmsal izlərini bir araya gətir və dünyaya öz unikal profilini paylaş!
                                         </p>
                                         <p>
@@ -79,17 +83,17 @@ function AboutPage() {
                 </div>
             </Section>
             <Section sectionName='' sectionBg='bgWhite'>
-                <div class="row gy-4 justify-content-center">
-                    <div class="col-lg-5">
-                        <div class="images-overlap">
-                            {/* <img src="assets/img/img_v_1.jpg" alt="student" class="img-fluid img-1" data-aos="fade-up" /> */}
+                <div className="row gy-4 justify-content-center">
+                    <div className="col-lg-5">
+                        <div className="images-overlap">
+                            {/* <img src="assets/img/img_v_1.jpg" alt="student" className="img-fluid img-1" data-aos="fade-up" /> */}
                         </div>
                     </div>
-                    <div class="col-lg-4 ps-lg-5">
-                        <p class="lead">
+                    <div className="col-lg-4 ps-lg-5">
+                        <p className="lead">
                             Biz, texnologiyanın həyatımızı necə sadələşdirə biləcəyinə inanırıq və məhz bu səbəbdən istifadəçilərimiz üçün hər gün inkişaf etməyə çalışırıq.
                         </p>
-                        <p class="mb-2">
+                        <p className="mb-2">
                             Misiyamız, həm fərdi istifadəçilərin, həm də bizneslərin onlayn varlığını gücləndirəcək yenilikçi həllər təqdim etməkdir.
                         </p>
                     </div>
@@ -122,6 +126,7 @@ function Team() {
                                     <div className="card-body py-4 text-center">
                                         <p className={`fs-6 fw-bold text-uppercase`}>{data.name}</p>
                                         <p className="card-subtitle mb-0 text-muted small">{data.profession}</p>
+                                        <Link to={`/${data.username}`}> Linki </Link>
                                     </div>
                                 </div>
                             </div>
