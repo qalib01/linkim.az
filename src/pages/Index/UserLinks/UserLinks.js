@@ -206,9 +206,6 @@ function ShareDialogBox({ onClose, data }) {
                         </div>
                     </div>
                 </div>
-                <div className={classes.footer}>
-
-                </div>
             </div>
         </div>,
         document.getElementById('modal')

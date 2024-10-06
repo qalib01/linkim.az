@@ -34,7 +34,7 @@
 .toTop {
     position: fixed;
     width: 40px;
-    height: 40px;
+    aspect-ratio: 1/1;
     bottom: 80px;
     right: 80px;
     background-color: #333333;
@@ -105,6 +105,11 @@
     .footerTitle {
 		font-size: 1.125rem;
 	}
+
+    .toTop {
+        bottom: 40px !important;
+        right: 40px !important;
+    }
 }
 
 @media (max-width: 575.98px) {

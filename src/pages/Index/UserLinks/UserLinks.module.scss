@@ -247,11 +247,53 @@
     .container {
         width: 80% !important;
     }
+    .dialog {
+        width: 60% !important;
+        padding: 16px !important;
+        border-radius: 26px !important;
+
+        .linkInformations {
+            padding: 15px !important;
+            border-radius: 20px !important;
+
+            p {
+                font-size: 18px !important;
+            }
+            
+            span {
+                font-size: 14px !important;
+            }
+        }
+
+        .buttons {
+            margin: 20px !important;
+            padding: 15px 0 !important;
+            column-gap: 15px !important;
+            
+            button, a {
+                width: 50px !important;
+            }
+        }
+
+        .authOptions {
+            
+            span {
+                font-size: 14px !important;
+            }
+
+            button, a {
+                padding: 10px 24px !important;
+                font-size: 14px !important;
+                margin-top: 16px !important;
+            }
+        }
+    }
 }
 
 @media (max-width: 575px) {
     .container {
         width: 100% !important;
+        padding: 10px 20px !important;
 
         button {
             width: 40px !important;
@@ -266,17 +308,60 @@
             row-gap: 10px !important;
 
             .userLink {
-                border-radius: 36px !important;
+                width: 100% !important;
 
                 a {
-                    padding: 16px !important;
-                    font-size: 1rem !important;
+                    padding: 12px !important;
+                    font-size: 14px !important;
+                }
+
+                .shareIcon {
+                    right: 0px !important;
+                    width: 38px !important;
                 }
             }
         }
 
         .userImg {
             max-width: 160px !important;
+        }
+    }
+
+    .dialog {
+        width: 95% !important;
+        padding: 12px !important;
+        border-radius: 20px !important;
+
+        .linkInformations {
+            padding: 12px !important;
+            border-radius: 16px !important;
+
+            p {
+                font-size: 16px !important;
+            }
+            
+            span {
+                font-size: 12px !important;
+            }
+        }
+
+        .buttons {
+            margin: 16px !important;
+            padding: 12px 0 !important;
+            column-gap: 16px !important;
+
+            span {
+                font-size: 12px !important;
+            }
+        }
+
+        .authOptions {
+
+            button, a {
+                padding: 8px 20px !important;
+                font-size: 12px !important;
+                margin-top: 14px !important;
+            }
         }
     }
 }

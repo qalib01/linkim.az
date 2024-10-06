@@ -126,13 +126,20 @@
 	}
 }
 @media (max-width: 767.98px) {
-	.sectionTitle {
-		font-size: 1.5rem;
-	}
+		.sectionTitle {
+			font-size: 1.5rem;
+		}
 }
 @media (max-width: 575.98px) {
 	.section {
 		padding: 50px 0;
+
+		a, button {
+			padding: 8px 24px !important;
+			border-radius: 24px !important;
+			font-size: 14px !important;
+			margin-top: 16px !important;
+		}
 	}
 	.sectionTitle {
 		font-size: 1.4rem;

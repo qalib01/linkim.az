@@ -119,7 +119,7 @@ function Team() {
             <div className="row flex-row-scroll">
                 {
                     TEAM_DATA.map((data) => (
-                        <div key={data.id} className="col-6 col-md-6 col-lg-3">
+                        <div key={data.id} className="col-8 col-md-6 col-lg-3">
                             <div className={`mt-3 mt-md-5`}>
                                 <div className="card border-0 shadow-sm">
                                     <img src={data.image} className="card-img-top rounded" alt={data.name} />
