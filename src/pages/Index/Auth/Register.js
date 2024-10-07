@@ -1,59 +1,58 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Section from "../../../components/Section/Section";
 import { hasMinLength, isEmail, isEqualsToOtherValue, isNotEmpty } from "../../../utils/validation";
 import { Link } from "react-router-dom";
 import Input from "../../../components/Form/Input";
 import classes from './Auth.module.scss';
+import { useInput } from "../../../hooks/useInput";
 
 
 function RegisterPage() {
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, [])
+    }, []);
 
-    const [enteredValues, setEnteredValues] = useState({
-        name: '',
-        surname: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-    })
+    const {
+        value: nameValue,
+        handleInputChange: handleNameChange,
+        handleInputBlur: handleNameBlur,
+        hasError: hasNameError,
+    } = useInput('', (value) => isNotEmpty(value));
 
-    const [didEdit, setDidEdit] = useState({
-        name: false,
-        surname: false,
-        email: false,
-        password: false,
-        confirmPassword: false,
-    })
+    const {
+        value: surnameValue,
+        handleInputChange: handleSurnameChange,
+        handleInputBlur: handleSurnameBlur,
+        hasError: hasSurnameError,
+    } = useInput('', (value) => isNotEmpty(value));
 
-    const nameIsInvalid = didEdit.name && !isNotEmpty(enteredValues.name);
-    const surnameIsInvalid = didEdit.surname && !isNotEmpty(enteredValues.surname);
-    const emailIsInvalid = didEdit.email && !isEmail(enteredValues.email) && !isNotEmpty(enteredValues.email);
-    const passwordIsInvalid = didEdit.password && (!hasMinLength(enteredValues.password, 8) || !isNotEmpty(enteredValues.password));
-    const passwordConfirmIsInvalid = didEdit.confirmPassword && (!isEqualsToOtherValue(enteredValues.password, enteredValues.confirmPassword) || !isNotEmpty(enteredValues.confirmPassword));
+    const {
+        value: emailValue,
+        handleInputChange: handleEmailChange,
+        handleInputBlur: handleEmailBlur,
+        hasError: hasEmailError,
+    } = useInput('', (value) => isEmail(value) && isNotEmpty(value));
 
-    function handleInputChange(identifier, event) {
-        setEnteredValues(prevValues => ({
-            ...prevValues,
-            [identifier]: event
-        }));
+    const {
+        value: passwordValue,
+        handleInputChange: handlePasswordChange,
+        handleInputBlur: handlePasswordBlur,
+        hasError: hasPasswordError,
+    } = useInput('', (value) => hasMinLength(value, 8) && isNotEmpty(value));
 
-        setDidEdit(prevEdit => ({
-            ...prevEdit,
-            [identifier]: false
-        }));
-    }
-
-    function handleInputBlur(identifier) {
-        setDidEdit(prevEdit => ({
-            ...prevEdit,
-            [identifier]: true
-        }))
-    }
+    const {
+        value: passwordConfirmValue,
+        handleInputChange: handlePasswordConfirmChange,
+        handleInputBlur: handlePasswordConfirmBlur,
+        hasError: hasPasswordConfirmError,
+    } = useInput('', (value) => isEqualsToOtherValue(value, passwordValue) && isNotEmpty(value));
 
     function handleSubmit(event) {
         event.preventDefault();
+
+        if (nameValue || surnameValue || emailValue || passwordValue || passwordConfirmValue) {
+            return;
+        }
     }
 
     return (
@@ -74,9 +73,10 @@ function RegisterPage() {
                                 label='Ad' 
                                 placeholder='Adın' 
                                 required={true} 
-                                onChange={(event) => handleInputChange('name', event.target.value)}
-                                onBlur={() => handleInputBlur('name')} 
-                                error={nameIsInvalid} 
+                                value={nameValue} 
+                                onChange={handleNameChange}
+                                onBlur={handleNameBlur} 
+                                error={hasNameError} 
                              />
                             <Input 
                                 id='surname' 
@@ -85,9 +85,10 @@ function RegisterPage() {
                                 label='Soyad' 
                                 placeholder='Soyadın' 
                                 required={true} 
-                                onChange={(event) => handleInputChange('surname', event.target.value)}
-                                onBlur={() => handleInputBlur('surname')} 
-                                error={surnameIsInvalid} 
+                                value={surnameValue} 
+                                onChange={handleSurnameChange}
+                                onBlur={handleSurnameBlur} 
+                                error={hasSurnameError} 
                              />
                             <Input 
                                 id='email' 
@@ -96,9 +97,10 @@ function RegisterPage() {
                                 label='Email' 
                                 placeholder='Emailin' 
                                 required={true} 
-                                onChange={(event) => handleInputChange('email', event.target.value)}
-                                onBlur={() => handleInputBlur('email')} 
-                                error={emailIsInvalid} 
+                                value={emailValue} 
+                                onChange={handleEmailChange}
+                                onBlur={handleEmailBlur} 
+                                error={hasEmailError} 
                              />
                             <Input 
                                 id='password' 
@@ -107,9 +109,10 @@ function RegisterPage() {
                                 label='Şifrə' 
                                 placeholder='Şifrən' 
                                 required={true} 
-                                onChange={(event) => handleInputChange('password', event.target.value)}
-                                onBlur={() => handleInputBlur('password')} 
-                                error={passwordIsInvalid} 
+                                value={passwordValue} 
+                                onChange={handlePasswordChange}
+                                onBlur={handlePasswordBlur} 
+                                error={hasPasswordError} 
                              />
                             <Input 
                                 id='confirmPassword' 
@@ -118,9 +121,10 @@ function RegisterPage() {
                                 label='Təkrar şifrə' 
                                 placeholder='Şifrən təkrar' 
                                 required={true} 
-                                onChange={(event) => handleInputChange('confirmPassword', event.target.value)}
-                                onBlur={() => handleInputBlur('confirmPassword')} 
-                                error={passwordConfirmIsInvalid} 
+                                value={passwordConfirmValue} 
+                                onChange={handlePasswordConfirmChange}
+                                onBlur={handlePasswordConfirmBlur} 
+                                error={hasPasswordConfirmError} 
                              />
                             <div className="text-center">
                                 <button type="submit">Göndər</button>

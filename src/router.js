@@ -1,37 +1,39 @@
+import { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import AboutPage from './pages/Index/About/About';
-import IndexErrorPage from './error/IndexErrorPage';
-import HomePage from './pages/Index/Home/Home';
 import IndexPageLayout from './layouts/IndexPageLayout';
-import ContactPage from './pages/Index/Contact/Contact';
-import RegisterPage from './pages/Index/Auth/Register';
-import LoginPage from './pages/Index/Auth/Login';
-import UserLinks from './pages/Index/UserLinks/UserLinks';
+
+const HomePage = lazy(() => import('./pages/Index/Home/Home'));
+const AboutPage = lazy(() => import('./pages/Index/About/About'));
+const ContactPage = lazy(() => import('./pages/Index/Contact/Contact'));
+const RegisterPage = lazy(() => import('./pages/Index/Auth/Register'));
+const LoginPage = lazy(() => import('./pages/Index/Auth/Login'));
+const UserLinks = lazy(() => import('./pages/Index/UserLinks/UserLinks'));
+const IndexErrorPage = lazy(() => import('./error/IndexErrorPage'));
 
 const router = createBrowserRouter([
     {
         path: '/',
-        errorElement: <IndexErrorPage />,
+        errorElement: <Suspense fallback={<p> Yüklənir... </p>}><IndexErrorPage /></Suspense>,
         children: [
             { 
                 path: '/', 
                 element: <IndexPageLayout />, 
                 children: [ 
-                    { index: true, element: <HomePage /> }, 
+                    { index: true, element: <Suspense fallback={<p> Yüklənir... </p>}><HomePage /></Suspense> }, 
                 ] 
             },
-            { path: ':username', element: <UserLinks /> },
+            { path: ':username', element: <Suspense fallback={<p> Yüklənir... </p>}><UserLinks /></Suspense> },
         ]
     },
     {
         path: '/p/',
         element: <IndexPageLayout />,
-        errorElement: <IndexErrorPage />,
+        errorElement: <Suspense fallback={<p> Yüklənir... </p>}><IndexErrorPage /></Suspense>,
         children: [
-            { path: 'about', element: <AboutPage /> },
-            { path: 'contact', element: <ContactPage /> },
-            { path: 'register', element: <RegisterPage /> },
-            { path: 'login', element: <LoginPage /> },
+            { path: 'about', element: <Suspense fallback={<p> Yüklənir... </p>}><AboutPage /></Suspense> },
+            { path: 'contact', element: <Suspense fallback={<p> Yüklənir... </p>}><ContactPage /></Suspense> },
+            { path: 'register', element: <Suspense fallback={<p> Yüklənir... </p>}><RegisterPage /></Suspense> },
+            { path: 'login', element: <Suspense fallback={<p> Yüklənir... </p>}><LoginPage /></Suspense> },
         ]
     },
 ])

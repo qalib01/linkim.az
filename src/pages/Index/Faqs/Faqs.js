@@ -1,34 +1,31 @@
 import classes from './Faqs.module.scss';
 import ArrowDownIconSvg from "../../../components/Icons/ArrowDownIconSvg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Section from "../../../components/Section/Section";
 import ArrowUpIconSvg from '../../../components/Icons/ArrowUpIconSvg';
+import { fetchFaqs } from '../../../utils/http';
 
-
-const FAQ_DATA = [
-    {
-        id: 1,
-        question: 'Why do I need a link in bio tool?',
-        answer: 'Right now, every time you’ve got something new to share, you have to go to every single one of your channels to change the link in each of your bios. It’s time-consuming and complicated – making it so much harder to keep everything up to date. A link in bio tool means you never have to compromise, or remove one link from your bio so you can add another. You can keep everything you want to share online in one link. When you’ve got a change, you only ever have to make it once.',
-    },
-    {
-        id: 2,
-        question: 'Why do I need a link in bio tool?',
-        answer: 'Right now, every time you’ve got something new to share, you have to go to every single one of your channels to change the link in each of your bios. It’s time-consuming and complicated – making it so much harder to keep everything up to date. A link in bio tool means you never have to compromise, or remove one link from your bio so you can add another. You can keep everything you want to share online in one link. When you’ve got a change, you only ever have to make it once.',
-    },
-    {
-        id: 3,
-        question: 'Why do I need a link in bio tool?',
-        answer: 'Right now, every time you’ve got something new to share, you have to go to every single one of your channels to change the link in each of your bios. It’s time-consuming and complicated – making it so much harder to keep everything up to date. A link in bio tool means you never have to compromise, or remove one link from your bio so you can add another. You can keep everything you want to share online in one link. When you’ve got a change, you only ever have to make it once.',
-    },
-    {
-        id: 4,
-        question: 'Why do I need a link in bio tool?',
-        answer: 'Right now, every time you’ve got something new to share, you have to go to every single one of your channels to change the link in each of your bios. It’s time-consuming and complicated – making it so much harder to keep everything up to date. A link in bio tool means you never have to compromise, or remove one link from your bio so you can add another. You can keep everything you want to share online in one link. When you’ve got a change, you only ever have to make it once.',
-    }
-]
 
 function Faqs() {
+    const [faqs, setFaqs] = useState([]);
+    const [isFetching, setIsFetching] = useState(false);
+    const [error, setError] = useState();
+
+    useEffect(() => {
+        async function allFaqs() {
+            setIsFetching(true);
+            try {
+                const data = await fetchFaqs();
+
+                setFaqs(data);
+            } catch (error) {
+                setError(error)
+            }
+            setIsFetching(false);
+        }
+        allFaqs();
+    }, []);
+
     return (
         <Section sectionName='faq' sectionBg='bgCoralOrange'>
             <div className="row flex-column" style={{ margin: '100px 0px' }}>
@@ -38,8 +35,11 @@ function Faqs() {
                     </div>
                 </div>
                 <div className={classes.faqBody}>
+                    {isFetching && <p> Məlumatlar yüklənir! </p>}
+                    {!isFetching && faqs.length === 0 && <p> Hal-hazırda heç bir məlumat yoxdur! </p>}
+                    {!isFetching && error && <p> Gözlənilməz xəta baş verib, xahiş olunur ki, daha sonra yenidən yoxlayasan! </p>}
                     {
-                        FAQ_DATA.map((data) => (
+                        !isFetching && faqs.length > 0 && faqs.map((data) => (
                             <Faq key={data.id} data={data} />
                         ))
                     }
@@ -49,24 +49,23 @@ function Faqs() {
     )
 }
 
-function Faq({data}) {
+function Faq({ data }) {
     const [showFaq, setShowFaq] = useState(false);
 
     function toggleShowFaq() {
         setShowFaq(prevState => !prevState)
     }
 
-
     return (
         <div className={classes.faqItem}>
             <div className={classes.faqQuestion} onClick={toggleShowFaq}>
                 <p>{data.question}</p>
-                { showFaq ? <ArrowUpIconSvg color='#F5ADA6' /> : <ArrowDownIconSvg color='#F5ADA6' /> }
+                {showFaq ? <ArrowUpIconSvg color='#F5ADA6' /> : <ArrowDownIconSvg color='#F5ADA6' />}
             </div>
             {
                 showFaq && <div className={classes.faqAnswer}>
-                <p>{data.answer}</p>
-            </div>
+                    <p>{data.answer}</p>
+                </div>
             }
         </div>
     )

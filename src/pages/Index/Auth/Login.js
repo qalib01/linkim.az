@@ -1,49 +1,36 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Section from "../../../components/Section/Section";
 import { hasMinLength, isEmail, isNotEmpty } from "../../../utils/validation";
 import { Link } from "react-router-dom";
 import Input from "../../../components/Form/Input";
 import classes from './Auth.module.scss';
+import { useInput } from "../../../hooks/useInput";
 
 function LoginPage() {
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, [])
+    }, []);
 
-    const [enteredValues, setEnteredValues] = useState({
-        email: '',
-        password: '',
-    });
+    const {
+        value: emailValue,
+        handleInputChange: handleEmailChange,
+        handleInputBlur: handleEmailBlur,
+        hasError: hasEmailError,
+    } = useInput('', (value) => isEmail(value) && isNotEmpty(value));
 
-    const [didEdit, setDidEdit] = useState({
-        email: false,
-        password: false
-    })
-
-    const emailIsInvalid = didEdit.email && (!isEmail(enteredValues.email) || !isNotEmpty(enteredValues.email));
-    const passwordIsInvalid = didEdit.password && (!hasMinLength(enteredValues.password, 8) || !isNotEmpty(enteredValues.password));
+    const {
+        value: passwordValue,
+        handleInputChange: handlePasswordChange,
+        handleInputBlur: handlePasswordBlur,
+        hasError: hasPasswordError,
+    } = useInput('', (value) => hasMinLength(value, 8) && isNotEmpty(value));
 
     function handleSubmit(event) {
         event.preventDefault();
-    }
 
-    function handleInputChange(identifier, event) {
-        setEnteredValues(prevValues => ({
-            ...prevValues,
-            [identifier]: event
-        }));
-
-        setDidEdit(prevEdit => ({
-            ...prevEdit,
-            [identifier]: false
-        }));
-    }
-
-    function handleInputBlur(identifier) {
-        setDidEdit(prevEdit => ({
-            ...prevEdit,
-            [identifier]: true
-        }))
+        if (hasEmailError || hasPasswordError) {
+            return;
+        }
     }
 
     return (
@@ -64,9 +51,10 @@ function LoginPage() {
                                 label='Email' 
                                 placeholder='Email adresin' 
                                 required={true} 
-                                onChange={(event) => handleInputChange('email', event.target.value)}
-                                onBlur={() => handleInputBlur('email')} 
-                                error={emailIsInvalid} 
+                                value={emailValue} 
+                                onChange={handleEmailChange}
+                                onBlur={handleEmailBlur} 
+                                error={hasEmailError} 
                              />
                             <Input 
                                 id='password' 
@@ -75,9 +63,10 @@ function LoginPage() {
                                 label='Şifrə' 
                                 placeholder='Şifrən' 
                                 required={true}
-                                onChange={(event) => handleInputChange('password', event.target.value)}
-                                onBlur={() => handleInputBlur('password')} 
-                                error={passwordIsInvalid} 
+                                value={passwordValue} 
+                                onChange={handlePasswordChange}
+                                onBlur={handlePasswordBlur} 
+                                error={hasPasswordError} 
                             />
                             <div className="text-center">
                                 <button type="submit">Göndər</button>

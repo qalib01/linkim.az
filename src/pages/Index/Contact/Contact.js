@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Textarea from "../../../components/Form/Textarea";
 import Input from "../../../components/Form/Input";
 import classes from './Contact.module.scss'
@@ -8,52 +8,47 @@ import EmailIconSvg from "../../../components/Icons/EmailIconSvg";
 import LocationIconSvg from "../../../components/Icons/LocationIconSvg";
 import PhoneIconSvg from "../../../components/Icons/PhoneIconSvg";
 import WorkHoursIconSvg from "../../../components/Icons/WorkHoursIconSvg";
+import { useInput } from "../../../hooks/useInput";
 
 function ContactPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const [enteredValues, setEnteredValues] = useState({
-    fullName: '',
-    email: '',
-    subject: '',
-    message: '',
-  });
+  const {
+    value: fullnameValue,
+    handleInputChange: handleFullnameChange,
+    handleInputBlur: handleFullnameBlur,
+    hasError: hasFullnameError,
+  } = useInput('', (value) => isNotEmpty(value));
 
-  const [didEdit, setDidEdit] = useState({
-    fullName: false,
-    email: false,
-    subject: false,
-    message: false,
-  })
+  const {
+    value: emailValue,
+    handleInputChange: handleEmailChange,
+    handleInputBlur: handleEmailBlur,
+    hasError: hasEmailError,
+  } = useInput('', (value) => isEmail(value) && isNotEmpty(value));
 
-  const fullNameIsInvalid = didEdit.fullName && !isNotEmpty(enteredValues.fullName);
-  const emailIsInvalid = didEdit.email && (!isEmail(enteredValues.email) || !isNotEmpty(enteredValues.email));
-  const subjectIsInvalid = didEdit.subject && !isNotEmpty(enteredValues.subject);
-  const messageIsInvalid = didEdit.message && !isNotEmpty(enteredValues.message);
+  const {
+    value: subjectValue,
+    handleInputChange: handleSubjectChange,
+    handleInputBlur: handleSubjectBlur,
+    hasError: hasSubjectError,
+  } = useInput('', (value) => isNotEmpty(value));
+
+  const {
+    value: messageValue,
+    handleInputChange: handleMessageChange,
+    handleInputBlur: handleMessageBlur,
+    hasError: hasMessageError,
+  } = useInput('', (value) => isNotEmpty(value));
 
   function handleSubmit(event) {
     event.preventDefault();
-  }
 
-  function handleInputChange(identifier, event) {
-    setEnteredValues(prevValues => ({
-      ...prevValues,
-      [identifier]: event
-    }));
-
-    setDidEdit(prevEdit => ({
-      ...prevEdit,
-      [identifier]: false
-    }));
-  }
-
-  function handleInputBlur(identifier) {
-    setDidEdit(prevEdit => ({
-      ...prevEdit,
-      [identifier]: true
-    }))
+    if (fullnameValue || emailValue || subjectValue || messageValue) {
+      return;
+    }
   }
 
   return (
@@ -104,48 +99,52 @@ function ContactPage() {
           <div className="col-lg-6">
             <form method="post" className={classes.form} onSubmit={handleSubmit}>
               <div className="row gy-4">
-                <Input
-                  id='fullName'
-                  type='text'
-                  name='fullName'
-                  label='Tam ad'
-                  placeholder='Tam adın'
-                  required={true}
-                  onChange={(event) => handleInputChange('fullName', event.target.value)}
-                  onBlur={() => handleInputBlur('fullName')}
-                  error={fullNameIsInvalid}
+                <Input 
+                  id='fullName' 
+                  type='text' 
+                  name='fullName' 
+                  label='Tam ad' 
+                  placeholder='Tam adın' 
+                  required={true} 
+                  value={fullnameValue} 
+                  onChange={handleFullnameChange} 
+                  onBlur={handleFullnameBlur} 
+                  error={hasFullnameError} 
                 />
-                <Input
-                  id='email'
-                  type='email'
-                  name='email'
-                  label='Email'
-                  placeholder='Emailin'
-                  required={true}
-                  onChange={(event) => handleInputChange('email', event.target.value)}
-                  onBlur={() => handleInputBlur('email')}
-                  error={emailIsInvalid}
+                <Input 
+                  id='email' 
+                  type='email' 
+                  name='email' 
+                  label='Email' 
+                  placeholder='Emailin' 
+                  required={true} 
+                  value={emailValue} 
+                  onChange={handleEmailChange} 
+                  onBlur={handleEmailBlur} 
+                  error={hasEmailError} 
                 />
-                <Input
-                  id='subject'
-                  type='text'
-                  name='subject'
-                  label='Mövzu'
-                  placeholder='Mövzun'
-                  required={true}
-                  onChange={(event) => handleInputChange('subject', event.target.value)}
-                  onBlur={() => handleInputBlur('subject')}
-                  error={subjectIsInvalid}
+                <Input 
+                  id='subject' 
+                  type='text' 
+                  name='subject' 
+                  label='Mövzu' 
+                  placeholder='Mövzun' 
+                  required={true} 
+                  value={subjectValue} 
+                  onChange={handleSubjectChange} 
+                  onBlur={handleSubjectBlur} 
+                  error={hasSubjectError} 
                 />
-                <Textarea
-                  id='message'
-                  name='message'
-                  label='Mesaj'
-                  placeholder='Mesajın'
-                  rows={6}
-                  onChange={(event) => handleInputChange('message', event.target.value)}
-                  onBlur={() => handleInputBlur('message')}
-                  error={messageIsInvalid}
+                <Textarea 
+                  id='message' 
+                  name='message' 
+                  label='Mesaj' 
+                  placeholder='Mesajın' 
+                  rows={6} 
+                  value={messageValue} 
+                  onChange={handleMessageChange} 
+                  onBlur={handleMessageBlur} 
+                  error={hasMessageError} 
                 />
                 <div className="text-center">
                   <button type="submit">Göndər</button>

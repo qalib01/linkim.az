@@ -1,46 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Section from "../../../components/Section/Section";
 import { Link } from "react-router-dom";
 import classes from './About.module.scss';
-import team1 from './team-1.jpg';
-import team2 from './team-2.jpg';
-import team3 from './team-3.jpg';
-import team4 from './team-4.jpg';
 import ShareIconWithLaptopSvg from "../../../components/Icons/ShareIconWithLaptopSvg";
 import SuitableIconSvg from "../../../components/Icons/SuitableIconSvg";
 import AllInOneIconSvg from "../../../components/Icons/AllInOneIconSvg";
 import UserFriendlyIconSvg from "../../../components/Icons/UserFriendlyIconSvg";
-
-const TEAM_DATA = [
-    {
-        id: 1,
-        name: 'Jimmy Jones',
-        username: 'username',
-        profession: 'CEO',
-        image: team1,
-    },
-    {
-        id: 2,
-        name: 'Piwy Powell',
-        username: 'username',
-        profession: 'CTO',
-        image: team2,
-    },
-    {
-        id: 3,
-        name: 'Siko Simpson',
-        username: 'username',
-        profession: 'COO',
-        image: team3,
-    },
-    {
-        id: 4,
-        name: 'Gina Griffin',
-        username: 'username',
-        profession: 'Creative Director',
-        image: team4,
-    }
-]
+import { fetchTeam } from "../../../utils/http";
 
 function AboutPage() {
     useEffect(() => {
@@ -107,6 +73,25 @@ function AboutPage() {
 
 
 function Team() {
+    const [team, setTeam] = useState([]);
+    const [isFetching, setIsFetching] = useState(false);
+    const [error, setError] = useState();
+
+    useEffect(() => {
+        async function allTeam() {
+            setIsFetching(true);
+            try {
+                const data = await fetchTeam();
+
+                setTeam(data);
+            } catch (error) {
+                setError(error)
+            }
+            setIsFetching(false);
+        }
+        allTeam();
+    }, []);
+
     return (
         <Section sectionName='team' sectionBg='bgTransparent'>
             <div className="row">
@@ -117,14 +102,17 @@ function Team() {
                 </div>
             </div>
             <div className="row flex-row-scroll">
+                {isFetching && <p> Məlumatlar yüklənir! </p>}
+                {!isFetching && team.length === 0 && <p> Hal-hazırda heç bir məlumat yoxdur! </p>}
+                {!isFetching && error && <p> Gözlənilməz xəta baş verib, xahiş olunur ki, daha sonra yenidən yoxlayasan! </p>}
                 {
-                    TEAM_DATA.map((data) => (
+                    team.map((data) => (
                         <div key={data.id} className="col-8 col-md-6 col-lg-3">
                             <div className={`mt-3 mt-md-5`}>
                                 <div className="card border-0 shadow-sm">
-                                    <img src={data.image} className="card-img-top rounded" alt={data.name} />
+                                    <img src={`http://localhost:1007/images/users/${data.photo}`} className="card-img-top rounded" alt={`${data.name} ${data.surname}`} />
                                     <div className="card-body py-4 text-center">
-                                        <p className={`fs-6 fw-bold text-uppercase`}>{data.name}</p>
+                                        <p className='fw-bold'>{data.name} {data.surname} </p>
                                         <p className="card-subtitle mb-0 text-muted small">{data.profession}</p>
                                         <Link to={`/${data.username}`}> Linki </Link>
                                     </div>
@@ -150,7 +138,7 @@ function WhyUs() {
                 </div>
                 <div className="col-12">
                     <div className="row gy-4 flex-wrap justify-content-between">
-                        <div className="col-lg-3">
+                        <div className="col-md-6 col-lg-3">
                             <div className={classes.item}>
                                 <div className={classes.icon}>
                                     <UserFriendlyIconSvg />
@@ -161,7 +149,7 @@ function WhyUs() {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-lg-3">
+                        <div className="col-md-6 col-lg-3">
                             <div className={classes.item}>
                                 <div className={classes.icon}>
                                     <AllInOneIconSvg />
@@ -172,7 +160,7 @@ function WhyUs() {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-lg-3">
+                        <div className="col-md-6 col-lg-3">
                             <div className={classes.item}>
                                 <div className={classes.icon}>
                                     <ShareIconWithLaptopSvg />
@@ -183,7 +171,7 @@ function WhyUs() {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-lg-3">
+                        <div className="col-md-6 col-lg-3">
                             <div className={classes.item}>
                                 <div className={classes.icon}>
                                     <SuitableIconSvg />
