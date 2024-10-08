@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Textarea from "../../../components/Form/Textarea";
 import Input from "../../../components/Form/Input";
 import classes from './Contact.module.scss'
@@ -15,11 +15,15 @@ function ContactPage() {
     window.scrollTo(0, 0);
   }, []);
 
+  const [loading, setLoading] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
+
   const {
     value: fullnameValue,
     handleInputChange: handleFullnameChange,
     handleInputBlur: handleFullnameBlur,
     hasError: hasFullnameError,
+    handleInputReset: handleFullnameReset,
   } = useInput('', (value) => isNotEmpty(value));
 
   const {
@@ -27,6 +31,7 @@ function ContactPage() {
     handleInputChange: handleEmailChange,
     handleInputBlur: handleEmailBlur,
     hasError: hasEmailError,
+    handleInputReset: handleEmailReset,
   } = useInput('', (value) => isEmail(value) && isNotEmpty(value));
 
   const {
@@ -34,6 +39,7 @@ function ContactPage() {
     handleInputChange: handleSubjectChange,
     handleInputBlur: handleSubjectBlur,
     hasError: hasSubjectError,
+    handleInputReset: handleSubjectReset,
   } = useInput('', (value) => isNotEmpty(value));
 
   const {
@@ -41,13 +47,38 @@ function ContactPage() {
     handleInputChange: handleMessageChange,
     handleInputBlur: handleMessageBlur,
     hasError: hasMessageError,
+    handleInputReset: handleMessageReset,
   } = useInput('', (value) => isNotEmpty(value));
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-
-    if (fullnameValue || emailValue || subjectValue || messageValue) {
+    if (hasFullnameError || hasEmailError || hasSubjectError || hasMessageError) {
+      setSubmitStatus({type: 'error', meesage: 'Zəhmət olmasa, bütün xanaları tam doldur!'})
       return;
+    }
+
+    try {
+      // let BASE_URL = process.env.REACT_APP_BASE_URL;
+      setLoading(true)
+      const req = await fetch(`http://localhost:1007/contact`, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ fullnameValue, emailValue, subjectValue, messageValue })
+      });
+
+      let res = await req.json();
+      setLoading(false);
+      setSubmitStatus(res);
+      handleFullnameReset();
+      handleEmailReset();
+      handleSubjectReset();
+      handleMessageReset();
+    } catch (error) {
+      setLoading(false);
+      console.error(error);
+      setSubmitStatus({ type: 'error', message: 'Mesajın göndərilməsi zaman texniki xəta baş verdi. Daha sonra yenidən yoxla!' });
     }
   }
 
@@ -147,7 +178,7 @@ function ContactPage() {
                   error={hasMessageError} 
                 />
                 <div className="text-center">
-                  <button type="submit">Göndər</button>
+                  <button type="submit" disabled={loading && true}>{ loading ? 'Göndərilir...' : 'Göndər' }</button>
                 </div>
               </div>
             </form>

@@ -82,7 +82,6 @@ function Team() {
             setIsFetching(true);
             try {
                 const data = await fetchTeam();
-
                 setTeam(data);
             } catch (error) {
                 setError(error)

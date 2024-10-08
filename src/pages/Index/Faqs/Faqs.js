@@ -16,7 +16,6 @@ function Faqs() {
             setIsFetching(true);
             try {
                 const data = await fetchFaqs();
-
                 setFaqs(data);
             } catch (error) {
                 setError(error)
