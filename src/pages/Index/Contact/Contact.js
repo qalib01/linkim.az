@@ -9,6 +9,7 @@ import LocationIconSvg from "../../../components/Icons/LocationIconSvg";
 import PhoneIconSvg from "../../../components/Icons/PhoneIconSvg";
 import WorkHoursIconSvg from "../../../components/Icons/WorkHoursIconSvg";
 import { useInput } from "../../../hooks/useInput";
+import Alert from "../../../components/Alert/Alert";
 
 function ContactPage() {
   useEffect(() => {
@@ -53,12 +54,11 @@ function ContactPage() {
   async function handleSubmit(event) {
     event.preventDefault();
     if (hasFullnameError || hasEmailError || hasSubjectError || hasMessageError) {
-      setSubmitStatus({type: 'error', meesage: 'Zəhmət olmasa, bütün xanaları tam doldur!'})
+      setSubmitStatus({ type: 'error', message: 'Zəhmət olmasa, bütün xanaları tam doldur!' })
       return;
     }
 
     try {
-      // let BASE_URL = process.env.REACT_APP_BASE_URL;
       setLoading(true)
       const req = await fetch(`http://localhost:1007/contact`, {
         method: 'POST',
@@ -70,6 +70,11 @@ function ContactPage() {
 
       let res = await req.json();
       setLoading(false);
+
+      if(!res.ok) {
+        setSubmitStatus({type: 'error', message: 'Mesajın göndərilməsi zaman texniki xəta baş verdi. Xahiş olunur ki, daha sonra yenidən yoxlayın!'});
+      }
+
       setSubmitStatus(res);
       handleFullnameReset();
       handleEmailReset();
@@ -78,7 +83,7 @@ function ContactPage() {
     } catch (error) {
       setLoading(false);
       console.error(error);
-      setSubmitStatus({ type: 'error', message: 'Mesajın göndərilməsi zaman texniki xəta baş verdi. Daha sonra yenidən yoxla!' });
+      setSubmitStatus({ type: 'error', message: 'Mesajın göndərilməsi zaman texniki xəta baş verdi. Xahiş olunur ki, daha sonra yenidən yoxlayın!' });
     }
   }
 
@@ -130,58 +135,61 @@ function ContactPage() {
           <div className="col-lg-6">
             <form method="post" className={classes.form} onSubmit={handleSubmit}>
               <div className="row gy-4">
-                <Input 
-                  id='fullName' 
-                  type='text' 
-                  name='fullName' 
-                  label='Tam ad' 
-                  placeholder='Tam adın' 
-                  required={true} 
-                  value={fullnameValue} 
-                  onChange={handleFullnameChange} 
-                  onBlur={handleFullnameBlur} 
-                  error={hasFullnameError} 
+                <Input
+                  id='fullName'
+                  type='text'
+                  name='fullName'
+                  label='Tam ad'
+                  placeholder='Tam adın'
+                  required={true}
+                  value={fullnameValue}
+                  onChange={handleFullnameChange}
+                  onBlur={handleFullnameBlur}
+                  error={hasFullnameError}
                 />
-                <Input 
-                  id='email' 
-                  type='email' 
-                  name='email' 
-                  label='Email' 
-                  placeholder='Emailin' 
-                  required={true} 
-                  value={emailValue} 
-                  onChange={handleEmailChange} 
-                  onBlur={handleEmailBlur} 
-                  error={hasEmailError} 
+                <Input
+                  id='email'
+                  type='email'
+                  name='email'
+                  label='Email'
+                  placeholder='Emailin'
+                  required={true}
+                  value={emailValue}
+                  onChange={handleEmailChange}
+                  onBlur={handleEmailBlur}
+                  error={hasEmailError}
                 />
-                <Input 
-                  id='subject' 
-                  type='text' 
-                  name='subject' 
-                  label='Mövzu' 
-                  placeholder='Mövzun' 
-                  required={true} 
-                  value={subjectValue} 
-                  onChange={handleSubjectChange} 
-                  onBlur={handleSubjectBlur} 
-                  error={hasSubjectError} 
+                <Input
+                  id='subject'
+                  type='text'
+                  name='subject'
+                  label='Mövzu'
+                  placeholder='Mövzun'
+                  required={true}
+                  value={subjectValue}
+                  onChange={handleSubjectChange}
+                  onBlur={handleSubjectBlur}
+                  error={hasSubjectError}
                 />
-                <Textarea 
-                  id='message' 
-                  name='message' 
-                  label='Mesaj' 
-                  placeholder='Mesajın' 
-                  rows={6} 
-                  value={messageValue} 
-                  onChange={handleMessageChange} 
-                  onBlur={handleMessageBlur} 
-                  error={hasMessageError} 
+                <Textarea
+                  id='message'
+                  name='message'
+                  label='Mesaj'
+                  placeholder='Mesajın'
+                  rows={6}
+                  value={messageValue}
+                  onChange={handleMessageChange}
+                  onBlur={handleMessageBlur}
+                  error={hasMessageError}
                 />
                 <div className="text-center">
-                  <button type="submit" disabled={loading && true}>{ loading ? 'Göndərilir...' : 'Göndər' }</button>
+                  <button type="submit" disabled={loading && true}>{loading ? 'Göndərilir...' : 'Göndər'}</button>
                 </div>
               </div>
             </form>
+            {submitStatus && (
+              <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus(null)} />
+            )}
           </div>
         </div>
       </div>
