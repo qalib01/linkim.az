@@ -1,13 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Section from "../../../components/Section/Section";
 import { hasMinLength, isEmail, isEqualsToOtherValue, isNotEmpty } from "../../../utils/validation";
 import { Link } from "react-router-dom";
 import Input from "../../../components/Form/Input";
 import classes from './Auth.module.scss';
 import { useInput } from "../../../hooks/useInput";
+import Alert from "../../../components/Alert/Alert";
 
 
 function RegisterPage() {
+    const [loading, setLoading] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState(null);
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -17,6 +20,7 @@ function RegisterPage() {
         handleInputChange: handleNameChange,
         handleInputBlur: handleNameBlur,
         hasError: hasNameError,
+        handleInputReset: handleNameReset,
     } = useInput('', (value) => isNotEmpty(value));
 
     const {
@@ -24,6 +28,7 @@ function RegisterPage() {
         handleInputChange: handleSurnameChange,
         handleInputBlur: handleSurnameBlur,
         hasError: hasSurnameError,
+        handleInputReset: handleSurnameReset,
     } = useInput('', (value) => isNotEmpty(value));
 
     const {
@@ -31,6 +36,7 @@ function RegisterPage() {
         handleInputChange: handleEmailChange,
         handleInputBlur: handleEmailBlur,
         hasError: hasEmailError,
+        handleInputReset: handleEmailReset,
     } = useInput('', (value) => isEmail(value) && isNotEmpty(value));
 
     const {
@@ -38,6 +44,7 @@ function RegisterPage() {
         handleInputChange: handlePasswordChange,
         handleInputBlur: handlePasswordBlur,
         hasError: hasPasswordError,
+        handleInputReset: handlePasswordReset,
     } = useInput('', (value) => hasMinLength(value, 8) && isNotEmpty(value));
 
     const {
@@ -45,13 +52,45 @@ function RegisterPage() {
         handleInputChange: handlePasswordConfirmChange,
         handleInputBlur: handlePasswordConfirmBlur,
         hasError: hasPasswordConfirmError,
+        handleInputReset: handlePasswordConfirmReset,
     } = useInput('', (value) => isEqualsToOtherValue(value, passwordValue) && isNotEmpty(value));
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault();
 
-        if (nameValue || surnameValue || emailValue || passwordValue || passwordConfirmValue) {
+        if (hasNameError || hasSurnameError || hasEmailError || hasPasswordError || hasPasswordConfirmError) {
+            setSubmitStatus({ type: 'error', message: 'Zəhmət olmasa, bütün xanaları tam doldur!' })
             return;
+        }
+
+        try {
+            setLoading(true)
+            const req = await fetch(`http://localhost:1007/register`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ nameValue, surnameValue, emailValue, passwordValue, passwordConfirmValue })
+            });
+
+            let res = await req.json();
+            setLoading(false);
+
+            if (!res.ok) {
+                console.log(res)
+                setSubmitStatus({ type: 'error', message: 'Qeydiyyat zamanı texniki problem baş verdi. Xahiş olunur ki, daha sonra yenidən cəhd edəsiniz!' });
+            }
+
+            setSubmitStatus(res);
+            handleNameReset();
+            handleSurnameReset();
+            handleEmailReset();
+            handlePasswordReset();
+            handlePasswordConfirmReset();
+        } catch (error) {
+            setLoading(false);
+            console.error(error);
+            setSubmitStatus({ type: 'error', message: 'Qeydiyyat zamanı texniki problem baş verdi. Xahiş olunur ki, daha sonra yenidən cəhd edəsiniz!' });
         }
     }
 
@@ -66,74 +105,77 @@ function RegisterPage() {
                     </div>
                     <form method="post" className={classes.form} onSubmit={handleSubmit}>
                         <div className="row gy-4">
-                            <Input 
-                                id='name' 
-                                type='text' 
-                                name='name' 
-                                label='Ad' 
-                                placeholder='Adın' 
-                                required={true} 
-                                value={nameValue} 
+                            <Input
+                                id='name'
+                                type='text'
+                                name='name'
+                                label='Ad'
+                                placeholder='Adın'
+                                required={true}
+                                value={nameValue}
                                 onChange={handleNameChange}
-                                onBlur={handleNameBlur} 
-                                error={hasNameError} 
-                             />
-                            <Input 
-                                id='surname' 
-                                type='text' 
-                                name='surname' 
-                                label='Soyad' 
-                                placeholder='Soyadın' 
-                                required={true} 
-                                value={surnameValue} 
+                                onBlur={handleNameBlur}
+                                error={hasNameError}
+                            />
+                            <Input
+                                id='surname'
+                                type='text'
+                                name='surname'
+                                label='Soyad'
+                                placeholder='Soyadın'
+                                required={true}
+                                value={surnameValue}
                                 onChange={handleSurnameChange}
-                                onBlur={handleSurnameBlur} 
-                                error={hasSurnameError} 
-                             />
-                            <Input 
-                                id='email' 
-                                type='email' 
-                                name='email' 
-                                label='Email' 
-                                placeholder='Emailin' 
-                                required={true} 
-                                value={emailValue} 
+                                onBlur={handleSurnameBlur}
+                                error={hasSurnameError}
+                            />
+                            <Input
+                                id='email'
+                                type='email'
+                                name='email'
+                                label='Email'
+                                placeholder='Emailin'
+                                required={true}
+                                value={emailValue}
                                 onChange={handleEmailChange}
-                                onBlur={handleEmailBlur} 
-                                error={hasEmailError} 
-                             />
-                            <Input 
-                                id='password' 
-                                type='password' 
-                                name='password' 
-                                label='Şifrə' 
-                                placeholder='Şifrən' 
-                                required={true} 
-                                value={passwordValue} 
+                                onBlur={handleEmailBlur}
+                                error={hasEmailError}
+                            />
+                            <Input
+                                id='password'
+                                type='password'
+                                name='password'
+                                label='Şifrə'
+                                placeholder='Şifrən'
+                                required={true}
+                                value={passwordValue}
                                 onChange={handlePasswordChange}
-                                onBlur={handlePasswordBlur} 
-                                error={hasPasswordError} 
-                             />
-                            <Input 
-                                id='confirmPassword' 
-                                type='password' 
-                                name='confirmPassword' 
-                                label='Təkrar şifrə' 
-                                placeholder='Şifrən təkrar' 
-                                required={true} 
-                                value={passwordConfirmValue} 
+                                onBlur={handlePasswordBlur}
+                                error={hasPasswordError}
+                            />
+                            <Input
+                                id='confirmPassword'
+                                type='password'
+                                name='confirmPassword'
+                                label='Təkrar şifrə'
+                                placeholder='Şifrən təkrar'
+                                required={true}
+                                value={passwordConfirmValue}
                                 onChange={handlePasswordConfirmChange}
-                                onBlur={handlePasswordConfirmBlur} 
-                                error={hasPasswordConfirmError} 
-                             />
+                                onBlur={handlePasswordConfirmBlur}
+                                error={hasPasswordConfirmError}
+                            />
                             <div className="text-center">
-                                <button type="submit">Göndər</button>
+                            <button type="submit" disabled={loading && true}>{loading ? 'Göndərilir...' : 'Göndər'}</button>
                             </div>
                         </div>
                     </form>
                     <div className={classes.hasAccount}>
                         <p> Artıq hesabın varsa, hesabına <Link to='/p/login'> buradan </Link> giriş edə bilərsən. </p>
                     </div>
+                    {submitStatus && (
+                        <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus(null)} />
+                    )}
                 </div>
             </div>
         </Section>

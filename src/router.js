@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import IndexPageLayout from './layouts/IndexPageLayout';
+import ResetPasswordPage from './pages/Index/Auth/ResetPassword';
 
 const HomePage = lazy(() => import('./pages/Index/Home/Home'));
 const AboutPage = lazy(() => import('./pages/Index/About/About'));
@@ -34,6 +35,7 @@ const router = createBrowserRouter([
             { path: 'contact', element: <Suspense fallback={<p> Yüklənir... </p>}><ContactPage /></Suspense> },
             { path: 'register', element: <Suspense fallback={<p> Yüklənir... </p>}><RegisterPage /></Suspense> },
             { path: 'login', element: <Suspense fallback={<p> Yüklənir... </p>}><LoginPage /></Suspense> },
+            { path: 'reset-password', element: <Suspense fallback={<p> Yüklənir... </p>}><ResetPasswordPage /></Suspense> },
         ]
     },
 ])
