@@ -6,6 +6,7 @@ import Input from "../../../components/Form/Input";
 import classes from './Auth.module.scss';
 import { useInput } from "../../../hooks/useInput";
 import Alert from "../../../components/Alert/Alert";
+import { apiRequest } from "../../../utils/apiRequest";
 
 function LoginPage() {
     const [loading, setLoading] = useState(false);
@@ -32,37 +33,22 @@ function LoginPage() {
 
     async function handleSubmit(event) {
         event.preventDefault();
+        setLoading(true);
 
         if (hasEmailError || hasPasswordError) {
-            setSubmitStatus({ type: 'error', message: 'Zəhmət olmasa, bütün xanaları tam doldur!' })
-            return;
+            return setSubmitStatus({ type: 'error', message: 'Bütün xanalar tam doldurulmalıdır!' });
         }
 
-        try {
-            setLoading(true)
-            const req = await fetch(`http://localhost:1007/login`, {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ emailValue, passwordValue })
-            });
+        let data = await apiRequest({
+            url: 'http://localhost:1007/login',
+            method: 'POST',
+            body: { emailValue, passwordValue }
+        });
 
-            let res = await req.json();
-            setLoading(false);
-
-            if (!res.ok) {
-                setSubmitStatus({ type: 'error', message: 'Giriş zamanı texniki problem baş verdi. Xahiş olunur ki, daha sonra yenidən cəhd edəsiniz!' });
-            }
-
-            setSubmitStatus(res);
-            handleEmailReset();
-            handlePasswordReset();
-        } catch (error) {
-            setLoading(false);
-            console.error(error);
-            setSubmitStatus({ type: 'error', message: 'Giriş zamanı texniki problem baş verdi. Xahiş olunur ki, daha sonra yenidən cəhd edəsiniz!' });
-        }
+        setSubmitStatus(data);
+        handleEmailReset();
+        handlePasswordReset();
+        setLoading(false);
     }
 
     return (

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import Section from "../../../components/Section/Section";
-import { hasMinLength, isEmail, isEqualsToOtherValue, isNotEmpty } from "../../../utils/validation";
+import { isEmail, isNotEmpty } from "../../../utils/validation";
 import { Link } from "react-router-dom";
 import Input from "../../../components/Form/Input";
 import classes from './Auth.module.scss';
 import { useInput } from "../../../hooks/useInput";
 import Alert from "../../../components/Alert/Alert";
+import { apiRequest } from "../../../utils/apiRequest";
 
 
 function ResetPasswordPage() {
@@ -25,37 +26,21 @@ function ResetPasswordPage() {
 
     async function handleSubmit(event) {
         event.preventDefault();
+        setLoading(true);
 
         if (hasEmailError) {
-            setSubmitStatus({ type: 'error', message: 'Zəhmət olmasa, bütün xanaları tam doldur!' })
-            return;
+            return setSubmitStatus({ type: 'error', message: 'Bütün xanalar tam doldurulmalıdır!' });
         }
 
-        try {
-            setLoading(true)
-            const req = await fetch(`http://localhost:1007/reset-password`, {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ emailValue })
-            });
+        let data = await apiRequest({
+            url: 'http://localhost:1007/reset-password',
+            method: 'POST',
+            body: { emailValue }
+        });
 
-            let res = await req.json();
-            setLoading(false);
-
-            if (!res.ok) {
-                console.log(res)
-                setSubmitStatus({ type: 'error', message: 'Qeydiyyat zamanı texniki problem baş verdi. Xahiş olunur ki, daha sonra yenidən cəhd edəsiniz!' });
-            }
-
-            setSubmitStatus(res);
-            handleEmailReset();
-        } catch (error) {
-            setLoading(false);
-            console.error(error);
-            setSubmitStatus({ type: 'error', message: 'Qeydiyyat zamanı texniki problem baş verdi. Xahiş olunur ki, daha sonra yenidən cəhd edəsiniz!' });
-        }
+        setSubmitStatus(data);
+        handleEmailReset();
+        setLoading(false);
     }
 
     return (
@@ -82,7 +67,7 @@ function ResetPasswordPage() {
                                 error={hasEmailError}
                             />
                             <div className="text-center">
-                            <button type="submit" disabled={loading && true}>{loading ? 'Göndərilir...' : 'Göndər'}</button>
+                                <button type="submit" disabled={loading && true}>{loading ? 'Göndərilir...' : 'Göndər'}</button>
                             </div>
                         </div>
                     </form>

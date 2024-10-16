@@ -3,23 +3,20 @@ import ArrowDownIconSvg from "../../../components/Icons/ArrowDownIconSvg";
 import { useEffect, useState } from "react";
 import Section from "../../../components/Section/Section";
 import ArrowUpIconSvg from '../../../components/Icons/ArrowUpIconSvg';
-import { fetchFaqs } from '../../../utils/http';
+import { apiRequest } from '../../../utils/apiRequest';
 
 
 function Faqs() {
     const [faqs, setFaqs] = useState([]);
     const [isFetching, setIsFetching] = useState(false);
-    const [error, setError] = useState();
 
     useEffect(() => {
         async function allFaqs() {
             setIsFetching(true);
-            try {
-                const data = await fetchFaqs();
-                setFaqs(data);
-            } catch (error) {
-                setError(error)
-            }
+            const data = await apiRequest({
+                url: 'http://localhost:1007/faqs',
+            });
+            setFaqs(data)
             setIsFetching(false);
         }
         allFaqs();
@@ -36,7 +33,6 @@ function Faqs() {
                 <div className={classes.faqBody}>
                     {isFetching && <p> Məlumatlar yüklənir! </p>}
                     {!isFetching && faqs.length === 0 && <p> Hal-hazırda heç bir məlumat yoxdur! </p>}
-                    {!isFetching && error && <p> Gözlənilməz xəta baş verib, xahiş olunur ki, daha sonra yenidən yoxlayasan! </p>}
                     {
                         !isFetching && faqs.length > 0 && faqs.map((data) => (
                             <Faq key={data.id} data={data} />

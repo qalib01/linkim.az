@@ -6,6 +6,7 @@ import Input from "../../../components/Form/Input";
 import classes from './Auth.module.scss';
 import { useInput } from "../../../hooks/useInput";
 import Alert from "../../../components/Alert/Alert";
+import { apiRequest } from "../../../utils/apiRequest";
 
 
 function RegisterPage() {
@@ -57,41 +58,25 @@ function RegisterPage() {
 
     async function handleSubmit(event) {
         event.preventDefault();
+        setLoading(true);
 
         if (hasNameError || hasSurnameError || hasEmailError || hasPasswordError || hasPasswordConfirmError) {
-            setSubmitStatus({ type: 'error', message: 'Zəhmət olmasa, bütün xanaları tam doldur!' })
-            return;
+            return setSubmitStatus({ type: 'error', message: 'Bütün xanalar tam doldurulmalıdır!' });
         }
 
-        try {
-            setLoading(true)
-            const req = await fetch(`http://localhost:1007/register`, {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ nameValue, surnameValue, emailValue, passwordValue, passwordConfirmValue })
-            });
+        let data = await apiRequest({
+            url: 'http://localhost:1007/register',
+            method: 'POST',
+            body: { nameValue, surnameValue, emailValue, passwordValue }
+        });
 
-            let res = await req.json();
-            setLoading(false);
-
-            if (!res.ok) {
-                console.log(res)
-                setSubmitStatus({ type: 'error', message: 'Qeydiyyat zamanı texniki problem baş verdi. Xahiş olunur ki, daha sonra yenidən cəhd edəsiniz!' });
-            }
-
-            setSubmitStatus(res);
-            handleNameReset();
-            handleSurnameReset();
-            handleEmailReset();
-            handlePasswordReset();
-            handlePasswordConfirmReset();
-        } catch (error) {
-            setLoading(false);
-            console.error(error);
-            setSubmitStatus({ type: 'error', message: 'Qeydiyyat zamanı texniki problem baş verdi. Xahiş olunur ki, daha sonra yenidən cəhd edəsiniz!' });
-        }
+        setSubmitStatus(data);
+        handleNameReset();
+        handleSurnameReset();
+        handleEmailReset();
+        handlePasswordReset();
+        handlePasswordConfirmReset();
+        setLoading(false);
     }
 
     return (
@@ -166,7 +151,7 @@ function RegisterPage() {
                                 error={hasPasswordConfirmError}
                             />
                             <div className="text-center">
-                            <button type="submit" disabled={loading && true}>{loading ? 'Göndərilir...' : 'Göndər'}</button>
+                                <button type="submit" disabled={loading && true}>{loading ? 'Göndərilir...' : 'Göndər'}</button>
                             </div>
                         </div>
                     </form>

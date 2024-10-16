@@ -6,7 +6,7 @@ import ShareIconWithLaptopSvg from "../../../components/Icons/ShareIconWithLapto
 import SuitableIconSvg from "../../../components/Icons/SuitableIconSvg";
 import AllInOneIconSvg from "../../../components/Icons/AllInOneIconSvg";
 import UserFriendlyIconSvg from "../../../components/Icons/UserFriendlyIconSvg";
-import { fetchTeam } from "../../../utils/http";
+import { apiRequest } from "../../../utils/apiRequest";
 
 function AboutPage() {
     useEffect(() => {
@@ -75,17 +75,14 @@ function AboutPage() {
 function Team() {
     const [team, setTeam] = useState([]);
     const [isFetching, setIsFetching] = useState(false);
-    const [error, setError] = useState();
 
     useEffect(() => {
         async function allTeam() {
             setIsFetching(true);
-            try {
-                const data = await fetchTeam();
-                setTeam(data);
-            } catch (error) {
-                setError(error)
-            }
+            const data = await apiRequest({
+                url: 'http://localhost:1007/team',
+            });
+            setTeam(data)
             setIsFetching(false);
         }
         allTeam();
@@ -103,7 +100,6 @@ function Team() {
             <div className="row flex-row-scroll">
                 {isFetching && <p> Məlumatlar yüklənir! </p>}
                 {!isFetching && team.length === 0 && <p> Hal-hazırda heç bir məlumat yoxdur! </p>}
-                {!isFetching && error && <p> Gözlənilməz xəta baş verib, xahiş olunur ki, daha sonra yenidən yoxlayasan! </p>}
                 {
                     team.map((data) => (
                         <div key={data.id} className="col-8 col-md-6 col-lg-3">

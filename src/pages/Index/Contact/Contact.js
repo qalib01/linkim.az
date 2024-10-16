@@ -10,6 +10,7 @@ import PhoneIconSvg from "../../../components/Icons/PhoneIconSvg";
 import WorkHoursIconSvg from "../../../components/Icons/WorkHoursIconSvg";
 import { useInput } from "../../../hooks/useInput";
 import Alert from "../../../components/Alert/Alert";
+import { apiRequest } from "../../../utils/apiRequest";
 
 function ContactPage() {
   useEffect(() => {
@@ -53,38 +54,24 @@ function ContactPage() {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    setLoading(true);
+
     if (hasFullnameError || hasEmailError || hasSubjectError || hasMessageError) {
-      setSubmitStatus({ type: 'error', message: 'Zəhmət olmasa, bütün xanaları tam doldur!' })
-      return;
+      return setSubmitStatus({ type: 'error', message: 'Bütün xanalar tam doldurulmalıdır!' });
     }
 
-    try {
-      setLoading(true)
-      const req = await fetch(`http://localhost:1007/contact`, {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ fullnameValue, emailValue, subjectValue, messageValue })
-      });
+    let data = await apiRequest({
+      url: 'http://localhost:1007/contact',
+      method: 'POST',
+      body: { fullnameValue, emailValue, subjectValue, messageValue }
+    });
 
-      let res = await req.json();
-      setLoading(false);
-
-      if(!res.ok) {
-        setSubmitStatus({type: 'error', message: 'Mesajın göndərilməsi zaman texniki xəta baş verdi. Xahiş olunur ki, daha sonra yenidən yoxlayın!'});
-      }
-
-      setSubmitStatus(res);
-      handleFullnameReset();
-      handleEmailReset();
-      handleSubjectReset();
-      handleMessageReset();
-    } catch (error) {
-      setLoading(false);
-      console.error(error);
-      setSubmitStatus({ type: 'error', message: 'Mesajın göndərilməsi zaman texniki xəta baş verdi. Xahiş olunur ki, daha sonra yenidən yoxlayın!' });
-    }
+    setSubmitStatus(data);
+    handleFullnameReset();
+    handleEmailReset();
+    handleSubjectReset();
+    handleMessageReset();
+    setLoading(false);
   }
 
   return (
