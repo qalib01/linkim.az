@@ -71,12 +71,17 @@ function RegisterPage() {
         });
 
         setSubmitStatus(data);
-        handleNameReset();
-        handleSurnameReset();
-        handleEmailReset();
-        handlePasswordReset();
-        handlePasswordConfirmReset();
         setLoading(false);
+        if (data.type === 'success') {
+            handleNameReset();
+            handleSurnameReset();
+            handleEmailReset();
+            handlePasswordReset();
+            handlePasswordConfirmReset();
+            setTimeout(() => {
+                return window.location.href = '/p/login';
+            }, 2000);
+        }
     }
 
     return (

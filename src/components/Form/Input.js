@@ -4,7 +4,7 @@ import ShowIconSvg from "../Icons/ShowIconSvg";
 import HideIconSvg from "../Icons/HideIconSvg";
 
 
-function Input({ id, error, label, type, ...props }) {
+function Input({ id, error, label, type, disabled=false, ...props }) {
     const [showPassword, setShowPassword] = useState(false);
 
     function toggleShowPassword() {
@@ -15,7 +15,7 @@ function Input({ id, error, label, type, ...props }) {
     return (
         <div className="col-12">
             <div className="position-relative">
-                <input id={id} type={inputType} {...props} className={`form-control ${error && 'border border-danger'} ${classes.input}`} />
+                <input id={id} type={inputType} {...props} className={`form-control ${error && 'border border-danger'} ${classes.input}`} disabled={disabled} readOnly={disabled} />
                 {
                     type === 'password' && (
                         <div onClick={toggleShowPassword} className={classes.showHidePasswordIcon}>

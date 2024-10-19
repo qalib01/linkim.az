@@ -1,4 +1,4 @@
-import { Link, NavLink } from 'react-router-dom';
+import { Form, Link, NavLink, useRouteLoaderData } from 'react-router-dom';
 import classes from './Header.module.scss';
 import LogoSvg from '../../Icons/LogoSvg';
 import MenuBarIconSvg from '../../Icons/MenuBarIconSvg';
@@ -7,6 +7,7 @@ import CloseIconSvg from '../../Icons/CloseIconSvg';
 
 function Header() {
    const [isOpen, setIsOpen] = useState(false);
+   const token = useRouteLoaderData('pageRoot');
 
    function toggleMenu() {
       setIsOpen(!isOpen);
@@ -32,6 +33,13 @@ function Header() {
                <li className="nav-item">
                   <NavLink className={({ isActive }) => isActive ? `${classes.navLink} ${classes.active}` : classes.navLink} to="/p/contact" end onClick={closeMenu}> Əlaqə </NavLink>
                </li>
+               {
+                  token && <li className="nav-item">
+                     <Form action='/p/logout' method='post'>
+                        <button style={{ border: 'none', backgroundColor: 'transparent' }} className={classes.navLink}> Çıxış </button>
+                     </Form>
+                  </li>
+               }
             </ul>
             <div className={classes.menuIcon} onClick={toggleMenu}>
                {isOpen ? <CloseIconSvg /> : <MenuBarIconSvg />}

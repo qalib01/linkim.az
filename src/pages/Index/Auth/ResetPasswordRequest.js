@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Section from "../../../components/Section/Section";
-import { hasMinLength, isEmail, isNotEmpty } from "../../../utils/validation";
+import { isEmail, isNotEmpty } from "../../../utils/validation";
 import { Link } from "react-router-dom";
 import Input from "../../../components/Form/Input";
 import classes from './Auth.module.scss';
@@ -8,7 +8,8 @@ import { useInput } from "../../../hooks/useInput";
 import Alert from "../../../components/Alert/Alert";
 import { apiRequest } from "../../../utils/apiRequest";
 
-function LoginPage() {
+
+function ResetPasswordRequestPage() {
     const [loading, setLoading] = useState(false);
     const [submitStatus, setSubmitStatus] = useState(null);
     useEffect(() => {
@@ -20,58 +21,40 @@ function LoginPage() {
         handleInputChange: handleEmailChange,
         handleInputBlur: handleEmailBlur,
         hasError: hasEmailError,
-        handleInputReset: handleEmailReset
+        handleInputReset: handleEmailReset,
     } = useInput('', (value) => isEmail(value) && isNotEmpty(value));
-
-    const {
-        value: passwordValue,
-        handleInputChange: handlePasswordChange,
-        handleInputBlur: handlePasswordBlur,
-        hasError: hasPasswordError,
-        handleInputReset: handlePasswordReset
-    } = useInput('', (value) => hasMinLength(value, 8) && isNotEmpty(value));
 
     async function handleSubmit(event) {
         event.preventDefault();
         setLoading(true);
 
-        if (hasEmailError || hasPasswordError) {
+        if (hasEmailError) {
             return setSubmitStatus({ type: 'error', message: 'Bütün xanalar tam doldurulmalıdır!' });
         }
 
         let data = await apiRequest({
-            url: 'http://localhost:1007/login',
+            url: 'http://localhost:1007/reset-password-request',
             method: 'POST',
-            body: { emailValue, passwordValue }
+            body: { emailValue }
         });
 
-        setSubmitStatus({
-            type: data.type,
-            message: data.message,
-        });
-
-        const token = data.token;
-        localStorage.setItem('lToken', token);
-        const expiration = new Date();
-        expiration.setMinutes(expiration.getMinutes() + 1);
-        localStorage.setItem('expiration', expiration.toISOString());
+        setSubmitStatus(data);
         setLoading(false);
         if (data.type === 'success') {
             handleEmailReset();
-            handlePasswordReset();
             setTimeout(() => {
-                return window.location.href = '/';
+                return window.location.href = '/p/login';
             }, 2000);
         }
     }
 
     return (
-        <Section sectionName='login' sectionBg='bgTransparent'>
+        <Section sectionName='register' sectionBg='bgTransparent'>
             <div className="row gy-4" style={{ margin: '100px 0' }}>
                 <div className="col-lg-6 m-auto">
                     <div className="row text-center">
                         <div className={`${classes.content} pe-md-0 pe-lg-5  mb-5`}>
-                            <h2 className={`title mt-3`}> Giriş </h2>
+                            <h2 className={`title mt-3`}> Şifrəni yenilə </h2>
                         </div>
                     </div>
                     <form method="post" className={classes.form} onSubmit={handleSubmit}>
@@ -81,35 +64,20 @@ function LoginPage() {
                                 type='email'
                                 name='email'
                                 label='Email'
-                                placeholder='Email adresin'
+                                placeholder='Emailin'
                                 required={true}
                                 value={emailValue}
                                 onChange={handleEmailChange}
                                 onBlur={handleEmailBlur}
                                 error={hasEmailError}
                             />
-                            <Input
-                                id='password'
-                                type='password'
-                                name='password'
-                                label='Şifrə'
-                                placeholder='Şifrən'
-                                required={true}
-                                value={passwordValue}
-                                onChange={handlePasswordChange}
-                                onBlur={handlePasswordBlur}
-                                error={hasPasswordError}
-                            />
-                            <div className={classes.hasAccount}>
-                                <p> Şifrəni unutmusansa, <Link to='/p/reset-password'> buradan </Link> yeniləyə bilərsən. </p>
-                            </div>
                             <div className="text-center">
                                 <button type="submit" disabled={loading && true}>{loading ? 'Göndərilir...' : 'Göndər'}</button>
                             </div>
                         </div>
                     </form>
                     <div className={classes.hasAccount}>
-                        <p> Hesabın yoxdursa, yeni hesabını <Link to='/p/register'> buradan </Link> yarada edə bilərsən. </p>
+                        <p> Artıq hesabın varsa, hesabına <Link to='/p/login'> buradan </Link> giriş edə və ya yeni hesab yaratmaq istəyirsənsə, <Link to='/p/register'> buraya </Link> daxil ola bilərsən. </p>
                     </div>
                     {submitStatus && (
                         <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus(null)} />
@@ -120,4 +88,4 @@ function LoginPage() {
     )
 }
 
-export default LoginPage;
+export default ResetPasswordRequestPage;

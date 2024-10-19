@@ -16,7 +16,7 @@ function Faqs() {
             const data = await apiRequest({
                 url: 'http://localhost:1007/faqs',
             });
-            setFaqs(data)
+            setFaqs(data);
             setIsFetching(false);
         }
         allFaqs();
@@ -31,8 +31,8 @@ function Faqs() {
                     </div>
                 </div>
                 <div className={classes.faqBody}>
-                    {isFetching && <p> Məlumatlar yüklənir! </p>}
-                    {!isFetching && faqs.length === 0 && <p> Hal-hazırda heç bir məlumat yoxdur! </p>}
+                    { isFetching && <p> Məlumatlar yüklənir! </p> }
+                    { (!isFetching || faqs.length === 0) && <p> Hal-hazırda heç bir məlumat yoxdur! </p> }
                     {
                         !isFetching && faqs.length > 0 && faqs.map((data) => (
                             <Faq key={data.id} data={data} />

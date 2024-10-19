@@ -82,7 +82,7 @@ function Team() {
             const data = await apiRequest({
                 url: 'http://localhost:1007/team',
             });
-            setTeam(data)
+            setTeam(data);
             setIsFetching(false);
         }
         allTeam();
@@ -97,17 +97,22 @@ function Team() {
                     </div>
                 </div>
             </div>
+
             <div className="row flex-row-scroll">
-                {isFetching && <p> Məlumatlar yüklənir! </p>}
-                {!isFetching && team.length === 0 && <p> Hal-hazırda heç bir məlumat yoxdur! </p>}
+                { isFetching && <p> Məlumatlar yüklənir! </p> }
+                { (!isFetching || team.length === 0) && <p> Hal-hazırda heç bir məlumat yoxdur! </p> }
                 {
-                    team.map((data) => (
+                    !isFetching && team.length > 0 && team.map((data) => (
                         <div key={data.id} className="col-8 col-md-6 col-lg-3">
                             <div className={`mt-3 mt-md-5`}>
                                 <div className="card border-0 shadow-sm">
-                                    <img src={`http://localhost:1007/images/users/${data.photo}`} className="card-img-top rounded" alt={`${data.name} ${data.surname}`} />
+                                    <img 
+                                        src={`http://localhost:1007/images/users/${data.photo}`} 
+                                        className="card-img-top rounded" 
+                                        alt={`${data.name} ${data.surname}`} 
+                                    />
                                     <div className="card-body py-4 text-center">
-                                        <p className='fw-bold'>{data.name} {data.surname} </p>
+                                        <p className='fw-bold'>{data.name} {data.surname}</p>
                                         <p className="card-subtitle mb-0 text-muted small">{data.profession}</p>
                                         <Link to={`/${data.username}`}> Linki </Link>
                                     </div>

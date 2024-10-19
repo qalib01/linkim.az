@@ -15,7 +15,7 @@ export async function apiRequest({ url, method = 'GET', body, headers = {} }) {
         console.error('API request error:', error.message);
         return {
             type: 'error',
-            message: 'Texniki problem baş verdi. Zəhmət olmasa, daha sonra yenidən cəhd edin!'
-        }
-    }
-}
+            message: 'Texniki problem baş verdi. Zəhmət olmasa, daha sonra yenidən cəhd edin!',
+        };
+    };
+};
