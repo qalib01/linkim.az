@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import Section from "../../../components/Section/Section";
 import { hasMinLength, isEmail, isNotEmpty } from "../../../utils/validation";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import Input from "../../../components/Form/Input";
 import classes from './Auth.module.scss';
 import { useInput } from "../../../hooks/useInput";
 import Alert from "../../../components/Alert/Alert";
 import { apiRequest } from "../../../utils/apiRequest";
+import useAuth from "../../../hooks/useAuth";
 
 function LoginPage() {
     const [loading, setLoading] = useState(false);
     const [submitStatus, setSubmitStatus] = useState(null);
+    const { setAuth } = useAuth();
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -45,22 +47,14 @@ function LoginPage() {
             body: { emailValue, passwordValue }
         });
 
-        setSubmitStatus({
-            type: data.type,
-            message: data.message,
-        });
-
-        const token = data.token;
-        localStorage.setItem('lToken', token);
-        const expiration = new Date();
-        expiration.setMinutes(expiration.getMinutes() + 1);
-        localStorage.setItem('expiration', expiration.toISOString());
+        setSubmitStatus({ type: data.type, message: data.message, });
+        setAuth({user: {...data.user}, token: {...data.token}});
         setLoading(false);
         if (data.type === 'success') {
             handleEmailReset();
             handlePasswordReset();
             setTimeout(() => {
-                return window.location.href = '/';
+                return redirect('/');
             }, 2000);
         }
     }

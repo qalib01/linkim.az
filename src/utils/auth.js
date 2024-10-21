@@ -23,8 +23,6 @@ export function getAuthToken() {
     return token;
 }
 
-
-
 export function tokenLoader() {
     return getAuthToken();
 }
@@ -33,8 +31,8 @@ export function checkUserLoginLoader(path) {
     const token = getAuthToken();
 
     if (token) {
-        return redirect(`/p/${path}`)
+        return redirect('/')
     }
 
-    return null;
+    return redirect(`/p/${path}`);
 }
