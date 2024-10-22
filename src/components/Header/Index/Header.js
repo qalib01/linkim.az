@@ -1,14 +1,15 @@
-import { Form, Link, NavLink, useRouteLoaderData } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import classes from './Header.module.scss';
 import LogoSvg from '../../Icons/LogoSvg';
 import MenuBarIconSvg from '../../Icons/MenuBarIconSvg';
 import { useState } from 'react';
 import CloseIconSvg from '../../Icons/CloseIconSvg';
+import useAuth from '../../../hooks/useAuth';
 
 function Header() {
    const [isOpen, setIsOpen] = useState(false);
-   const token = useRouteLoaderData('pageRoot');
-
+   const { auth } = useAuth();
+   console.log(auth)
    function toggleMenu() {
       setIsOpen(!isOpen);
    }
@@ -34,10 +35,8 @@ function Header() {
                   <NavLink className={({ isActive }) => isActive ? `${classes.navLink} ${classes.active}` : classes.navLink} to="/p/contact" end onClick={closeMenu}> Əlaqə </NavLink>
                </li>
                {
-                  token && <li className="nav-item">
-                     <Form action='/p/logout' method='post'>
-                        <button style={{ border: 'none', backgroundColor: 'transparent' }} className={classes.navLink}> Çıxış </button>
-                     </Form>
+                  auth.user && <li className="nav-item">
+                     <Link className={classes.navLink} to="/p/logout"> Çıxış </Link>
                   </li>
                }
             </ul>

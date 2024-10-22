@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Section from "../../../components/Section/Section";
 import { hasMinLength, isEqualsToOtherValue, isNotEmpty } from "../../../utils/validation";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Input from "../../../components/Form/Input";
 import classes from './Auth.module.scss';
 import { useInput } from "../../../hooks/useInput";
@@ -15,6 +15,7 @@ function ResetPasswordRequestPage() {
     const [emailValue, setEmailValue] = useState('')
     const [isTokenValid, setIsTokenValid] = useState(false)
     const [submitStatus, setSubmitStatus] = useState(null);
+    const navigate = useNavigate();
     useEffect(() => {
         window.scrollTo(0, 0);
         validateToken(token);
@@ -71,9 +72,7 @@ function ResetPasswordRequestPage() {
         if (data.type === 'success') {
             handlePasswordReset();
             handlePasswordConfirmReset();
-            setTimeout(() => {
-                return window.location.href = '/p/login';
-            }, 2000);
+            navigate('/');
         }
     }
 

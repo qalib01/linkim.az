@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Section from "../../../components/Section/Section";
 import { isEmail, isNotEmpty } from "../../../utils/validation";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../../../components/Form/Input";
 import classes from './Auth.module.scss';
 import { useInput } from "../../../hooks/useInput";
@@ -12,6 +12,7 @@ import { apiRequest } from "../../../utils/apiRequest";
 function ResetPasswordRequestPage() {
     const [loading, setLoading] = useState(false);
     const [submitStatus, setSubmitStatus] = useState(null);
+    const navigate = useNavigate();
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -42,9 +43,7 @@ function ResetPasswordRequestPage() {
         setLoading(false);
         if (data.type === 'success') {
             handleEmailReset();
-            setTimeout(() => {
-                return window.location.href = '/p/login';
-            }, 2000);
+            navigate('/p/login');
         }
     }
 

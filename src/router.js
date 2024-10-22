@@ -1,8 +1,8 @@
 import { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import IndexPageLayout from './layouts/IndexPageLayout';
-import logoutAction from './pages/Index/Auth/LogOut';
 import { tokenLoader } from './utils/auth';
+import Logout from './pages/Index/Auth/Logout';
 
 const HomePage = lazy(() => import('./pages/Index/Home/Home'));
 const AboutPage = lazy(() => import('./pages/Index/About/About'));
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
                     { path: 'contact', element: <Suspense fallback={<p> Yüklənir... </p>}><ContactPage /></Suspense> },
                     { path: 'register', element: <Suspense fallback={<p> Yüklənir... </p>}><RegisterPage /></Suspense> },
                     { path: 'login', element: <Suspense fallback={<p> Yüklənir... </p>}><LoginPage /></Suspense> },
-                    { path: 'logout', action: logoutAction },
+                    { path: 'logout', element: <Logout /> },
                     {
                         path: 'reset-password',
                         children: [

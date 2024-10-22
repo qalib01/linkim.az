@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Section from "../../../components/Section/Section";
 import { hasMinLength, isEmail, isNotEmpty } from "../../../utils/validation";
-import { Link, redirect } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../../../components/Form/Input";
 import classes from './Auth.module.scss';
 import { useInput } from "../../../hooks/useInput";
@@ -13,6 +13,7 @@ function LoginPage() {
     const [loading, setLoading] = useState(false);
     const [submitStatus, setSubmitStatus] = useState(null);
     const { setAuth } = useAuth();
+    const navigate = useNavigate();
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -22,7 +23,6 @@ function LoginPage() {
         handleInputChange: handleEmailChange,
         handleInputBlur: handleEmailBlur,
         hasError: hasEmailError,
-        handleInputReset: handleEmailReset
     } = useInput('', (value) => isEmail(value) && isNotEmpty(value));
 
     const {
@@ -30,7 +30,6 @@ function LoginPage() {
         handleInputChange: handlePasswordChange,
         handleInputBlur: handlePasswordBlur,
         hasError: hasPasswordError,
-        handleInputReset: handlePasswordReset
     } = useInput('', (value) => hasMinLength(value, 8) && isNotEmpty(value));
 
     async function handleSubmit(event) {
@@ -47,16 +46,9 @@ function LoginPage() {
             body: { emailValue, passwordValue }
         });
 
-        setSubmitStatus({ type: data.type, message: data.message, });
         setAuth({user: {...data.user}, token: {...data.token}});
         setLoading(false);
-        if (data.type === 'success') {
-            handleEmailReset();
-            handlePasswordReset();
-            setTimeout(() => {
-                return redirect('/');
-            }, 2000);
-        }
+        navigate('/');
     }
 
     return (

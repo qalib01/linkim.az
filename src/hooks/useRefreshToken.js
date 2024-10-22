@@ -9,7 +9,7 @@ const useRefreshToken = () => {
         setAuth(prev => {
             console.log(JSON.stringify(prev))
             console.log(res.data);
-            // return { ...prev } //, burda art;q yeni gələn daha qeyd olunacaq 
+            // return { ...prev } //, burda artıq yeni gələn daha qeyd olunacaq 
         });
         // return burda da yuxarıda qeyd olunan data qeyd olunacaq 17:28 - 4th video
     }
