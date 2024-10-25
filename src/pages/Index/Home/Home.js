@@ -7,6 +7,8 @@ import RegisterIconSvg from "../../../components/Icons/RegisterIconSvg";
 import LinkIconSvg from "../../../components/Icons/LinkIconSvg";
 import ShareIconSvg from "../../../components/Icons/ShareIconSvg";
 import TimeIconSvg from "../../../components/Icons/TimeIconSvg";
+import Hero from "../../../components/Hero/Hero";
+
 
 function HomePage() {
     useEffect(() => {
@@ -15,78 +17,25 @@ function HomePage() {
 
     return (
         <>
-            <Hero />
-            <Customize />
-            <Share />
+            <Hero sectionName='hero' sectionBg='bgPastelGreen'>
+                <h1 className={`title mt-3`}> Bütün linklər indi sadəcə 1 yerdə </h1>
+                <p className={`mt-3 mb-0`}> İndi sən də bizim inkişaf etməkdə olan platformamıza qoşularaq bütün Facebook, Instagram, Tiktok, X və digər linklərini sadəcə bir link üzərindən paylaş </p>
+                <Link to="/p/register"> İndi başla </Link>
+            </Hero>
+            <Hero sectionName='customize' order={2} sectionBg='bgElectricViolet'>
+                <h2 className={`title mt-3`}> Linkini dəqiqələr içində yarat </h2>
+                <p className={`mt-3 mb-0`}> Tiktok, Instagram, X, web sayt, mağaza, canlı yayım, musiqi və daha çoxunu 1 linkdə topla və paylaş </p>
+                <Link to="/p/register"> İndi başla </Link>
+            </Hero>
+            <Hero sectionName='share' sectionBg='bgSkyBlue'>
+                <h3 className={`title mt-3`}> Linklərini daha rahat paylaş </h3>
+                <p className={`mt-3 mb-0`}> Bütün linklərini linkim.az platformasından qeydiyyatdan keçir, sosial şəbəkələrinin bio hissəsinə əlavə et və rahatlıqdan faydalan </p>
+                <Link to="/p/register"> İndi başla </Link>
+            </Hero>
             <Instructions />
             <Faqs />
         </>
-    )
-}
-
-
-function Hero() {
-    return (
-        <Section sectionName='hero' sectionBg='bgPastelGreen'>
-            <div className="row align-items-center">
-                <div className="col-md-12 col-lg-6 order-1 mt-4 mt-lg-0 pt-4 pt-lg-0">
-                    <div className={`content pe-md-0 pe-lg-5`}>
-                        <h1 className={`title mt-3`}> Bütün linklər indi sadəcə 1 yerdə </h1>
-                        <p className={`mt-3 mb-0`}> İndi sən də bizim inkişaf etməkdə olan platformamıza qoşularaq bütün Facebook, Instagram, Tiktok, X və digər linklərini sadəcə bir link üzərindən paylaş </p>
-                        <Link to="/p/register"> İndi başla </Link>
-                    </div>
-                </div>
-                <div className="col-md-12 col-lg-6 order-2">
-                    {/* <div className={`${classes.heroImage} wings position-relative mx-3 mx-md-4 ms-lg-5`}>
-                        <img className="rounded img-fluid w-100 position-relative" src="assets/images/hero.jpg" alt="Hero" />
-                    </div> */}
-                </div>
-            </div>
-        </Section>
-    )
-}
-
-
-function Customize() {
-    return (
-        <Section sectionName='customize' sectionBg='bgElectricViolet'>
-            <div className="row align-items-center">
-                <div className="col-md-12 col-lg-6 order-2 mt-4 mt-lg-0 pt-4 pt-lg-0">
-                    <div className={`content pe-md-0 pe-lg-5`}>
-                        <h2 className={`title mt-3`}> Linkini dəqiqələr içində yarat </h2>
-                        <p className={`mt-3 mb-0`}> Tiktok, Instagram, X, web sayt, mağaza, canlı yayım, musiqi və daha çoxunu 1 linkdə topla və paylaş </p>
-                        <Link to="/p/register"> İndi başla </Link>
-                    </div>
-                </div>
-                <div className="col-md-12 col-lg-6 order-1">
-                    {/* <div className={`${classes.customizeImage} wings position-relative mx-3 mx-md-4 ms-lg-5`}>
-                        <img className="rounded img-fluid w-100 position-relative" src="assets/images/customize.jpg" alt="Customize" />
-                    </div> */}
-                </div>
-            </div>
-        </Section>
-    )
-}
-
-
-function Share() {
-    return (
-        <Section sectionName='hero' sectionBg='bgSkyBlue'>
-            <div className="row align-items-center">
-                <div className="col-md-12 col-lg-6 order-1 mt-4 mt-lg-0 pt-4 pt-lg-0">
-                    <div className={`content pe-md-0 pe-lg-5`}>
-                        <h3 className={`title mt-3`}> Linklərini daha rahat paylaş </h3>
-                        <p className={`mt-3 mb-0`}> Bütün linklərini linkim.az platformasından qeydiyyatdan keçir, sosial şəbəkələrinin bio hissəsinə əlavə et və rahatlıqdan faydalan </p>
-                        <Link to="/p/register"> İndi başla </Link>
-                    </div>
-                </div>
-                <div className="col-md-12 col-lg-6 order-2">
-                    {/* <div className={`${classes.heroImage} wings position-relative mx-3 mx-md-4 ms-lg-5`}>
-                        <img className="rounded img-fluid w-100 position-relative" src="assets/images/hero.jpg" alt="Hero" />
-                    </div> */}
-                </div>
-            </div>
-        </Section>
+        
     )
 }
 

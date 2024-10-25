@@ -72,7 +72,10 @@ function ResetPasswordRequestPage() {
         if (data.type === 'success') {
             handlePasswordReset();
             handlePasswordConfirmReset();
-            navigate('/');
+            setSubmitStatus(data);
+            setTimeout(() => {
+                navigate('/p/login'); 
+            }, 2000);
         }
     }
 

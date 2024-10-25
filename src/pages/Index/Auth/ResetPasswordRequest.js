@@ -43,7 +43,10 @@ function ResetPasswordRequestPage() {
         setLoading(false);
         if (data.type === 'success') {
             handleEmailReset();
-            navigate('/p/login');
+            setSubmitStatus(data)
+            setTimeout(() => {
+                navigate('/p/login');
+            }, 2000);
         }
     }
 
