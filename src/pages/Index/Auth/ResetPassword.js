@@ -23,7 +23,7 @@ function ResetPasswordRequestPage() {
 
     async function validateToken(token) {
         let data = await apiRequest({
-            url: 'http://localhost:1007/validate-token',
+            url: `${process.env.REACT_APP_API_LINK}/validate-token`,
             method: 'POST',
             body: { token }
         });
@@ -62,7 +62,7 @@ function ResetPasswordRequestPage() {
         }
 
         let data = await apiRequest({
-            url: 'http://localhost:1007/reset-password',
+            url: `${process.env.REACT_APP_API_LINK}/reset-password`,
             method: 'POST',
             body: { emailValue, passwordValue }
         });
@@ -80,7 +80,7 @@ function ResetPasswordRequestPage() {
     }
 
     return (
-        <Section sectionName='register' sectionBg='bgTransparent'>
+        <Section sectionName='reset-password' sectionBg='bgTransparent'>
             <div className="row gy-4" style={{ margin: '100px 0' }}>
                 <div className="col-lg-6 m-auto">
                     <div className="row text-center">

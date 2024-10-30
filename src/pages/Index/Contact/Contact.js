@@ -11,6 +11,7 @@ import WorkHoursIconSvg from "../../../components/Icons/WorkHoursIconSvg";
 import { useInput } from "../../../hooks/useInput";
 import Alert from "../../../components/Alert/Alert";
 import { apiRequest } from "../../../utils/apiRequest";
+import Button from "../../../components/Button/Button";
 
 function ContactPage() {
   useEffect(() => {
@@ -61,7 +62,7 @@ function ContactPage() {
     }
 
     let data = await apiRequest({
-      url: 'http://localhost:1007/contact',
+      url: `${process.env.REACT_APP_API_LINK}/contact`,
       method: 'POST',
       body: { fullnameValue, emailValue, subjectValue, messageValue }
     });
@@ -170,7 +171,7 @@ function ContactPage() {
                   error={hasMessageError}
                 />
                 <div className="text-center">
-                  <button type="submit" disabled={loading && true}>{loading ? 'Göndərilir...' : 'Göndər'}</button>
+                  <Button asButton={true} type="submit" disabled={loading && true}>{loading ? 'Göndərilir...' : 'Göndər'}</Button>
                 </div>
               </div>
             </form>

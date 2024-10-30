@@ -13,6 +13,7 @@ import XIconSvg from "../../../components/Icons/XIconSvg";
 import LinkedInSvgIcon from "../../../components/Icons/LinkedInIconSvg";
 import FacebookIconSvg from "../../../components/Icons/FacebookIconSvg";
 import TelegramIconSvg from "../../../components/Icons/TelegramIconSvg";
+import MetaIndex from "../../../helmet/IndexPageHelmet";
 
 
 
@@ -34,7 +35,7 @@ const USER_DATA = {
             url: 'https://www.facebook.com/qalib.mlee',
             linkType: 'social',
         },
-        
+
         {
             id: '3',
             title: 'LinkedIn hesabım',
@@ -55,11 +56,12 @@ const USER_DATA = {
         },
     ],
 }
+console.log(process.env.REACT_APP_PROJECT_LINK)
 
 
 function UserLinks() {
     useEffect(() => {
-        window.scrollTo(0,0)
+        window.scrollTo(0, 0)
     })
 
     const [isOpenModal, setIsOpenModal] = useState(false);
@@ -74,11 +76,12 @@ function UserLinks() {
 
     const data = {
         title: `${USER_DATA.name} ${USER_DATA.surname}`,
-        url: `https://linkim.az/${USER_DATA.username}`
+        url: `${process.env.REACT_APP_PROJECT_LINK}/${USER_DATA.username}`
     }
 
     return (
         <>
+            <MetaIndex />
             <section className={classes.background}>
                 <div className={classes.container}>
                     <div className={classes.topbar}>
@@ -161,7 +164,7 @@ function ShareDialogBox({ onClose, data }) {
                             <div className={classes.button}>
                                 <CopyToClipboard text={data.url} onCopy={onCopyText}>
                                     <button>
-                                        { copyStatus ? <DoneIconSvg /> : <LinkIconSvg /> }
+                                        {copyStatus ? <DoneIconSvg /> : <LinkIconSvg />}
                                     </button>
                                 </CopyToClipboard>
                                 <span> {copyStatus ? 'Kopyalandı' : 'Kopyala'} </span>

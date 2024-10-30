@@ -7,6 +7,7 @@ import SuitableIconSvg from "../../../components/Icons/SuitableIconSvg";
 import AllInOneIconSvg from "../../../components/Icons/AllInOneIconSvg";
 import UserFriendlyIconSvg from "../../../components/Icons/UserFriendlyIconSvg";
 import { apiRequest } from "../../../utils/apiRequest";
+import Button from "../../../components/Button/Button";
 
 function AboutPage() {
     useEffect(() => {
@@ -39,7 +40,7 @@ function AboutPage() {
                                             Məqsədimiz, hər kəsin öz şəxsiyyətini və brendini bir kliklə göstərməsini asanlaşdırmaqdır. İstifadəsi sadə, funksional və hər kəsin ehtiyaclarına uyğun olan "linkim.az" ilə rəqəmsal izlərini bir araya gətir və dünyaya öz unikal profilini paylaş!
                                         </p>
                                         <p>
-                                            <Link to='/p/register'> İndi başla </Link>
+                                            <Button to='/p/register'>İndi başla</Button>
                                         </p>
                                     </div>
                                 </div>
@@ -80,7 +81,7 @@ function Team() {
         async function allTeam() {
             setIsFetching(true);
             const data = await apiRequest({
-                url: 'http://localhost:1007/team',
+                url: `${process.env.REACT_APP_API_LINK}/team`,
             });
             setTeam(data);
             setIsFetching(false);

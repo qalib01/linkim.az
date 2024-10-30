@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
 import classes from './Footer.module.scss'
+import Button from '../../Button/Button';
 
 function GetInTouch() {
     return (
@@ -13,7 +13,7 @@ function GetInTouch() {
                         <div className={classes.ctaContent}>
                             <h3 className={`${classes.ctaTitle} text-white`}> Bizimlə əlaqə saxla </h3>
                             <p className="cta-text text-muted mt-3"> Əlavə sualın və ya aramıza qatılmaq üçün bizimlə əlaqə saxla, komandamız bütün suallarını cavablamağa hazırdır </p>
-                            <Link to="/p/contact"> Əlaqə </Link>
+                            <Button to='/p/contact'>İndi başla</Button>
                         </div>
                     </div>
                 </div>

@@ -2,22 +2,6 @@
 	min-height: 100vh;
     display: flex;
     align-items: center;
-
-	a, button {
-		outline: none;
-		text-decoration: none;
-		border: none;
-		padding: 12px 36px;
-		border-radius: 28px;
-		font-size: 16px;
-		color: #FFFFFF;
-		margin-top: 20px;
-		display: inline-block;
-		cursor: pointer;
-		transition: all .4s ease-in-out;
-		font-weight: 500;
-		width: max-content;
-	}
 }
 .bgPastelGreen {
 	background-color: #E3F1D5;
@@ -27,7 +11,7 @@
 		color: #507829;
 	}
 
-	a, button {
+	.customButton {
 		background-color: #507829;
 		color: #FFFFFF;
 
@@ -44,7 +28,7 @@
 		color: #4F0299	;
 	}
 
-	a, button {
+	.customButton {
 		background-color: #4F0299;
 		color: #FFFFFF;
 
@@ -61,7 +45,7 @@
 		color: #006DAB	;
 	}
 
-	a, button {
+	.customButton {
 		background-color: #006DAB;
 		color: #FFFFFF;
 
@@ -78,7 +62,7 @@
 		color: #D63424;
 	}
 
-	a, button {
+	.customButton {
 		background-color: #FA8A7F;
 		color: #D63424;
 
@@ -91,7 +75,7 @@
 	background-color: transparent;
 	color: #333333;
 	
-	a, button {
+	.customButton {
 		background-color: #333333;
 		color: #FFFFFF;
 
@@ -104,7 +88,7 @@
 	background-color: #FFFFFF;
 	color: #333333;
 	
-	a, button {
+	.customButton {
 		background-color: #333333;
 		color: #FFFFFF;
 

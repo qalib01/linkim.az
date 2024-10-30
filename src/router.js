@@ -5,6 +5,7 @@ import UserPageLayout from './layouts/UserPageLayout';
 import { tokenLoader } from './utils/auth';
 import Logout from './pages/Index/Auth/Logout';
 import Loader from './components/Loader/Loader';
+import ActivateUserPage from './pages/Index/Auth/ActivateUser';
 
 const HomePage = lazy(() => import('./pages/Index/Home/Home'));
 const AboutPage = lazy(() => import('./pages/Index/About/About'));
@@ -45,12 +46,13 @@ const router = createBrowserRouter([
                     { path: 'login', element: <Suspense fallback={<Loader />}><LoginPage /></Suspense> },
                     { path: 'logout', element: <Logout /> },
                     {
-                        path: 'reset-password',
+                        path: `${process.env.REACT_APP_RESET_PASSWORD_LINK_KEY}`,
                         children: [
                             { index: true, element: <Suspense fallback={<Loader />}><ResetPasswordRequestPage /></Suspense> },
                             { path: ':token', element: <Suspense fallback={<Loader />}><ResetPasswordPage /></Suspense> }
                         ],
                     },
+                    { path: `${process.env.REACT_APP_USER_ACTIVATE_LINK_KEY}/:token`, element: <Suspense fallback={<Loader />}><ActivateUserPage /></Suspense> }
                 ],
             },
             {
@@ -59,6 +61,7 @@ const router = createBrowserRouter([
                 errorElement: <Suspense fallback={<Loader />}><UserErrorPage /></Suspense>,
                 children: [
                     { index: true, element: <Suspense fallback={<Loader />}><Dashboard /></Suspense>},
+                    { path: 'dashboard', element: <Suspense fallback={<Loader />}><Dashboard /></Suspense>},
                 ],
             },
         ],

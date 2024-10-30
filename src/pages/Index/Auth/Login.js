@@ -8,6 +8,7 @@ import { useInput } from "../../../hooks/useInput";
 import Alert from "../../../components/Alert/Alert";
 import { apiRequest } from "../../../utils/apiRequest";
 import useAuth from "../../../hooks/useAuth";
+import Button from "../../../components/Button/Button";
 
 function LoginPage() {
     const [loading, setLoading] = useState(false);
@@ -41,7 +42,7 @@ function LoginPage() {
         }
 
         let data = await apiRequest({
-            url: 'http://localhost:1007/login',
+            url: `${process.env.REACT_APP_API_LINK}/login`,
             method: 'POST',
             body: { emailValue, passwordValue }
         });
@@ -93,7 +94,7 @@ function LoginPage() {
                                 <p> Şifrəni unutmusansa, <Link to='/p/reset-password'> buradan </Link> yeniləyə bilərsən. </p>
                             </div>
                             <div className="text-center">
-                                <button type="submit" disabled={loading && true}>{loading ? 'Göndərilir...' : 'Göndər'}</button>
+                                <Button asButton={true} type="submit" disabled={loading && true}>{loading ? 'Göndərilir...' : 'Göndər'}</Button>
                             </div>
                         </div>
                     </form>

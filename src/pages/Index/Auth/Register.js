@@ -66,7 +66,7 @@ function RegisterPage() {
         }
 
         let data = await apiRequest({
-            url: 'http://localhost:1007/register',
+            url: `${process.env.REACT_APP_API_LINK}/register`,
             method: 'POST',
             body: { nameValue, surnameValue, emailValue, passwordValue }
         });

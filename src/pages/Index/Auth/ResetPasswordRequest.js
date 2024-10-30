@@ -34,7 +34,7 @@ function ResetPasswordRequestPage() {
         }
 
         let data = await apiRequest({
-            url: 'http://localhost:1007/reset-password-request',
+            url: `${process.env.REACT_APP_API_LINK}/reset-password-request`,
             method: 'POST',
             body: { emailValue }
         });
@@ -51,7 +51,7 @@ function ResetPasswordRequestPage() {
     }
 
     return (
-        <Section sectionName='register' sectionBg='bgTransparent'>
+        <Section sectionName='reset-password-request' sectionBg='bgTransparent'>
             <div className="row gy-4" style={{ margin: '100px 0' }}>
                 <div className="col-lg-6 m-auto">
                     <div className="row text-center">

@@ -14,7 +14,7 @@ function Faqs() {
         async function allFaqs() {
             setIsFetching(true);
             const data = await apiRequest({
-                url: 'http://localhost:1007/faqs',
+                url: `${process.env.REACT_APP_API_LINK}/faqs`,
             });
             setFaqs(data);
             setIsFetching(false);
