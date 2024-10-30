@@ -46,9 +46,12 @@ function LoginPage() {
             body: { emailValue, passwordValue }
         });
 
-        setAuth({user: {...data.user}, token: {...data.token}});
+        if (data.type !== 'error') {
+            setAuth({user: {...data.user}, token: {...data.token}});
+            navigate('/');
+        }
+        setSubmitStatus(data)
         setLoading(false);
-        navigate('/');
     }
 
     return (

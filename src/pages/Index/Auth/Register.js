@@ -80,7 +80,6 @@ function RegisterPage() {
             handlePasswordReset();
             handlePasswordConfirmReset();
             navigate('/');
-
         }
     }
 

@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import IndexPageLayout from './layouts/IndexPageLayout';
+import UserPageLayout from './layouts/UserPageLayout';
 import { tokenLoader } from './utils/auth';
 import Logout from './pages/Index/Auth/Logout';
 import Loader from './components/Loader/Loader';
@@ -14,6 +15,9 @@ const ResetPasswordPage = lazy(() => import('./pages/Index/Auth/ResetPassword'))
 const LoginPage = lazy(() => import('./pages/Index/Auth/Login'));
 const UserLinks = lazy(() => import('./pages/Index/UserLinks/UserLinks'));
 const IndexErrorPage = lazy(() => import('./error/IndexErrorPage'));
+
+const Dashboard = lazy(() => import('./pages/User/Dashboard/Dashboard'));
+const UserErrorPage = lazy(() => import('./error/UserErrorPage'));
 
 const router = createBrowserRouter([
     {
@@ -47,6 +51,14 @@ const router = createBrowserRouter([
                             { path: ':token', element: <Suspense fallback={<Loader />}><ResetPasswordPage /></Suspense> }
                         ],
                     },
+                ],
+            },
+            {
+                path: 'u/',
+                element: <UserPageLayout />,
+                errorElement: <Suspense fallback={<Loader />}><UserErrorPage /></Suspense>,
+                children: [
+                    { index: true, element: <Suspense fallback={<Loader />}><Dashboard /></Suspense>},
                 ],
             },
         ],

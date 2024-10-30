@@ -9,7 +9,6 @@ import useAuth from '../../../hooks/useAuth';
 function Header() {
    const [isOpen, setIsOpen] = useState(false);
    const { auth } = useAuth();
-   console.log(auth)
    function toggleMenu() {
       setIsOpen(!isOpen);
    }

@@ -25,32 +25,32 @@ const USER_DATA = {
         {
             id: '1',
             title: 'Instagram hesabım',
-            url: 'https://instagram.com/qalib.mmmdli',
+            url: 'https://www.instagram.com/qalib.mmmdli',
             linkType: 'social',
         },
         {
             id: '2',
             title: 'Facebook hesabım',
-            url: 'https://facebook.com/qalib.mlee',
+            url: 'https://www.facebook.com/qalib.mlee',
             linkType: 'social',
         },
         
         {
             id: '3',
             title: 'LinkedIn hesabım',
-            url: 'https://linkedin.com/in/galib-mammadli-7884b11b2/',
+            url: 'https://www.linkedin.com/in/galib-mammadli-7884b11b2/',
             linkType: 'social',
         },
         {
             id: '4',
             title: 'TəqdimatımAz',
-            url: 'https://teqdimatim.az/',
+            url: 'https://www.teqdimatim.az/',
             linkType: 'custom',
         },
         {
             id: '5',
             title: 'Portfoliom',
-            url: 'https://mammadli.info/',
+            url: 'https://www.mammadli.info/',
             linkType: 'custom',
         },
     ],
