@@ -7,6 +7,7 @@ import classes from './Auth.module.scss';
 import { useInput } from "../../../hooks/useInput";
 import Alert from "../../../components/Alert/Alert";
 import { apiRequest } from "../../../utils/apiRequest";
+import Button from "../../../components/Button/Button";
 
 
 function ResetPasswordRequestPage() {
@@ -74,7 +75,7 @@ function ResetPasswordRequestPage() {
                                 error={hasEmailError}
                             />
                             <div className="text-center">
-                                <button type="submit" disabled={loading && true}>{loading ? 'Göndərilir...' : 'Göndər'}</button>
+                                <Button asButton={true} type="submit" disabled={loading && true}>{loading ? 'Göndərilir...' : 'Göndər'}</Button>
                             </div>
                         </div>
                     </form>

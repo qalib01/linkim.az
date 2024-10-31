@@ -1,8 +1,10 @@
 import classes from './Section.module.scss'
 
 function Section({ sectionName, sectionBg, children }) {
+    const bgClass = sectionBg ? sectionBg : 'bgTransparent';
+
     return (
-        <section className={`${ classes.section } ${ sectionName } ${ sectionBg !== null && sectionBg !== undefined ? classes[sectionBg] : classes.bgTransparent } `}>
+        <section className={`${ classes.section } ${ sectionName } ${ bgClass }`}>
             <div className="container">
                 { children }
             </div>

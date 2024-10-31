@@ -7,6 +7,7 @@ import classes from './Auth.module.scss';
 import { useInput } from "../../../hooks/useInput";
 import Alert from "../../../components/Alert/Alert";
 import { apiRequest } from "../../../utils/apiRequest";
+import Button from "../../../components/Button/Button";
 
 
 function RegisterPage() {
@@ -155,12 +156,12 @@ function RegisterPage() {
                                 error={hasPasswordConfirmError}
                             />
                             <div className="text-center">
-                                <button type="submit" disabled={loading && true}>{loading ? 'Göndərilir...' : 'Göndər'}</button>
+                                <Button asButton={true} type="submit" disabled={loading && true}>{loading ? 'Göndərilir...' : 'Göndər'}</Button>
                             </div>
                         </div>
                     </form>
                     <div className={classes.hasAccount}>
-                        <p> Artıq hesabın varsa, hesabına <Link to='/p/login'> buradan </Link> giriş edə bilərsən. </p>
+                        <p> Artıq hesabın varsa, hesabına <Link to='/p/login'>buradan</Link> giriş edə bilərsən. </p>
                     </div>
                     {submitStatus && (
                         <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus(null)} />

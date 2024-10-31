@@ -18,6 +18,7 @@ const UserLinks = lazy(() => import('./pages/Index/UserLinks/UserLinks'));
 const IndexErrorPage = lazy(() => import('./error/IndexErrorPage'));
 
 const Dashboard = lazy(() => import('./pages/User/Dashboard/Dashboard'));
+const Profile = lazy(() => import('./pages/User/Profile/Profile'));
 const UserErrorPage = lazy(() => import('./error/UserErrorPage'));
 
 const router = createBrowserRouter([
@@ -62,6 +63,7 @@ const router = createBrowserRouter([
                 children: [
                     { index: true, element: <Suspense fallback={<Loader />}><Dashboard /></Suspense>},
                     { path: 'dashboard', element: <Suspense fallback={<Loader />}><Dashboard /></Suspense>},
+                    { path: 'profile', element: <Suspense fallback={<Loader />}><Profile /></Suspense>},
                 ],
             },
         ],
