@@ -5,7 +5,7 @@ import { HelmetProvider } from 'react-helmet-async';
 function App() {
   return (
     <HelmetProvider>
-      <RouterProvider router={router} />
+        <RouterProvider router={router} />
     </HelmetProvider>
   )
 }
