@@ -1,9 +1,14 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faLink } from '@fortawesome/free-solid-svg-icons'
+import { useEffect } from "react";
 library.add(faLink)
 
 function Dashboard() {
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     return (
         <>
             <div className="container-fluid py-4">
@@ -17,7 +22,6 @@ function Dashboard() {
                                             <p className="text-sm mb-0 text-capitalize font-weight-bold">Link sayı</p>
                                             <h5 className="font-weight-bolder mb-0">
                                                 15
-                                                {/* <span className="text-success text-sm font-weight-bolder">+55%</span> */}
                                             </h5>
                                         </div>
                                     </div>

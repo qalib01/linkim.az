@@ -14,16 +14,8 @@ function Navbar() {
           </ol>
           <h6 className="font-weight-bolder mb-0"> Dashboard </h6>
         </nav>
-        <div className="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-          <div className="ms-md-auto pe-md-3 d-flex align-items-center">
-            <div className="input-group">
-              <span className="input-group-text text-body">
-                <i className="fas fa-search" aria-hidden="true"></i>
-                </span>
-              <input type="seacrh" className="form-control" placeholder="Type here..." />
-            </div>
-          </div>
-          <ul className="navbar-nav  justify-content-end">
+        <div className="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4">
+          <ul className="navbar-nav justify-content-end ms-md-auto">
             <li className="nav-item d-flex align-items-center d-xl-block">
               <a href="/" className="nav-link text-body font-weight-bold px-0">
                 <FontAwesomeIcon icon={faSignOut} size="lg" />
