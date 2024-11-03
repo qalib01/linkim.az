@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import classes from './UserLinks.module.scss'
 import ThreeDotsIconSvg from "../../../components/Icons/ThreeDotsIconSvg";
 import userImg from './user.jpg'
@@ -14,57 +14,32 @@ import LinkedInSvgIcon from "../../../components/Icons/LinkedInIconSvg";
 import FacebookIconSvg from "../../../components/Icons/FacebookIconSvg";
 import TelegramIconSvg from "../../../components/Icons/TelegramIconSvg";
 import MetaIndex from "../../../helmet/IndexPageHelmet";
-
-
-
-
-const USER_DATA = {
-    name: 'Galib',
-    surname: 'Mammadli',
-    username: 'galibm',
-    userLinks: [
-        {
-            id: '1',
-            title: 'Instagram hesabım',
-            url: 'https://www.instagram.com/qalib.mmmdli',
-            linkType: 'social',
-        },
-        {
-            id: '2',
-            title: 'Facebook hesabım',
-            url: 'https://www.facebook.com/qalib.mlee',
-            linkType: 'social',
-        },
-
-        {
-            id: '3',
-            title: 'LinkedIn hesabım',
-            url: 'https://www.linkedin.com/in/galib-mammadli-7884b11b2/',
-            linkType: 'social',
-        },
-        {
-            id: '4',
-            title: 'TəqdimatımAz',
-            url: 'https://www.teqdimatim.az/',
-            linkType: 'custom',
-        },
-        {
-            id: '5',
-            title: 'Portfoliom',
-            url: 'https://www.mammadli.info/',
-            linkType: 'custom',
-        },
-    ],
-}
-console.log(process.env.REACT_APP_PROJECT_LINK)
+import { apiRequest } from "../../../utils/apiRequest";
+import Loader from "../../../components/Loader/Loader";
+import Error from "../../../error/UserErrorPage";
 
 
 function UserLinks() {
-    useEffect(() => {
-        window.scrollTo(0, 0)
-    })
-
+    const [userData, setUserData] = useState([]);
+    const [isFetching, setIsFetching] = useState(false);
     const [isOpenModal, setIsOpenModal] = useState(false);
+    const { username } = useParams();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+
+        async function userLinks() {
+            setIsFetching(true);
+            const data = await apiRequest({
+                url: `${process.env.REACT_APP_API_LINK}/user-data`,
+                method: 'POST',
+                body: { username }
+            });
+            setUserData(data || null);
+            setIsFetching(false);
+        }
+        userLinks();
+    }, [username]);
 
     function openShareDialog() {
         setIsOpenModal(true);
@@ -74,41 +49,54 @@ function UserLinks() {
         setIsOpenModal(false);
     }
 
+    if (isFetching) return <Loader />
+
+    if (!isFetching && Object.keys(userData).length === 0) {
+        return <Error />
+    }
+
     const data = {
-        title: `${USER_DATA.name} ${USER_DATA.surname}`,
-        url: `${process.env.REACT_APP_PROJECT_LINK}/${USER_DATA.username}`
+        title: `${userData.name} ${userData.surname}`,
+        url: `${process.env.REACT_APP_PROJECT_LINK}/${userData.username}`
     }
 
     return (
         <>
             <MetaIndex />
-            <section className={classes.background}>
-                <div className={classes.container}>
-                    <div className={classes.topbar}>
-                        <button onClick={openShareDialog}>
-                            <ThreeDotsIconSvg color='#FFFFFF' />
-                        </button>
-                    </div>
-                    <div className={classes.content}>
-                        <div className={classes.userContainer}>
-                            <div className={classes.userImg}>
-                                <img src={userImg} alt={`${USER_DATA.name} ${USER_DATA.surname}`} />
-                            </div>
-                            <div className={classes.userData}>
-                                <h1> {USER_DATA.name} {USER_DATA.surname} </h1>
-                                <span> @{USER_DATA.username} </span>
-                            </div>
-                            <div className={classes.userLinks}>
-                                {
-                                    USER_DATA.userLinks.map((userLink) => (
-                                        <UserLink key={userLink.id} data={userLink} />
-                                    ))
-                                }
+            {userData &&
+                <section className={classes.background}>
+                    <div className={classes.container}>
+                        <div className={classes.topbar}>
+                            <button onClick={openShareDialog}>
+                                <ThreeDotsIconSvg color='#FFF' />
+                            </button>
+                        </div>
+                        <div className={classes.content}>
+                            <div className={classes.userContainer}>
+                                <div className={classes.userImg}>
+                                    <img
+                                        src={userImg}
+                                        alt={`${userData.name || ''} ${userData.surname || ''}`}
+                                    />
+                                </div>
+                                <div className={classes.userData}>
+                                    <h1> {userData.name} {userData.surname} </h1>
+                                    <span> @{userData.username} </span>
+                                </div>
+                                <div className={classes.userLinks}>
+                                    {userData.userLinks && userData.userLinks.length > 0 ? (
+                                        userData.userLinks.map((userLink) => (
+                                            <UserLink key={userLink.id} data={userLink} />
+                                        ))
+                                    ) : (
+                                        <p>No links available</p> // Optional: message if no links are present
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>}
+
             {isOpenModal && <ShareDialogBox onClose={closeShareDialog} data={data} />}
         </>
     )
@@ -140,6 +128,7 @@ function UserLink({ data }) {
 
 function ShareDialogBox({ onClose, data }) {
     const [copyStatus, setCopyStatus] = useState(false);
+    console.log(data)
 
     function onCopyText() {
         setCopyStatus(true);
@@ -201,7 +190,7 @@ function ShareDialogBox({ onClose, data }) {
                             </div>
                         </div>
                         <div className={classes.authOptions}>
-                            <span> İndi {USER_DATA.name} kimi sən də rahatlıqla öz şəxsi linkini yarada bilərsən! </span>
+                            <span> İndi {data.name} kimi sən də rahatlıqla öz şəxsi linkini yarada və paylaşa bilərsən! </span>
                             <div className="d-flex align-items-center justify-content-center gap-3">
                                 <Link to='/p/register'> Qeydiyyat </Link>
                                 <Link to='/p/login'> Giriş </Link>
