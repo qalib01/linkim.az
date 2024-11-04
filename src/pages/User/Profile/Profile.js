@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import UserProfileCard from "../../../components/Card/UserProfileCard";
 import ListGroupParent from "../../../components/ListGroup/ListGroupParent";
 import ListGroupItem from "../../../components/ListGroup/ListGroupItem";
@@ -11,10 +11,23 @@ import CardBody from "../../../components/Card/CardBody";
 import Line from "../../../components/Line/Line";
 import Button from "../../../components/Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import CloseIconSvg from "../../../components/Icons/CloseIconSvg";
+import { createPortal } from "react-dom";
 library.add(faUserEdit);
 
 
 function Profile() {
+    const [isOpen, setIsOpen] = useState(false);
+    function openModal() {
+        setIsOpen(true);
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        setIsOpen(false);
+        document.body.style.overflow = 'visible';
+    }
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -100,7 +113,7 @@ function Profile() {
                     <div className="col-12 col-xl-4">
                         <UserProfileCard>
                             <CardHeader title='Profile Information' >
-                                <CardAction icon={faUserEdit} title='Edit profile' />
+                                <CardAction icon={faUserEdit} title='Edit profile' classList='col-md-4 text-end' openModal={openModal} />
                             </CardHeader>
                             <CardBody classList='p-3'>
                                 <p className="text-sm">
@@ -195,7 +208,32 @@ function Profile() {
                     </div>
                 </div>
             </div>
+            {isOpen && <EditDialogBox onClose={closeModal} />}
         </>
+    )
+}
+
+function EditDialogBox({ onClose, data }) {
+    return createPortal(
+        <div className="modal modal-lg" style={{display: 'block'}}>
+            <div className="modal-dialog modal-dialog-centered" role="document">
+                <div className="modal-content">
+                    <div className="modal-header" style={{alignItems: 'unset !important'}}>
+                        <h5 className="modal-title" id="exampleModalLabel">Profil məlumatları</h5>
+                            <Button asButton={true} classList='btn-close text-dark' onClick={onClose}>
+                                <CloseIconSvg />
+                            </Button>
+                    </div>
+                    <div className="modal-body">
+                        ...
+                    </div>
+                    <div className="modal-footer">
+                        <button type="button" className="btn bg-gradient-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>,
+        document.getElementById('modal')
     )
 }
 

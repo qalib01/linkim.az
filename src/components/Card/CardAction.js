@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../Button/Button";
 
-function CardAction({ icon, title }) {
+function CardAction({ icon, title, classList, openModal }) {
     return (
-        <div className="col-md-4 text-end">
-            <Button>
+        <div className={classList}>
+            <Button classList='bg-transparent border-0' asButton={true} onClick={openModal}>
                 <FontAwesomeIcon icon={icon} className="text-secondary" title={title} />
             </Button>
         </div>

@@ -190,7 +190,7 @@ function ShareDialogBox({ onClose, data }) {
                             </div>
                         </div>
                         <div className={classes.authOptions}>
-                            <span> İndi {data.name} kimi sən də rahatlıqla öz şəxsi linkini yarada və paylaşa bilərsən! </span>
+                            <span> İndi sən də rahatlıqla öz şəxsi linkini yarada və paylaşa bilərsən! </span>
                             <div className="d-flex align-items-center justify-content-center gap-3">
                                 <Link to='/p/register'> Qeydiyyat </Link>
                                 <Link to='/p/login'> Giriş </Link>

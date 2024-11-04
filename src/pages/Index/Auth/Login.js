@@ -49,7 +49,7 @@ function LoginPage() {
 
         if (data.type !== 'error') {
             setAuth({user: {...data.user}, token: {...data.token}});
-            navigate('/');
+            navigate('/u/');
         }
         setSubmitStatus(data)
         setLoading(false);
