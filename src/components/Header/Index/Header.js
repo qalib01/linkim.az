@@ -8,7 +8,7 @@ import useAuth from '../../../hooks/useAuth';
 
 function Header() {
    const [isOpen, setIsOpen] = useState(false);
-   const { auth } = useAuth();
+   const { isAuthenticated } = useAuth();
    function toggleMenu() {
       setIsOpen(!isOpen);
    }
@@ -34,7 +34,7 @@ function Header() {
                   <NavLink className={({ isActive }) => isActive ? `${classes.navLink} ${classes.active}` : classes.navLink} to="/p/contact" end onClick={closeMenu}> Əlaqə </NavLink>
                </li>
                {
-                  auth.user && <li className="nav-item">
+                  isAuthenticated && <li className="nav-item">
                      <Link className={classes.navLink} to="/p/logout"> Çıxış </Link>
                   </li>
                }
@@ -43,7 +43,6 @@ function Header() {
                {isOpen ? <CloseIconSvg /> : <MenuBarIconSvg />}
             </div>
          </div>
-
       </nav>
    )
 }

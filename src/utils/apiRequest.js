@@ -7,6 +7,7 @@ export async function apiRequest({ url, method = 'GET', body, headers = {} }) {
             method,
             headers: allHeaders,
             body: body ? JSON.stringify(body) : null,
+            credentials: 'include'
         });
 
         let res = await req.json();

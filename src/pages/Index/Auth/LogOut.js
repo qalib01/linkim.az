@@ -4,14 +4,15 @@ import { useEffect } from "react";
 
 
 function Logout() {
-    const { auth, setAuth } = useAuth();
+    const { user, setUser } = useAuth();
+    const { isAuthenticated, setIsAuthenticated } = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
-        setAuth({});
+        setUser(null);
+        setIsAuthenticated(false);
         navigate('/');
-        console.log(auth)
-    }, [auth, setAuth, navigate]);
+    }, [user, setUser, isAuthenticated, setIsAuthenticated, navigate]);
 
     return null;
 }

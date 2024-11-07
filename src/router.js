@@ -2,10 +2,9 @@ import { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import IndexPageLayout from './layouts/IndexPageLayout';
 import UserPageLayout from './layouts/UserPageLayout';
-import { tokenLoader } from './utils/auth';
 import Logout from './pages/Index/Auth/Logout';
 import Loader from './components/Loader/Loader';
-import ActivateUserPage from './pages/Index/Auth/ActivateUser';
+import ProtectedRoute from './components/ProtectedRoute.js/ProtectedRoute';
 
 const HomePage = lazy(() => import('./pages/Index/Home/Home'));
 const AboutPage = lazy(() => import('./pages/Index/About/About'));
@@ -14,6 +13,7 @@ const RegisterPage = lazy(() => import('./pages/Index/Auth/Register'));
 const ResetPasswordRequestPage = lazy(() => import('./pages/Index/Auth/ResetPasswordRequest'));
 const ResetPasswordPage = lazy(() => import('./pages/Index/Auth/ResetPassword'));
 const LoginPage = lazy(() => import('./pages/Index/Auth/Login'));
+const ActivateUserPage = lazy(() => import('./pages/Index/Auth/ActivateUser'));
 const UserLinks = lazy(() => import('./pages/Index/UserLinks/UserLinks'));
 const IndexErrorPage = lazy(() => import('./error/IndexErrorPage'));
 
@@ -26,7 +26,6 @@ const router = createBrowserRouter([
         path: '/',
         errorElement: <Suspense fallback={<Loader />}><IndexErrorPage /></Suspense>,
         id: 'pageRoot',
-        loader: tokenLoader,
         children: [
             {
                 path: '/', element: <IndexPageLayout />,
@@ -40,12 +39,13 @@ const router = createBrowserRouter([
                 element: <IndexPageLayout />,
                 errorElement: <Suspense fallback={<Loader />}><IndexErrorPage /></Suspense>,
                 children: [
-                    { index: true, element: <Suspense fallback={<Loader />}><HomePage /></Suspense>},
+                    { index: true, element: <Suspense fallback={<Loader />}><HomePage /></Suspense> },
                     { path: 'about', element: <Suspense fallback={<Loader />}><AboutPage /></Suspense> },
                     { path: 'contact', element: <Suspense fallback={<Loader />}><ContactPage /></Suspense> },
+                    { path: 'logout', element: <Logout /> },
+
                     { path: 'register', element: <Suspense fallback={<Loader />}><RegisterPage /></Suspense> },
                     { path: 'login', element: <Suspense fallback={<Loader />}><LoginPage /></Suspense> },
-                    { path: 'logout', element: <Logout /> },
                     {
                         path: `${process.env.REACT_APP_RESET_PASSWORD_LINK_KEY}`,
                         children: [
@@ -58,13 +58,19 @@ const router = createBrowserRouter([
             },
             {
                 path: 'u/',
-                element: <UserPageLayout />,
-                errorElement: <Suspense fallback={<Loader />}><UserErrorPage /></Suspense>,
+                element: <ProtectedRoute />,
                 children: [
-                    { index: true, element: <Suspense fallback={<Loader />}><Dashboard /></Suspense>},
-                    { path: 'dashboard', element: <Suspense fallback={<Loader />}><Dashboard /></Suspense>},
-                    { path: 'profile', element: <Suspense fallback={<Loader />}><Profile /></Suspense>},
-                ],
+                    {
+                        path: '',
+                        element: <Suspense><UserPageLayout /></Suspense>,
+                        errorElement: <Suspense fallback={<Loader />}><UserErrorPage /></Suspense>,
+                        children: [
+                            { index: true, element: <Suspense fallback={<Loader />}><Dashboard /></Suspense> },
+                            { path: 'dashboard', element: <Suspense fallback={<Loader />}><Dashboard /></Suspense> },
+                            { path: 'profile', element: <Suspense fallback={<Loader />}><Profile /></Suspense> },
+                        ],
+                    }
+                ]
             },
         ],
     },

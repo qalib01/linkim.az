@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
 import Section from "../components/Section/Section";
 import { useNavigate } from 'react-router-dom';
+import Button from "../components/Button/Button";
 
 function Error() {
     const navigate = useNavigate();
@@ -18,10 +18,10 @@ function Error() {
                         <p> Görünüşə görə ya səhv, ya da sistemimizdə mövcud olmayan səhifəyə daxil olmağa cəhd edirsən </p>
                         <div className="row">
                             <div className="col-12 col-md-6">
-                                <button onClick={goBack}> Əvvələ qayıt </button>
+                                <Button asButton={true} onClick={goBack}> Əvvələ qayıt </Button>
                             </div>
                             <div className="col-12 col-md-6">
-                                <Link to='/'> Ana səhifə </Link>
+                                <Button to='/'> Ana səhifə </Button>
                             </div>
                         </div>
                     </div>

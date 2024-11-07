@@ -80,7 +80,7 @@ function ResetPasswordRequestPage() {
                         </div>
                     </form>
                     <div className={classes.hasAccount}>
-                        <p> Artıq hesabın varsa, hesabına <Link to='/p/login'> buradan </Link> giriş edə və ya yeni hesab yaratmaq istəyirsənsə, <Link to='/p/register'> buraya </Link> daxil ola bilərsən. </p>
+                        <p> Artıq hesabın varsa, hesabına <Link to='/p/login'>buradan</Link> giriş edə və ya yeni hesab yaratmaq istəyirsənsə, <Link to='/p/register'> buraya </Link> daxil ola bilərsən. </p>
                     </div>
                     {submitStatus && (
                         <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus(null)} />

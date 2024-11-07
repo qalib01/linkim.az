@@ -13,7 +13,7 @@ import Button from "../../../components/Button/Button";
 function LoginPage() {
     const [loading, setLoading] = useState(false);
     const [submitStatus, setSubmitStatus] = useState(null);
-    const { setAuth } = useAuth();
+    const { setUser, setIsAuthenticated } = useAuth();
     const navigate = useNavigate();
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -48,7 +48,8 @@ function LoginPage() {
         });
 
         if (data.type !== 'error') {
-            setAuth({user: {...data.user}, token: {...data.token}});
+            setUser({...data.user});
+            setIsAuthenticated(true);
             navigate('/u/');
         }
         setSubmitStatus(data)
@@ -91,7 +92,7 @@ function LoginPage() {
                                 error={hasPasswordError}
                             />
                             <div className={classes.hasAccount}>
-                                <p> Şifrəni unutmusansa, <Link to='/p/reset-password'> buradan </Link> yeniləyə bilərsən. </p>
+                                <p> Şifrəni unutmusansa, <Link to='/p/reset-password'>buradan</Link> yeniləyə bilərsən. </p>
                             </div>
                             <div className="text-center">
                                 <Button asButton={true} type="submit" disabled={loading && true}>{loading ? 'Göndərilir...' : 'Göndər'}</Button>
@@ -99,7 +100,7 @@ function LoginPage() {
                         </div>
                     </form>
                     <div className={classes.hasAccount}>
-                        <p> Hesabın yoxdursa, yeni hesabını <Link to='/p/register'> buradan </Link> yarada edə bilərsən. </p>
+                        <p> Hesabın yoxdursa, yeni hesabını <Link to='/p/register'>buradan</Link> yarada edə bilərsən. </p>
                     </div>
                     {submitStatus && (
                         <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus(null)} />
