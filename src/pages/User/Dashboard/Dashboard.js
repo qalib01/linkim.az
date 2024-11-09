@@ -4,9 +4,11 @@ import { faLink } from '@fortawesome/free-solid-svg-icons'
 import { useEffect } from "react";
 import UserProfileCard from "../../../components/Card/UserProfileCard";
 import CardBody from "../../../components/Card/CardBody";
+import useAuth from "../../../hooks/useAuth";
 library.add(faLink)
 
 function Dashboard() {
+    const { user } = useAuth();
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -23,7 +25,7 @@ function Dashboard() {
                                         <div className="numbers">
                                             <p className="text-sm mb-0 text-capitalize font-weight-bold">Link sayı</p>
                                             <h5 className="font-weight-bolder mb-0">
-                                                15
+                                                { user.userLinks.length }
                                             </h5>
                                         </div>
                                     </div>

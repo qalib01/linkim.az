@@ -66,14 +66,16 @@ function RegisterPage() {
             return setSubmitStatus({ type: 'error', message: 'Bütün xanalar tam doldurulmalıdır!' });
         }
 
-        let data = await apiRequest({
+        let response = await apiRequest({
             url: `${process.env.REACT_APP_API_LINK}/register`,
             method: 'POST',
             body: { nameValue, surnameValue, emailValue, passwordValue }
         });
 
+        const data = response.data;
         setSubmitStatus(data);
         setLoading(false);
+        
         if (data.type === 'success') {
             handleNameReset();
             handleSurnameReset();

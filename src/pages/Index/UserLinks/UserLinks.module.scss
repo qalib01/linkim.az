@@ -160,7 +160,8 @@
                 .linkInformations {
                     margin: auto;
                     border: 1px solid #333333;
-                    width: min-content;
+                    width: max-content;
+                    max-width: 350px;
                     padding: 20px;
                     border-radius: 24px;
                     text-align: center;
@@ -238,8 +239,6 @@
                 }
             }
         }
-
-        .footer {}
     }
 }
 

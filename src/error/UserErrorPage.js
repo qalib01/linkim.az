@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import Section from "../components/Section/Section";
 import { useNavigate } from 'react-router-dom';
 import MetaIndex from "../helmet/IndexPageHelmet";

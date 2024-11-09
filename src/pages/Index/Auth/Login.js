@@ -41,18 +41,27 @@ function LoginPage() {
             return setSubmitStatus({ type: 'error', message: 'Bütün xanalar tam doldurulmalıdır!' });
         }
 
-        let data = await apiRequest({
+        let { status, data } = await apiRequest({
             url: `${process.env.REACT_APP_API_LINK}/login`,
             method: 'POST',
             body: { emailValue, passwordValue }
         });
 
-        if (data.type !== 'error') {
-            setUser({...data.user});
-            setIsAuthenticated(true);
-            navigate('/u/');
+        if ( status === 200 && data.tokens) {
+            const { accessToken, refreshToken } = data.tokens;
+            if (accessToken && refreshToken) {
+                setUser(data.user);
+                setIsAuthenticated(true);
+                localStorage.setItem('accessToken', accessToken);
+                localStorage.setItem('refreshToken', refreshToken);
+                navigate('/u/');
+            } else {
+                setSubmitStatus({ type: 'error', message: 'Token alınması zamanı texniki problem baş verdi!' })
+            }
+        } else {
+            setSubmitStatus({ type: data.type, message: data.message })
         }
-        setSubmitStatus(data)
+
         setLoading(false);
     }
 

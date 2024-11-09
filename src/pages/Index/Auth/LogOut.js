@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import { useEffect } from "react";
+import { apiRequest } from "../../../utils/apiRequest";
 
 
 function Logout() {
@@ -8,9 +9,23 @@ function Logout() {
     const { isAuthenticated, setIsAuthenticated } = useAuth();
     const navigate = useNavigate();
 
+    async function logoutUser(refreshToken) {
+        const data = await apiRequest({
+            url: `${process.env.REACT_APP_API_LINK}/logout`,
+            headers: {
+                Authorization: `Bearer ${refreshToken}`
+            }
+        });
+
+        return data;
+    }
+
     useEffect(() => {
         setUser(null);
         setIsAuthenticated(false);
+        logoutUser(localStorage.getItem('refreshToken'));
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
         navigate('/');
     }, [user, setUser, isAuthenticated, setIsAuthenticated, navigate]);
 

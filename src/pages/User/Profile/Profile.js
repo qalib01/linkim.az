@@ -4,20 +4,22 @@ import ListGroupParent from "../../../components/ListGroup/ListGroupParent";
 import ListGroupItem from "../../../components/ListGroup/ListGroupItem";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faUserEdit } from '@fortawesome/free-solid-svg-icons';
-import { faFacebook, faInstagram, faXTwitter } from '@fortawesome/free-brands-svg-icons';
 import CardHeader from "../../../components/Card/CardHeader";
 import CardAction from "../../../components/Card/CardAction";
 import CardBody from "../../../components/Card/CardBody";
 import Line from "../../../components/Line/Line";
 import Button from "../../../components/Button/Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CloseIconSvg from "../../../components/Icons/CloseIconSvg";
 import { createPortal } from "react-dom";
+import useAuth from "../../../hooks/useAuth";
+import { Link } from "react-router-dom";
 library.add(faUserEdit);
 
 
 function Profile() {
     const [isOpen, setIsOpen] = useState(false);
+    const { user } = useAuth();
+
     function openModal() {
         setIsOpen(true);
         document.body.style.overflow = 'hidden';
@@ -49,7 +51,7 @@ function Profile() {
                             <div className="col-auto my-auto">
                                 <div className="h-100">
                                     <h5 className="mb-1">
-                                        Alec Thompson
+                                        {user.name} {user.surname}
                                     </h5>
                                     <p className="mb-0 font-weight-bold text-sm">
                                         CEO / Co-Founder
@@ -64,83 +66,23 @@ function Profile() {
                 <div className="row">
                     <div className="col-12 col-xl-4">
                         <UserProfileCard>
-                            <CardHeader title='Platform Settings' />
-                            <CardBody classList='p-3'>
-                                <ListGroupParent title='Account'>
-                                    <ListGroupItem classList='border-0 px-0' >
-                                        <div className="form-check form-switch ps-0">
-                                            <input className="form-check-input ms-auto" type="checkbox" id="" />
-                                            <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" htmlFor="" title='Email me when someone follows me'>Email me when someone follows me</label>
-                                        </div>
-                                    </ListGroupItem>
-                                    <ListGroupItem classList='border-0 px-0' >
-                                        <div className="form-check form-switch ps-0">
-                                            <input className="form-check-input ms-auto" type="checkbox" id="" />
-                                            <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" htmlFor="" title='Email me when someone answers on my post'>Email me when someone answers on my post</label>
-                                        </div>
-                                    </ListGroupItem>
-                                    <ListGroupItem classList='border-0 px-0' >
-                                        <div className="form-check form-switch ps-0">
-                                            <input className="form-check-input ms-auto" type="checkbox" id="" />
-                                            <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" htmlFor="" title='Email me when someone mentions me'>Email me when someone mentions me</label>
-                                        </div>
-                                    </ListGroupItem>
-                                </ListGroupParent>
-                                <ListGroupParent title='Application'>
-                                    <ListGroupItem classList='border-0 px-0' >
-                                        <div className="form-check form-switch ps-0">
-                                            <input className="form-check-input ms-auto" type="checkbox" id="" />
-                                            <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" htmlFor="" title='Subscribe to newsletter'>Subscribe to newsletter</label>
-                                        </div>
-                                    </ListGroupItem>
-                                    <ListGroupItem classList='border-0 px-0' >
-                                        <div className="form-check form-switch ps-0">
-                                            <input className="form-check-input ms-auto" type="checkbox" id="" />
-                                            <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" htmlFor="" title='Monthly product updates'>Monthly product updates</label>
-                                        </div>
-                                    </ListGroupItem>
-                                    <ListGroupItem classList='border-0 px-0' >
-                                        <div className="form-check form-switch ps-0">
-                                            <input className="form-check-input ms-auto" type="checkbox" id="" />
-                                            <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" htmlFor="" title='Subscribe to newsletter'>Subscribe to newsletter</label>
-                                        </div>
-                                    </ListGroupItem>
-                                </ListGroupParent>
-                            </CardBody>
-                        </UserProfileCard>
-                    </div>
-
-                    <div className="col-12 col-xl-4">
-                        <UserProfileCard>
-                            <CardHeader title='Profile Information' >
+                            <CardHeader title='Profil məlumatları' >
                                 <CardAction icon={faUserEdit} title='Edit profile' classList='col-md-4 text-end' openModal={openModal} />
                             </CardHeader>
                             <CardBody classList='p-3'>
                                 <p className="text-sm">
-                                    Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality).
+                                    {user.bio}
                                 </p>
                                 <Line />
                                 <ListGroupParent>
                                     <ListGroupItem classList='border-0 ps-0 pt-0 text-sm' >
-                                        <strong className="text-dark">Full Name:</strong> &nbsp; Alec M. Thompson
+                                        <strong className="text-dark">Tam adı:</strong> &nbsp; {user.name} {user.surname}
                                     </ListGroupItem>
                                     <ListGroupItem classList='border-0 ps-0 pt-0 text-sm' >
-                                        <strong className="text-dark">Email:</strong> &nbsp; alecthompson@mail.com
+                                        <strong className="text-dark">İstifadəçi adı:</strong> &nbsp; {user.username ? <Link to={`${process.env.REACT_APP_PROJECT_LINK}/${user.username}`}> {user.username} </Link> : 'Məlumat yoxdur'}
                                     </ListGroupItem>
                                     <ListGroupItem classList='border-0 ps-0 pt-0 text-sm' >
-                                        <strong className="text-dark">Location:</strong> &nbsp; USA
-                                    </ListGroupItem>
-                                    <ListGroupItem classList='border-0 ps-0 pt-0 text-sm' >
-                                        <strong className="text-dark text-sm">Social:</strong> &nbsp;
-                                        <Button classList='btn btn-facebook btn-simple mb-0 ps-1 pe-2 py-0' to='/'>
-                                            <FontAwesomeIcon icon={faFacebook} size="lg" />
-                                        </Button>
-                                        <Button classList='btn btn-twitter btn-simple mb-0 ps-1 pe-2 py-0' to='/'>
-                                            <FontAwesomeIcon icon={faXTwitter} size="lg" />
-                                        </Button>
-                                        <Button classList='btn btn-instagram btn-simple mb-0 ps-1 pe-2 py-0' to='/'>
-                                            <FontAwesomeIcon icon={faInstagram} size="lg" />
-                                        </Button>
+                                        <strong className="text-dark">Email:</strong> &nbsp; {user.email}
                                     </ListGroupItem>
                                 </ListGroupParent>
                             </CardBody>
@@ -149,59 +91,21 @@ function Profile() {
 
                     <div className="col-12 col-xl-4">
                         <UserProfileCard>
-                            <CardHeader title='Conversations' />
+                            <CardHeader title='Linklər' />
                             <CardBody classList='p-3'>
                                 <ListGroupParent>
-                                    <ListGroupItem classList='border-0 d-flex align-items-center px-0 mb-2' >
-                                        <div className="avatar me-3">
-                                            <img src="../assets/img/kal-visuals-square.jpg" alt="kal" className="border-radius-lg shadow" />
-                                        </div>
-                                        <div className="d-flex align-items-start flex-column justify-content-center">
-                                            <h6 className="mb-0 text-sm">Sophie B.</h6>
-                                            <p className="mb-0 text-xs">Hi! I need more information..</p>
-                                        </div>
-                                        <Button classList='btn btn-link pe-3 ps-0 mb-0 ms-auto' to='/'> Reply </Button>
-                                    </ListGroupItem>
-                                    <ListGroupItem classList='border-0 d-flex align-items-center px-0 mb-2' >
-                                        <div className="avatar me-3">
-                                            <img src="../assets/img/marie.jpg" alt="kal" className="border-radius-lg shadow" />
-                                        </div>
-                                        <div className="d-flex align-items-start flex-column justify-content-center">
-                                            <h6 className="mb-0 text-sm">Anne Marie</h6>
-                                            <p className="mb-0 text-xs">Awesome work, can you..</p>
-                                        </div>
-                                        <Button classList='btn btn-link pe-3 ps-0 mb-0 ms-auto' to='/'> Reply </Button>
-                                    </ListGroupItem>
-                                    <ListGroupItem classList='border-0 d-flex align-items-center px-0 mb-2' >
-                                        <div className="avatar me-3">
-                                            <img src="../assets/img/ivana-square.jpg" alt="kal" className="border-radius-lg shadow" />
-                                        </div>
-                                        <div className="d-flex align-items-start flex-column justify-content-center">
-                                            <h6 className="mb-0 text-sm">Ivanna</h6>
-                                            <p className="mb-0 text-xs">About files I can..</p>
-                                        </div>
-                                        <Button classList='btn btn-link pe-3 ps-0 mb-0 ms-auto' to='/'> Reply </Button>
-                                    </ListGroupItem>
-                                    <ListGroupItem classList='border-0 d-flex align-items-center px-0 mb-2' >
-                                        <div className="avatar me-3">
-                                            <img src="../assets/img/team-3.jpg" alt="kal" className="border-radius-lg shadow" />
-                                        </div>
-                                        <div className="d-flex align-items-start flex-column justify-content-center">
-                                            <h6 className="mb-0 text-sm">Nick Daniel</h6>
-                                            <p className="mb-0 text-xs">Hi! I need more information..</p>
-                                        </div>
-                                        <Button classList='btn btn-link pe-3 ps-0 mb-0 ms-auto' to='/'> Reply </Button>
-                                    </ListGroupItem>
-                                    <ListGroupItem classList='border-0 d-flex align-items-center px-0 mb-2' >
-                                        <div className="avatar me-3">
-                                            <img src="../assets/img/team-4.jpg" alt="kal" className="border-radius-lg shadow" />
-                                        </div>
-                                        <div className="d-flex align-items-start flex-column justify-content-center">
-                                            <h6 className="mb-0 text-sm">Peterson</h6>
-                                            <p className="mb-0 text-xs">Have a great afternoon..</p>
-                                        </div>
-                                        <Button classList='btn btn-link pe-3 ps-0 mb-0 ms-auto' to='/'> Reply </Button>
-                                    </ListGroupItem>
+                                    {user.userLinks.length > 0 && user.userLinks.map((link) => (
+                                        <ListGroupItem classList='border-0 d-flex align-items-center px-0 mb-2' key={link.id}>
+                                            <div className="avatar me-3">
+                                                <img src="../assets/img/kal-visuals-square.jpg" alt="kal" className="border-radius-lg shadow" />
+                                            </div>
+                                            <div className="d-flex align-items-start flex-column justify-content-center">
+                                                <h6 className="mb-0 text-sm"> <Link to={link.url} target="_blank"> {link.title} </Link> </h6>
+                                                <p className="mb-0 text-xs"> {link.type} </p>
+                                            </div>
+                                            <Button classList='btn btn-link pe-3 ps-0 mb-0 ms-auto' to='/'> Bax </Button>
+                                        </ListGroupItem>
+                                    ))}
                                 </ListGroupParent>
                             </CardBody>
                         </UserProfileCard>
@@ -213,16 +117,16 @@ function Profile() {
     )
 }
 
-function EditDialogBox({ onClose, data }) {
+function EditDialogBox({ onClose }) {
     return createPortal(
-        <div className="modal modal-lg" style={{display: 'block'}}>
+        <div className="modal modal-lg" style={{ display: 'block' }}>
             <div className="modal-dialog modal-dialog-centered" role="document">
                 <div className="modal-content">
-                    <div className="modal-header" style={{alignItems: 'unset !important'}}>
+                    <div className="modal-header" style={{ alignItems: 'unset !important' }}>
                         <h5 className="modal-title" id="exampleModalLabel">Profil məlumatları</h5>
-                            <Button asButton={true} classList='btn-close text-dark' onClick={onClose}>
-                                <CloseIconSvg />
-                            </Button>
+                        <Button asButton={true} classList='btn-close text-dark' onClick={onClose}>
+                            <CloseIconSvg />
+                        </Button>
                     </div>
                     <div className="modal-body">
                         ...

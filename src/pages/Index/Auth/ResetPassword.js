@@ -23,16 +23,17 @@ function ResetPasswordRequestPage() {
     }, [token]);
 
     async function validateToken(token) {
-        let data = await apiRequest({
+        let response = await apiRequest({
             url: `${process.env.REACT_APP_API_LINK}/validate-token`,
             method: 'POST',
             body: { token }
         });
 
+        const data = response.data;
+
         if (data.valid) {
             setIsTokenValid(data.valid);
             setEmailValue(data.email);
-            console.log(data)
         } else {
             setSubmitStatus({ type: 'error', message: 'Link etibarsızdır.' });
         }

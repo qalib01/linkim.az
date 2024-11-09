@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faSignOut } from '@fortawesome/free-solid-svg-icons'
+import { Link } from "react-router-dom";
 library.add(faSignOut)
 
 function Navbar() {
@@ -17,10 +18,10 @@ function Navbar() {
         <div className="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4">
           <ul className="navbar-nav justify-content-end ms-md-auto">
             <li className="nav-item d-flex align-items-center d-xl-block">
-              <a href="/" className="nav-link text-body font-weight-bold px-0">
+              <Link  to="/p/logout" className="nav-link text-body font-weight-bold px-0">
                 <FontAwesomeIcon icon={faSignOut} size="lg" />
                 <span className="d-sm-inline d-none" style={{marginLeft: "10px"}}>Çıxış</span>
-              </a>
+              </Link>
             </li>
             <li className="nav-item d-xl-none ps-3 d-flex align-items-center">
               <a href="/" className="nav-link text-body p-0">

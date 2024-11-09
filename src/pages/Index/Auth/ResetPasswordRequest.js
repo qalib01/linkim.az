@@ -34,12 +34,13 @@ function ResetPasswordRequestPage() {
             return setSubmitStatus({ type: 'error', message: 'Bütün xanalar tam doldurulmalıdır!' });
         }
 
-        let data = await apiRequest({
+        let response = await apiRequest({
             url: `${process.env.REACT_APP_API_LINK}/reset-password-request`,
             method: 'POST',
             body: { emailValue }
         });
 
+        const data = response.data;
         setSubmitStatus(data);
         setLoading(false);
         if (data.type === 'success') {

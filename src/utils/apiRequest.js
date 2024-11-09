@@ -3,15 +3,18 @@ export async function apiRequest({ url, method = 'GET', body, headers = {} }) {
     let allHeaders = { ...defaultHeaders, ...headers }
 
     try {
-        const req = await fetch(url, {
+        const res = await fetch(url, {
             method,
             headers: allHeaders,
             body: body ? JSON.stringify(body) : null,
             credentials: 'include'
         });
 
-        let res = await req.json();
-        return res;
+        let data = await res.json();
+        return {
+            status: res.status,
+            data
+        };
     } catch (error) {
         console.error('API request error:', error.message);
         return {

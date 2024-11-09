@@ -3,7 +3,7 @@ import classes from './UserLinks.module.scss'
 import ThreeDotsIconSvg from "../../../components/Icons/ThreeDotsIconSvg";
 import userImg from './user.jpg'
 import CloseIconSvg from "../../../components/Icons/CloseIconSvg";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import LinkIconSvg from "../../../components/Icons/LinkIconSvg";
 import { CopyToClipboard } from "react-copy-to-clipboard";
@@ -17,6 +17,7 @@ import MetaIndex from "../../../helmet/IndexPageHelmet";
 import { apiRequest } from "../../../utils/apiRequest";
 import Loader from "../../../components/Loader/Loader";
 import Error from "../../../error/UserErrorPage";
+import useAuth from "../../../hooks/useAuth";
 
 
 function UserLinks() {
@@ -30,11 +31,13 @@ function UserLinks() {
 
         async function userLinks() {
             setIsFetching(true);
-            const data = await apiRequest({
+            const response = await apiRequest({
                 url: `${process.env.REACT_APP_API_LINK}/user-data`,
                 method: 'POST',
                 body: { username }
             });
+
+            let data = response.data;
             setUserData(data || null);
             setIsFetching(false);
         }
@@ -96,7 +99,6 @@ function UserLinks() {
                         </div>
                     </div>
                 </section>}
-
             {isOpenModal && <ShareDialogBox onClose={closeShareDialog} data={data} />}
         </>
     )
@@ -128,7 +130,7 @@ function UserLink({ data }) {
 
 function ShareDialogBox({ onClose, data }) {
     const [copyStatus, setCopyStatus] = useState(false);
-    console.log(data)
+    const { isAuthenticated } = useAuth();
 
     function onCopyText() {
         setCopyStatus(true);
@@ -189,13 +191,13 @@ function ShareDialogBox({ onClose, data }) {
                                 <span> Telegram </span>
                             </div>
                         </div>
-                        <div className={classes.authOptions}>
+                        {!isAuthenticated && <div className={classes.authOptions}>
                             <span> İndi sən də rahatlıqla öz şəxsi linkini yarada və paylaşa bilərsən! </span>
                             <div className="d-flex align-items-center justify-content-center gap-3">
                                 <Link to='/p/register'> Qeydiyyat </Link>
                                 <Link to='/p/login'> Giriş </Link>
                             </div>
-                        </div>
+                        </div>}
                     </div>
                 </div>
             </div>

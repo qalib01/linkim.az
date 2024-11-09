@@ -2,9 +2,11 @@ import { Link } from 'react-router-dom';
 import classes from './Footer.module.scss';
 import GetInTouch from './GetInTouch';
 import ToTop from './ToTop';
+import useAuth from '../../../hooks/useAuth';
 
 
 export default function Footer() {
+    const { isAuthenticated } = useAuth();
     return (
         <>
             <GetInTouch />
@@ -21,9 +23,11 @@ export default function Footer() {
                                     <li className="mb-2">
                                         <Link to="/p/contact"> Əlaqə </Link>
                                     </li>
-                                    <li className="mb-2">
-                                        <Link to="/p/register"> Qeydiyyat </Link>
-                                    </li>
+                                    {
+                                        !isAuthenticated && <li className="mb-2">
+                                            <Link to="/p/register"> Qeydiyyat </Link>
+                                        </li>
+                                    }
                                 </ul>
                             </div>
                         </div>
