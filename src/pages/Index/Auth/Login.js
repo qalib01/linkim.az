@@ -41,13 +41,15 @@ function LoginPage() {
             return setSubmitStatus({ type: 'error', message: 'Bütün xanalar tam doldurulmalıdır!' });
         }
 
-        let { status, data } = await apiRequest({
+        let response = await apiRequest({
             url: `${process.env.REACT_APP_API_LINK}/login`,
             method: 'POST',
             body: { emailValue, passwordValue }
         });
 
-        if ( status === 200 && data.tokens) {
+        const data = response.data;
+
+        if ( response.status === 200 && response.data.tokens) {
             const { accessToken, refreshToken } = data.tokens;
             if (accessToken && refreshToken) {
                 setUser(data.user);

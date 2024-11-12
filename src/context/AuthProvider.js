@@ -1,7 +1,6 @@
 import { createContext, useCallback, useEffect, useState } from "react";
 import { apiRequest } from "../utils/apiRequest";
 import Loader from "../components/Loader/Loader";
-// import { useNavigate } from "react-router";
 
 const AuthContext = createContext({});
 
@@ -10,11 +9,10 @@ export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
     let accessToken = localStorage.getItem('accessToken');
-    // const navigate = useNavigate();
 
     const validateToken = useCallback(async (accessToken) => {
         try {
-            const { status, data } = await apiRequest({
+            const response = await apiRequest({
                 url: `${process.env.REACT_APP_API_LINK}/validate-login`,
                 method: 'POST',
                 headers: {
@@ -22,13 +20,16 @@ export const AuthProvider = ({ children }) => {
                 }
             });
 
-            if (status === 401) {
+            const data = response.data;
+            console.log(response)
+
+            if (response.status === 401) {
                 const newAccessToken = await refreshAccessToken();
                 if (newAccessToken) {
                     return validateToken(newAccessToken);
                 }
                 return null;
-            } else {
+            } else { 
                 return data.user;
             }
 
@@ -49,7 +50,6 @@ export const AuthProvider = ({ children }) => {
         const refreshToken = localStorage.getItem('refreshToken');
 
         if (!refreshToken) {
-            // navigate('/login');
             return null;
         }
 
@@ -81,7 +81,6 @@ export const AuthProvider = ({ children }) => {
             return null;
         } catch (error) {
             console.error('Refresh token ilə yeni access token alınmadı:', error);
-            // navigate('/login');
             return null;
         }
     }

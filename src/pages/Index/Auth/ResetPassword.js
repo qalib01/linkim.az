@@ -35,7 +35,10 @@ function ResetPasswordRequestPage() {
             setIsTokenValid(data.valid);
             setEmailValue(data.email);
         } else {
-            setSubmitStatus({ type: 'error', message: 'Link etibarsızdır.' });
+            setSubmitStatus(data);
+            setTimeout(() => {
+                navigate('/p/login'); 
+            }, 2000);
         }
     }
 
@@ -63,15 +66,16 @@ function ResetPasswordRequestPage() {
             return setSubmitStatus({ type: 'error', message: 'Bütün xanalar tam doldurulmalıdır!' });
         }
 
-        let data = await apiRequest({
+        let response = await apiRequest({
             url: `${process.env.REACT_APP_API_LINK}/reset-password`,
             method: 'POST',
             body: { emailValue, passwordValue }
         });
 
+        const data = response.data;
         setSubmitStatus(data);
         setLoading(false);
-        if (data.type === 'success') {
+        if (response.status === 200) {
             handlePasswordReset();
             handlePasswordConfirmReset();
             setSubmitStatus(data);
@@ -136,7 +140,7 @@ function ResetPasswordRequestPage() {
                             <p> Artıq hesabın varsa, hesabına <Link to='/p/login'>buradan</Link> giriş edə və ya yeni hesab yaratmaq istəyirsənsə, <Link to='/p/register'> buraya </Link> daxil ola bilərsən. </p>
                         </div>
                     </>) : (
-                        <p>Token etibarsızdır və ya müddəti keçib.</p>
+                        <p> { submitStatus && submitStatus.message } </p>
                     )}
                     {submitStatus && (
                         <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus(null)} />

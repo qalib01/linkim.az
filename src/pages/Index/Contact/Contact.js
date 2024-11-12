@@ -12,8 +12,10 @@ import { useInput } from "../../../hooks/useInput";
 import Alert from "../../../components/Alert/Alert";
 import { apiRequest } from "../../../utils/apiRequest";
 import Button from "../../../components/Button/Button";
+import useAuth from "../../../hooks/useAuth";
 
 function ContactPage() {
+  const { user } = useAuth();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -130,10 +132,11 @@ function ContactPage() {
                   label='Tam ad'
                   placeholder='Tam adın'
                   required={true}
-                  value={fullnameValue}
+                  value={user ? user.name + ' ' + user.surname : fullnameValue}
                   onChange={handleFullnameChange}
                   onBlur={handleFullnameBlur}
                   error={hasFullnameError}
+                  disabled={user && true}
                 />
                 <Input
                   id='email'
@@ -142,10 +145,11 @@ function ContactPage() {
                   label='Email'
                   placeholder='Emailin'
                   required={true}
-                  value={emailValue}
+                  value={user ? user.email : emailValue}
                   onChange={handleEmailChange}
                   onBlur={handleEmailBlur}
                   error={hasEmailError}
+                  disabled={user && true}
                 />
                 <Input
                   id='subject'
