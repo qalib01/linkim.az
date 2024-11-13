@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import UserProfileCard from "../../../components/Card/UserProfileCard";
 import ListGroupParent from "../../../components/ListGroup/ListGroupParent";
 import ListGroupItem from "../../../components/ListGroup/ListGroupItem";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faUserEdit } from '@fortawesome/free-solid-svg-icons';
+import { faUserEdit, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import CardHeader from "../../../components/Card/CardHeader";
 import CardAction from "../../../components/Card/CardAction";
 import CardBody from "../../../components/Card/CardBody";
@@ -13,40 +12,69 @@ import CloseIconSvg from "../../../components/Icons/CloseIconSvg";
 import { createPortal } from "react-dom";
 import useAuth from "../../../hooks/useAuth";
 import { Link } from "react-router-dom";
-library.add(faUserEdit);
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useUserProfile } from "../../../hooks/useUserProfile";
 
 
 function Profile() {
     const [isOpen, setIsOpen] = useState(false);
+    const [modalTitle, setModalTitle] = useState('');
+    const [modalContent, setModalContent] = useState(null);
+    const [modalSize, setModalSize] = useState(null);
+    const [modalButtons, setModalButtons] = useState([]);
+    const { setProfileImgUrl } = useUserProfile();
     const { user } = useAuth();
-
-    function openModal() {
-        setIsOpen(true);
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal() {
-        setIsOpen(false);
-        document.body.style.overflow = 'visible';
-    }
+    const userImgUrl = `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_USER_PHOTO_SERVER_URL}/${user.photo}`;
 
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
+    function openModal(title, content, size, buttons) {
+        setIsOpen(true);
+        setModalTitle(title);
+        setModalContent(content);
+        setModalSize(size);
+        setModalButtons(buttons);
+        setProfileImgUrl(userImgUrl);
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        setIsOpen(false);
+        setModalTitle('');
+        setModalContent(null);
+        setModalSize(null);
+        setModalButtons([]);
+        setProfileImgUrl('');
+        document.body.style.overflow = 'visible';
+    }
+
     return (
         <>
             <div className="container-fluid">
-                <div className="page-header min-height-300 border-radius-xl mt-4"  /*style="background-image: url('../assets/img/curved-images/curved0.jpg'); background-position-y: 50%;" */>
+                <div className="page-header min-height-300 border-radius-xl mt-4">
                     <span className="mask bg-gradient-primary opacity-6"></span>
                 </div>
                 <UserProfileCard classList='blur shadow-blur mx-4 mt-n6 overflow-hidden'>
                     <CardBody>
                         <div className="row gx-4">
                             <div className="col-auto">
-                                <div className="avatar avatar-xl position-relative">
-                                    <img src="../assets/img/bruce-mars.jpg" alt="profile_image" className="w-100 border-radius-lg shadow-sm" />
-                                </div>
+                                <CardAction title='Profil şəkili' openModal={() => openModal('Profil şəkili', <ProfilePictureEditForm />, 'md',
+                                    [
+                                        { label: 'Göndər', classList: 'btn bg-gradient-primary', onClick: () => {} },
+                                        { label: 'Bağla', classList: 'btn bg-dark text-white', onClick: () => { closeModal() } },
+                                    ],
+                                )}>
+                                    <div className="avatar-container">
+                                        <div className="avatar avatar-xl position-relative">
+                                            <img src={userImgUrl} alt="Profil şəkili" className="w-100 border-radius-lg shadow-sm" />
+                                        </div>
+                                        <div className="edit-icon">
+                                            <FontAwesomeIcon icon={faPencilAlt} />
+                                        </div>
+                                    </div>
+                                </CardAction>
                             </div>
                             <div className="col-auto my-auto">
                                 <div className="h-100">
@@ -67,7 +95,12 @@ function Profile() {
                     <div className="col-12 col-xl-4">
                         <UserProfileCard>
                             <CardHeader title='Profil məlumatları' >
-                                <CardAction icon={faUserEdit} title='Edit profile' classList='col-md-4 text-end' openModal={openModal} />
+                                <CardAction icon={faUserEdit} title='Edit profile' classList='col-md-4 text-end' openModal={() => openModal('Profil məlumatları', <ProfileEditForm />, 'md',
+                                    [
+                                        { label: 'Göndər', classList: 'btn bg-gradient-primary', onClick: () => {} },
+                                        { label: 'Bağla', classList: 'btn bg-dark text-white', onClick: () => { closeModal() } },
+                                    ])
+                                } />
                             </CardHeader>
                             <CardBody classList='p-3'>
                                 <p className="text-sm">
@@ -91,7 +124,14 @@ function Profile() {
 
                     <div className="col-12 col-xl-4">
                         <UserProfileCard>
-                            <CardHeader title='Linklər' />
+                            <CardHeader title='Linklər'>
+                                <CardAction icon={faUserEdit} title='Edit profile' classList='col-md-4 text-end' openModal={() => openModal('Linklər', <ProfileLinkEditForm />, 'md',
+                                    [
+                                        { label: 'Göndər', classList: 'btn bg-gradient-primary', onClick: () => {} },
+                                        { label: 'Bağla', classList: 'btn bg-dark text-white', onClick: () => { closeModal() } },
+                                    ]
+                                )} />
+                            </CardHeader>
                             <CardBody classList='p-3'>
                                 <ListGroupParent>
                                     {user.userLinks.length > 0 && user.userLinks.map((link) => (
@@ -112,32 +152,80 @@ function Profile() {
                     </div>
                 </div>
             </div>
-            {isOpen && <EditDialogBox onClose={closeModal} />}
+            {isOpen && <EditDialogBox onClose={closeModal} title={modalTitle} content={modalContent} size={modalSize} buttons={modalButtons} />}
         </>
     )
 }
 
-function EditDialogBox({ onClose }) {
+function EditDialogBox({ onClose, title, content, size = 'lg', buttons }) {
     return createPortal(
-        <div className="modal modal-lg" style={{ display: 'block' }}>
-            <div className="modal-dialog modal-dialog-centered" role="document">
+        <div className={`modal modal-${size}`} style={{ display: 'inline-block' }}>
+            <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header" style={{ alignItems: 'unset !important' }}>
-                        <h5 className="modal-title" id="exampleModalLabel">Profil məlumatları</h5>
+                        <h5 className="modal-title"> {title} </h5>
                         <Button asButton={true} classList='btn-close text-dark' onClick={onClose}>
                             <CloseIconSvg />
                         </Button>
                     </div>
                     <div className="modal-body">
-                        ...
+                        {content}
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn bg-gradient-primary">Save changes</button>
+                        {
+                            buttons.map((button) => (
+                                <button type="button" className={button.classList} onClick={button.onClick}>{button.label}</button>
+                            ))
+                        }
                     </div>
                 </div>
             </div>
         </div>,
         document.getElementById('modal')
+    )
+}
+
+function ProfileEditForm() {
+    return (
+        <p>
+            Profile Edit Form
+        </p>
+    )
+}
+
+function ProfilePictureEditForm() {
+    const { profileImgUrl, setProfileImgUrl } = useUserProfile();
+    const fileInputRef = useRef(null);
+
+    function handleImageChange(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const imageUrl = URL.createObjectURL(file);
+            setProfileImgUrl(imageUrl);
+        }
+    }
+
+    function handleImageClick() {
+        fileInputRef.current.click();
+    }
+
+    return (
+        <div className="container-fluid">
+            <div className="avatar-container mx-auto">
+                <div className=" position-relative" onClick={handleImageClick}>
+                    <img src={profileImgUrl} alt="Profil şəkili" className="w-100 shadow-sm border" />
+                    <input type="file" onChange={handleImageChange} ref={fileInputRef} style={{ display: 'none' }} />
+                </div>
+            </div>
+        </div>
+    )
+}
+
+function ProfileLinkEditForm() {
+    return (
+        <p>
+            Profile Link Edit Form
+        </p>
     )
 }
 

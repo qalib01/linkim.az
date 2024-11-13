@@ -21,7 +21,6 @@ export const AuthProvider = ({ children }) => {
             });
 
             const data = response.data;
-            console.log(response)
 
             if (response.status === 401) {
                 const newAccessToken = await refreshAccessToken();
@@ -34,7 +33,6 @@ export const AuthProvider = ({ children }) => {
             }
 
         } catch (error) {
-            console.log(error);
             if (error.response && error.response.status === 401) {
                 const newAccessToken = await refreshAccessToken();
                 if (newAccessToken) {
@@ -73,7 +71,6 @@ export const AuthProvider = ({ children }) => {
             let { accessToken } = data.tokens;
 
             if (data && accessToken) {
-                console.log(data)
                 localStorage.setItem('accessToken', accessToken);
                 return accessToken;
             }

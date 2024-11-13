@@ -3589,8 +3589,8 @@ textarea.form-control.is-invalid {
 }
 
 .btn {
-    --bs-btn-padding-x: 1.5rem;
-    --bs-btn-padding-y: 0.75rem;
+    --bs-btn-padding-x: 1.25rem;
+    --bs-btn-padding-y: 0.70rem;
     --bs-btn-font-family: ;
     --bs-btn-font-size: 0.75rem;
     --bs-btn-font-weight: 700;
@@ -20187,6 +20187,36 @@ fieldset:disabled .btn {
 
 .alert-dismissible .btn-close {
     background-image: none;
+}
+
+.avatar-container {
+    position: relative;
+    width: fit-content;
+    cursor: pointer;
+}
+
+.avatar-container .edit-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1rem;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    padding: 0.5rem;
+    display: none;
+    transition: opacity 0.3s ease;
+}
+
+.avatar-container:hover .avatar img {
+    filter: blur(2px);
+}
+
+.avatar-container:hover .edit-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .avatar {

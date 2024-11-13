@@ -63,13 +63,14 @@ function ContactPage() {
       return setSubmitStatus({ type: 'error', message: 'Bütün xanalar tam doldurulmalıdır!' });
     }
 
-    let data = await apiRequest({
+    let response = await apiRequest({
       url: `${process.env.REACT_APP_API_LINK}/contact`,
       method: 'POST',
       body: { fullnameValue, emailValue, subjectValue, messageValue }
     });
 
-    setSubmitStatus(data);
+
+    setSubmitStatus(response);
     handleFullnameReset();
     handleEmailReset();
     handleSubjectReset();

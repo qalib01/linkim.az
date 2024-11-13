@@ -15,7 +15,7 @@ function Error() {
                 <div className="col">
                     <div className="section-head text-center mx-auto narrow">
                         <h5 className='title'> Xəta </h5>
-                        <p> Görünüşə görə ya səhv, ya da sistemimizdə mövcud olmayan səhifəyə daxil olmağa cəhd edirsən </p>
+                        <p> Görünüşə görə ya səhv, ya da sistemimizdə mövcud olmayan səhifəyə daxil olmağa cəhd edirsən! </p>
                         <div className="row">
                             <div className="col-12 col-md-6">
                                 <Button asButton={true} onClick={goBack}> Əvvələ qayıt </Button>

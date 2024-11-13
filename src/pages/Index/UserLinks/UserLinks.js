@@ -1,7 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import classes from './UserLinks.module.scss'
 import ThreeDotsIconSvg from "../../../components/Icons/ThreeDotsIconSvg";
-import userImg from './user.jpg'
 import CloseIconSvg from "../../../components/Icons/CloseIconSvg";
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
@@ -25,6 +24,7 @@ function UserLinks() {
     const [isFetching, setIsFetching] = useState(false);
     const [isOpenModal, setIsOpenModal] = useState(false);
     const { username } = useParams();
+    
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -38,7 +38,7 @@ function UserLinks() {
             });
 
             let data = response.data;
-            setUserData(data || null);
+            setUserData(response.status !== 404 ? data : []);
             setIsFetching(false);
         }
         userLinks();
@@ -58,6 +58,7 @@ function UserLinks() {
         return <Error />
     }
 
+    const userImgUrl = `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_USER_PHOTO_SERVER_URL}/${userData.photo}`;
     const data = {
         title: `${userData.name} ${userData.surname}`,
         url: `${process.env.REACT_APP_PROJECT_LINK}/${userData.username}`
@@ -78,7 +79,7 @@ function UserLinks() {
                             <div className={classes.userContainer}>
                                 <div className={classes.userImg}>
                                     <img
-                                        src={userImg}
+                                        src={userImgUrl}
                                         alt={`${userData.name || ''} ${userData.surname || ''}`}
                                     />
                                 </div>
