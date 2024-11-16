@@ -23,7 +23,8 @@ function ActivateUserPage() {
         let data = await apiRequest({
             url: `${process.env.REACT_APP_API_LINK}/activate`,
             method: 'POST',
-            body: { token }
+            headers: { "Content-Type": "application/json" },
+            body: { token },
         });
         console.log(data)
 

@@ -62,13 +62,12 @@ function RegisterPage() {
         event.preventDefault();
         setLoading(true);
 
-        if (hasNameError || hasSurnameError || hasEmailError || hasPasswordError || hasPasswordConfirmError) {
-            return setSubmitStatus({ type: 'error', message: 'Bütün xanalar tam doldurulmalıdır!' });
-        }
+        if (hasNameError || hasSurnameError || hasEmailError || hasPasswordError || hasPasswordConfirmError) return setSubmitStatus({ type: 'error', message: 'Bütün xanalar tam doldurulmalıdır!' });
 
         let response = await apiRequest({
             url: `${process.env.REACT_APP_API_LINK}/register`,
             method: 'POST',
+            headers: { "Content-Type": "application/json" },
             body: { nameValue, surnameValue, emailValue, passwordValue }
         });
 
@@ -149,8 +148,8 @@ function RegisterPage() {
                                 id='confirmPassword'
                                 type='password'
                                 name='confirmPassword'
-                                label='Təkrar şifrə'
-                                placeholder='Şifrən təkrar'
+                                label='Şifrə təkrar'
+                                placeholder='Şifrənin təkrar'
                                 required={true}
                                 value={passwordConfirmValue}
                                 onChange={handlePasswordConfirmChange}

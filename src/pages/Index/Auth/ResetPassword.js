@@ -69,6 +69,7 @@ function ResetPasswordRequestPage() {
         let response = await apiRequest({
             url: `${process.env.REACT_APP_API_LINK}/reset-password`,
             method: 'POST',
+            headers: { "Content-Type": "application/json" },
             body: { emailValue, passwordValue }
         });
 
@@ -123,8 +124,8 @@ function ResetPasswordRequestPage() {
                                     id='confirmPassword'
                                     type='password'
                                     name='confirmPassword'
-                                    label='Təkrar şifrə'
-                                    placeholder='Şifrən təkrar'
+                                    label='Şifrə təkrar'
+                                    placeholder='Şifrənin təkrar'
                                     required={true}
                                     value={passwordConfirmValue}
                                     onChange={handlePasswordConfirmChange}

@@ -34,6 +34,7 @@ function UserLinks() {
             const response = await apiRequest({
                 url: `${process.env.REACT_APP_API_LINK}/user-data`,
                 method: 'POST',
+                headers: { "Content-Type": "application/json" },
                 body: { username }
             });
 

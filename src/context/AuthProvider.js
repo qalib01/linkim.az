@@ -31,7 +31,6 @@ export const AuthProvider = ({ children }) => {
             } else { 
                 return data.user;
             }
-
         } catch (error) {
             if (error.response && error.response.status === 401) {
                 const newAccessToken = await refreshAccessToken();

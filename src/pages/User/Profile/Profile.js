@@ -14,6 +14,12 @@ import useAuth from "../../../hooks/useAuth";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useUserProfile } from "../../../hooks/useUserProfile";
+import { apiRequest } from "../../../utils/apiRequest";
+import Alert from "../../../components/Alert/Alert";
+import { useInput } from "../../../hooks/useInput";
+import { hasMinLength, isEmail, isEqualsToOtherValue, isNotEmpty } from "../../../utils/validation";
+import Input from "../../../components/Form/Input";
+import Textarea from "../../../components/Form/Textarea";
 
 
 function Profile() {
@@ -60,12 +66,7 @@ function Profile() {
                     <CardBody>
                         <div className="row gx-4">
                             <div className="col-auto">
-                                <CardAction title='Profil şəkili' openModal={() => openModal('Profil şəkili', <ProfilePictureEditForm />, 'md',
-                                    [
-                                        { label: 'Göndər', classList: 'btn bg-gradient-primary', onClick: () => {} },
-                                        { label: 'Bağla', classList: 'btn bg-dark text-white', onClick: () => { closeModal() } },
-                                    ],
-                                )}>
+                                <CardAction title='Profil şəkili' openModal={() => openModal('Profil şəkili', <ProfilePictureEditForm onClose={closeModal} />, 'md')}>
                                     <div className="avatar-container">
                                         <div className="avatar avatar-xl position-relative">
                                             <img src={userImgUrl} alt="Profil şəkili" className="w-100 border-radius-lg shadow-sm" />
@@ -95,12 +96,7 @@ function Profile() {
                     <div className="col-12 col-xl-4">
                         <UserProfileCard>
                             <CardHeader title='Profil məlumatları' >
-                                <CardAction icon={faUserEdit} title='Edit profile' classList='col-md-4 text-end' openModal={() => openModal('Profil məlumatları', <ProfileEditForm />, 'md',
-                                    [
-                                        { label: 'Göndər', classList: 'btn bg-gradient-primary', onClick: () => {} },
-                                        { label: 'Bağla', classList: 'btn bg-dark text-white', onClick: () => { closeModal() } },
-                                    ])
-                                } />
+                                <CardAction icon={faUserEdit} title='Edit profile' classList='col-md-4 text-end' openModal={() => openModal('Profil məlumatları', <ProfileEditForm onClose={closeModal} />, 'lg')} />
                             </CardHeader>
                             <CardBody classList='p-3'>
                                 <p className="text-sm">
@@ -125,12 +121,7 @@ function Profile() {
                     <div className="col-12 col-xl-4">
                         <UserProfileCard>
                             <CardHeader title='Linklər'>
-                                <CardAction icon={faUserEdit} title='Edit profile' classList='col-md-4 text-end' openModal={() => openModal('Linklər', <ProfileLinkEditForm />, 'md',
-                                    [
-                                        { label: 'Göndər', classList: 'btn bg-gradient-primary', onClick: () => {} },
-                                        { label: 'Bağla', classList: 'btn bg-dark text-white', onClick: () => { closeModal() } },
-                                    ]
-                                )} />
+                                <CardAction icon={faUserEdit} title='Edit profile' classList='col-md-4 text-end' openModal={() => openModal('Linklər', <ProfileLinkEditForm onClose={closeModal} />, 'lg')} />
                             </CardHeader>
                             <CardBody classList='p-3'>
                                 <ListGroupParent>
@@ -157,7 +148,7 @@ function Profile() {
     )
 }
 
-function EditDialogBox({ onClose, title, content, size = 'lg', buttons }) {
+function EditDialogBox({ onClose, title, content, size }) {
     return createPortal(
         <div className={`modal modal-${size}`} style={{ display: 'inline-block' }}>
             <div className="modal-dialog modal-dialog-centered">
@@ -171,13 +162,6 @@ function EditDialogBox({ onClose, title, content, size = 'lg', buttons }) {
                     <div className="modal-body">
                         {content}
                     </div>
-                    <div className="modal-footer">
-                        {
-                            buttons.map((button) => (
-                                <button type="button" className={button.classList} onClick={button.onClick}>{button.label}</button>
-                            ))
-                        }
-                    </div>
                 </div>
             </div>
         </div>,
@@ -185,17 +169,188 @@ function EditDialogBox({ onClose, title, content, size = 'lg', buttons }) {
     )
 }
 
-function ProfileEditForm() {
+function ProfileEditForm({ onClose }) {
+    const [isLoading, setIsLoading] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState([]);
+    const { user } = useAuth();
+
+    const {
+        value: nameValue,
+        handleInputChange: handleNameChange,
+        handleInputBlur: handleNameBlur,
+        hasError: hasNameError,
+    } = useInput('', (value) => isNotEmpty(value));
+
+    const {
+        value: surnameValue,
+        handleInputChange: handleSurnameChange,
+        handleInputBlur: handleSurnameBlur,
+        hasError: hasSurnameError,
+    } = useInput('', (value) => isNotEmpty(value));
+
+    const {
+        value: emailValue,
+        handleInputChange: handleEmailChange,
+        handleInputBlur: handleEmailBlur,
+        hasError: hasEmailError,
+    } = useInput('', (value) => isEmail(value) && isNotEmpty(value));
+
+    const {
+        value: usernameValue,
+        handleInputChange: handleUsernameChange,
+        handleInputBlur: handleUsernameBlur,
+        hasError: hasUsernameError,
+    } = useInput('', (value) => isNotEmpty(value));
+
+    const {
+        value: passwordValue,
+        handleInputChange: handlePasswordChange,
+        handleInputBlur: handlePasswordBlur,
+        hasError: hasPasswordError,
+    } = useInput('', (value) => hasMinLength(value, 8) && isNotEmpty(value));
+
+    const {
+        value: passwordConfirmValue,
+        handleInputChange: handlePasswordConfirmChange,
+        handleInputBlur: handlePasswordConfirmBlur,
+        hasError: hasPasswordConfirmError,
+    } = useInput('', (value) => isEqualsToOtherValue(value, passwordValue) && isNotEmpty(value));
+
+    const {
+        value: informationValue,
+        handleInputChange: handleInformationChange,
+        handleInputBlur: handleInformationBlur,
+        hasError: hasInformationError,
+    } = useInput('', (value) => isNotEmpty(value));
+
+    function handleSubmitUpdateUserData(e) {
+        e.preventDefault();
+        setIsLoading(true);
+    }
+
     return (
-        <p>
-            Profile Edit Form
-        </p>
+        <div className="container-fluid">
+            <form>
+                <div class="row">
+                    <div className="col-12 col-lg-6 mb-2">
+                        <Input
+                            id='name'
+                            type='text'
+                            name='name'
+                            label='Ad'
+                            placeholder='Adın'
+                            required={true}
+                            value={nameValue}
+                            onChange={handleNameChange}
+                            onBlur={handleNameBlur}
+                            error={hasNameError}
+                        />
+                    </div>
+                    <div className="col-12 col-lg-6">
+                        <Input
+                            id='surname'
+                            type='text'
+                            name='surname'
+                            label='Soyad'
+                            placeholder='Soyadın'
+                            required={true}
+                            value={surnameValue}
+                            onChange={handleSurnameChange}
+                            onBlur={handleSurnameBlur}
+                            error={hasSurnameError}
+                        />
+                    </div>
+                </div>
+                <div class="row my-2">
+                    <div className="col-12 col-lg-6 mb-2">
+                        <Input
+                            id='email'
+                            type='email'
+                            name='email'
+                            label='Email'
+                            placeholder='Emailin'
+                            required={true}
+                            value={emailValue}
+                            onChange={handleEmailChange}
+                            onBlur={handleEmailBlur}
+                            error={hasEmailError}
+                        />
+                    </div>
+                    <div className="col-12 col-lg-6">
+                        <Input
+                            id='username'
+                            type='text'
+                            name='username'
+                            label='İstifadəçi adı'
+                            placeholder='İstifadəçi adın'
+                            required={true}
+                            value={usernameValue}
+                            onChange={handleUsernameChange}
+                            onBlur={handleUsernameBlur}
+                            error={hasUsernameError}
+                        />
+                    </div>
+                </div>
+                <div class="row my-2">
+                    <div className="col-12 col-lg-6 mb-2">
+                        <Input
+                            id='password'
+                            type='password'
+                            name='password'
+                            label='Şifrə'
+                            placeholder='Şifrən'
+                            required={true}
+                            value={passwordValue}
+                            onChange={handlePasswordChange}
+                            onBlur={handlePasswordBlur}
+                            error={hasPasswordError}
+                        />
+                    </div>
+                    <div className="col-12 col-lg-6">
+                        <Input
+                            id='confirmPassword'
+                            type='password'
+                            name='password'
+                            label='Şifrə təkrar'
+                            placeholder='Şifrənin təkrar'
+                            required={true}
+                            value={passwordConfirmValue}
+                            onChange={handlePasswordConfirmChange}
+                            onBlur={handlePasswordConfirmBlur}
+                            error={hasPasswordConfirmError}
+                        />
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <Textarea
+                        id='bio'
+                        name='bio'
+                        label='Şəxsi məlumat'
+                        placeholder='Şəxsi məlumat'
+                        rows={3}
+                        value={informationValue}
+                        onChange={handleInformationChange}
+                        onBlur={handleInformationBlur}
+                        error={hasInformationError}
+                    />
+                </div>
+            </form>
+            <div className='text-end mt-3'>
+                <button type="submit" className='btn bg-gradient-primary mx-2' onClick={handleSubmitUpdateUserData} disabled={isLoading && true}>{isLoading ? 'Göndərilir' : 'Göndər'}</button>
+                <button type="button" className='btn bg-dark text-white' onClick={onClose}>Bağla</button>
+            </div>
+            {submitStatus && (
+                <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus(null)} />
+            )}
+        </div>
     )
 }
 
-function ProfilePictureEditForm() {
-    const { profileImgUrl, setProfileImgUrl } = useUserProfile();
+function ProfilePictureEditForm({ onClose }) {
+    const { profileImgUrl, setProfileImgUrl } = useUserProfile(undefined);
     const fileInputRef = useRef(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState([]);
 
     function handleImageChange(e) {
         const file = e.target.files[0];
@@ -209,14 +364,50 @@ function ProfilePictureEditForm() {
         fileInputRef.current.click();
     }
 
+    async function handleSubmitUpdateUserPhoto(e) {
+        e.preventDefault();
+        let file = fileInputRef.current.files[0];
+        let accessToken = localStorage.getItem('accessToken');
+        if (!file) return setSubmitStatus({ type: 'error', message: 'Fayl seçilməlidir!' });
+        if (!accessToken) return setSubmitStatus({ type: 'error', message: 'Token yoxdur!' });
+        setIsLoading(true);
+        const formData = new FormData();
+        formData.append("photo", file);
+        formData.append("accessToken", accessToken);
+
+        const response = await apiRequest({
+            url: `${process.env.REACT_APP_API_LINK}/api/user/upload-userPhoto`,
+            method: 'POST',
+            body: formData
+        });
+
+        let data = response.data;
+        setIsLoading(false);
+        if (!response) return setSubmitStatus({ type: data.type, message: data.message });
+        if (response.status === 200) {
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+            return setSubmitStatus({ type: data.type, message: data.message });
+        };
+
+    }
+
     return (
         <div className="container-fluid">
             <div className="avatar-container mx-auto">
                 <div className=" position-relative" onClick={handleImageClick}>
-                    <img src={profileImgUrl} alt="Profil şəkili" className="w-100 shadow-sm border" />
-                    <input type="file" onChange={handleImageChange} ref={fileInputRef} style={{ display: 'none' }} />
+                    <img src={profileImgUrl} alt="Profil şəkili" title={isLoading ? 'Şəkil yüklənir...' : 'Yeni şəkil yükləmək üçün basın'} className="w-100 shadow-sm border" style={{ cursor: isLoading && 'progress' }} />
+                    <input type="file" onChange={handleImageChange} ref={fileInputRef} style={{ display: 'none', cursor: isLoading && 'progress' }} accept="image/png, image/jpeg, image/jpg" disabled={isLoading && true} />
                 </div>
             </div>
+            <div className='text-end mt-3'>
+                <button type="submit" className='btn bg-gradient-primary mx-2' onClick={handleSubmitUpdateUserPhoto} disabled={isLoading && true}>{isLoading ? 'Göndərilir' : 'Göndər'}</button>
+                <button type="button" className='btn bg-dark text-white' onClick={onClose}>Bağla</button>
+            </div>
+            {submitStatus && (
+                <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus(null)} />
+            )}
         </div>
     )
 }

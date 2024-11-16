@@ -1,12 +1,9 @@
-export async function apiRequest({ url, method = 'GET', body, headers = {} }) {
-    let defaultHeaders = { "Content-Type": "application/json", }
-    let allHeaders = { ...defaultHeaders, ...headers }
-
+export async function apiRequest({ url, method = 'GET', body, headers }) {
     try {
         const res = await fetch(url, {
             method,
-            headers: allHeaders,
-            body: body ? JSON.stringify(body) : null,
+            headers,
+            body: body ? (headers ? JSON.stringify(body) : body) : null,
             credentials: 'include'
         });
 
