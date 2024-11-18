@@ -1,7 +1,7 @@
 import { useState } from "react";
 import classes from './Form.module.scss';
-import ShowIconSvg from "../Icons/ShowIconSvg";
-import HideIconSvg from "../Icons/HideIconSvg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 
 function Input({ id, error, label, type, disabled = false, ...props }) {
@@ -20,7 +20,7 @@ function Input({ id, error, label, type, disabled = false, ...props }) {
                     type === 'password' && (
                         <div onClick={toggleShowPassword} className={classes.showHidePasswordIcon}>
                             {
-                                showPassword ? <ShowIconSvg /> : <HideIconSvg />
+                                showPassword ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />
                             }
                         </div>
                     )
