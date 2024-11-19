@@ -12,6 +12,7 @@ import Button from "../../../components/Button/Button";
 
 function ResetPasswordRequestPage() {
     const { token } = useParams();
+    console.log(token)
     const [loading, setLoading] = useState(false);
     const [emailValue, setEmailValue] = useState('')
     const [isTokenValid, setIsTokenValid] = useState(false)
@@ -26,14 +27,16 @@ function ResetPasswordRequestPage() {
         let response = await apiRequest({
             url: `${process.env.REACT_APP_API_LINK}/validate-token`,
             method: 'POST',
+            headers: { "Content-Type": "application/json" },
             body: { token }
         });
 
         const data = response.data;
 
-        if (data.valid) {
-            setIsTokenValid(data.valid);
+        if (response.status === 200) {
+            setIsTokenValid(true);
             setEmailValue(data.email);
+            console.log(response)
         } else {
             setSubmitStatus(data);
             setTimeout(() => {
@@ -63,6 +66,7 @@ function ResetPasswordRequestPage() {
         setLoading(true);
 
         if (!token || hasPasswordError || hasPasswordConfirmError) {
+            setLoading(false);
             return setSubmitStatus({ type: 'error', message: 'Bütün xanalar tam doldurulmalıdır!' });
         }
 

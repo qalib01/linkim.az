@@ -77,11 +77,10 @@
                     margin-top: 40px;
 
                     .userLink {
-                        border-radius: 36px;
-                        background-color: #FFFFFF;
                         position: relative;
 
-                        a {
+                        a,
+                        button {
                             color: #000000;
                             display: block;
                             width: 100%;
@@ -90,6 +89,9 @@
                             font-size: 1.2rem;
                             font-weight: bold;
                             text-decoration: none;
+                            border-radius: 36px;
+                            background-color: #FFFFFF;
+                            border: none;
                         }
 
                         .shareIcon {
@@ -181,6 +183,40 @@
 
                 }
 
+                .userData {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 5px;
+                    text-align: center;
+                    padding: 0 40px;
+
+                    .userDetails {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        gap: 5px;
+
+                        .userName {
+                            font-size: 1.4rem;
+                            font-weight: bold;
+                            color: #333;
+                        }
+
+                        .email {
+                            font-size: 1rem;
+                            color: #333;
+                        }
+
+                        .bio {
+                            font-size: 0.95rem;
+                            color: #777;
+                            margin-top: 10px;
+                            font-style: italic;
+                        }
+                    }
+                }
+
                 .buttons {
                     display: flex;
                     border-top: 1px solid black;
@@ -194,7 +230,8 @@
                         flex-direction: column;
                         align-items: center;
 
-                        button, a {
+                        button,
+                        a {
                             width: 60px;
                             aspect-ratio: 1/1;
                             border-radius: 50%;
@@ -220,7 +257,8 @@
                         font-weight: bold;
                     }
 
-                    a, button {
+                    a,
+                    button {
                         outline: none;
                         text-decoration: none;
                         border: none;
@@ -246,6 +284,7 @@
     .container {
         width: 80% !important;
     }
+
     .dialog {
         width: 60% !important;
         padding: 16px !important;
@@ -258,7 +297,7 @@
             p {
                 font-size: 18px !important;
             }
-            
+
             span {
                 font-size: 14px !important;
             }
@@ -268,19 +307,21 @@
             margin: 20px !important;
             padding: 15px 0 !important;
             column-gap: 15px !important;
-            
-            button, a {
+
+            button,
+            a {
                 width: 50px !important;
             }
         }
 
         .authOptions {
-            
+
             span {
                 font-size: 14px !important;
             }
 
-            button, a {
+            button,
+            a {
                 padding: 10px 24px !important;
                 font-size: 14px !important;
                 margin-top: 16px !important;
@@ -294,22 +335,14 @@
         width: 100% !important;
         padding: 10px 20px !important;
 
-        button {
-            width: 40px !important;
-            border-radius: 50%;
-
-            svg {
-                width: 16px !important;
-            }
-        }
-
         .userLinks {
             row-gap: 10px !important;
 
             .userLink {
                 width: 100% !important;
 
-                a {
+                a,
+                button {
                     padding: 12px !important;
                     font-size: 14px !important;
                 }
@@ -323,6 +356,15 @@
 
         .userImg {
             max-width: 160px !important;
+        }
+
+        button {
+            // width: 40px !important;
+            border-radius: 50%;
+
+            svg {
+                width: 16px !important;
+            }
         }
     }
 
@@ -338,9 +380,31 @@
             p {
                 font-size: 16px !important;
             }
-            
+
             span {
                 font-size: 12px !important;
+            }
+        }
+
+        .userData {
+            gap: 0px;
+            padding: 0px !important;
+
+            .userDetails {
+                gap: 0px;
+
+                .userName {
+                    margin-bottom: 0px !important;
+                }
+
+                .email {
+                    font-size: 0.9rem !important;
+                }
+
+                .bio {
+                    font-size: 0.8rem !important;
+                    margin-top: 0px !important;
+                }
             }
         }
 
@@ -356,7 +420,8 @@
 
         .authOptions {
 
-            button, a {
+            button,
+            a {
                 padding: 8px 20px !important;
                 font-size: 12px !important;
                 margin-top: 14px !important;

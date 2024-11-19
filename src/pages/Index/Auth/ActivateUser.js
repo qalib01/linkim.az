@@ -5,6 +5,7 @@ import classes from './Auth.module.scss';
 import { apiRequest } from "../../../utils/apiRequest";
 import Loader from "../../../components/Loader/Loader";
 import Section from "../../../components/Section/Section";
+import Button from "../../../components/Button/Button";
 
 
 function ActivateUserPage() {
@@ -20,19 +21,18 @@ function ActivateUserPage() {
 
     async function activateUser(token) {
         setLoading(true)
-        let data = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}/activate`,
+        let response = await apiRequest({
+            url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_USER_ACTIVATE_LINK_KEY}`,
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: { token },
         });
-        console.log(data)
 
-        if (data.type === 'success') {
+        if (response.status === 200) {
             navigate('/p/login');
             setIsTokenValid(true);
         } else {
-            setSubmitStatus({ type: 'error', message: 'Link etibarsızdır.' });
+            setSubmitStatus(response.data);
         }
         setLoading(false);
     }
@@ -42,15 +42,22 @@ function ActivateUserPage() {
             {loading && (<Loader />)}
             {!loading && <Section sectionName='activate-user' sectionBg='bgTransparent'>
                 <div className="row gy-4" style={{ margin: '100px 0' }}>
-                    <div className="col-12 m-auto">
-                        <div className="row text-center">
-                            <div className={`${classes.content} pe-md-0 pe-lg-5  mb-5`}>
+                    <div className="m-auto">
+                        <div className="text-center">
+                            <div className={`${classes.content} pe-md-0 mb-5`}>
                                 <h2 className={`title mt-3`}> Hesabını aktifləşdir </h2>
                             </div>
+                            {!isTokenValid && (
+                                <div className="row justify-content-center">
+                                    <div className="col-12 col-md-4">
+                                        <Button to='/p/login'> Giriş </Button>
+                                    </div>
+                                    <div className="col-12 col-md-4">
+                                        <Button to='/'> Ana səhifə </Button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
-                        {!isTokenValid && (
-                            <p>Token etibarsızdır və ya müddəti keçib.</p>
-                        )}
                         {submitStatus && (
                             <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus(null)} />
                         )}

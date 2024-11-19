@@ -1,5 +1,6 @@
-import ArrowUpIconSvg from '../../Icons/ArrowUpIconSvg';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classes from './Footer.module.scss';
+import { faAngleUp } from '@fortawesome/free-solid-svg-icons';
 
 function ToTop() {
     function toTop() {
@@ -8,7 +9,7 @@ function ToTop() {
 
     return (
         <div className={classes.toTop} onClick={toTop}>
-            <ArrowUpIconSvg color='#FFFFFF' />
+            <FontAwesomeIcon icon={faAngleUp} color='#fff' />
         </div>
     )
 }

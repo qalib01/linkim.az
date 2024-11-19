@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 function Alert({type, message, handleCloseAlertBox}) {
     const [isClosing, setIsClosing] = useState(false);
     const [progress, setProgress] = useState(0);
-    const duration = 10000;
+    const duration = 4000;
     
     useEffect(() => {
         if(progress < 100 && !isClosing) {

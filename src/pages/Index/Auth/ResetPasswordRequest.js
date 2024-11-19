@@ -44,12 +44,12 @@ function ResetPasswordRequestPage() {
         const data = response.data;
         setSubmitStatus(data);
         setLoading(false);
-        if (data.type === 'success') {
+        if (response.status === 200) {
             handleEmailReset();
             setSubmitStatus(data)
             setTimeout(() => {
                 navigate('/p/login');
-            }, 2000);
+            }, 4000);
         }
     }
 

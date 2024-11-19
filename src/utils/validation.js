@@ -13,3 +13,7 @@ export function hasMinLength(value, minLength) {
 export function isEqualsToOtherValue(value, otherValue) {
     return value === otherValue;
 }
+
+export function isContentCatchMaxLimit(value, maxLength) {
+    return value.trim().length <= maxLength;
+}

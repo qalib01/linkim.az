@@ -29,7 +29,7 @@ function ContactPage() {
     handleInputBlur: handleFullnameBlur,
     hasError: hasFullnameError,
     handleInputReset: handleFullnameReset,
-  } = useInput('', (value) => isNotEmpty(value));
+  } = useInput(user ? user.name + ' ' + user.surname : '', (value) => isNotEmpty(value));
 
   const {
     value: emailValue,
@@ -37,7 +37,7 @@ function ContactPage() {
     handleInputBlur: handleEmailBlur,
     hasError: hasEmailError,
     handleInputReset: handleEmailReset,
-  } = useInput('', (value) => isEmail(value) && isNotEmpty(value));
+  } = useInput(user ? user.email : '', (value) => isEmail(value) && isNotEmpty(value));
 
   const {
     value: subjectValue,
@@ -70,8 +70,7 @@ function ContactPage() {
       body: { fullnameValue, emailValue, subjectValue, messageValue }
     });
 
-
-    setSubmitStatus(response);
+    setSubmitStatus(response.data);
     handleFullnameReset();
     handleEmailReset();
     handleSubjectReset();

@@ -17,14 +17,16 @@ import { apiRequest } from "../../../utils/apiRequest";
 import Loader from "../../../components/Loader/Loader";
 import Error from "../../../error/UserErrorPage";
 import useAuth from "../../../hooks/useAuth";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 
 
 function UserLinks() {
     const [userData, setUserData] = useState([]);
     const [isFetching, setIsFetching] = useState(false);
     const [isOpenModal, setIsOpenModal] = useState(false);
+    const [modalType, setModalType] = useState('');
     const { username } = useParams();
-    
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -45,7 +47,8 @@ function UserLinks() {
         userLinks();
     }, [username]);
 
-    function openShareDialog() {
+    function openShareDialog(type) {
+        setModalType(type);
         setIsOpenModal(true);
     }
 
@@ -72,7 +75,7 @@ function UserLinks() {
                 <section className={classes.background}>
                     <div className={classes.container}>
                         <div className={classes.topbar}>
-                            <button onClick={openShareDialog}>
+                            <button onClick={() => openShareDialog('link')}>
                                 <ThreeDotsIconSvg color='#FFF' />
                             </button>
                         </div>
@@ -89,27 +92,30 @@ function UserLinks() {
                                     <span> @{userData.username} </span>
                                 </div>
                                 <div className={classes.userLinks}>
+                                    {userData.bio && <UserLink data={{ title: "Haqqımda", body: userData }} />}
                                     {userData.userLinks && userData.userLinks.length > 0 ? (
                                         userData.userLinks.map((userLink) => (
                                             <UserLink key={userLink.id} data={userLink} />
                                         ))
                                     ) : (
-                                        <p>No links available</p> // Optional: message if no links are present
+                                        <p> Hər hansı link yoxdur </p>
                                     )}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>}
-            {isOpenModal && <ShareDialogBox onClose={closeShareDialog} data={data} />}
+            {isOpenModal && <ShareDialogBox onClose={closeShareDialog} data={data} type={modalType} />}
         </>
     )
 }
 
 function UserLink({ data }) {
     const [isOpenModal, setIsOpenModal] = useState(false);
+    const [modalType, setModalType] = useState('');
 
-    function openShareDialog() {
+    function openShareDialog(type) {
+        setModalType(type);
         setIsOpenModal(true);
     }
 
@@ -120,17 +126,48 @@ function UserLink({ data }) {
     return (
         <>
             <div className={classes.userLink}>
-                <Link target="_blank" to={data.url}> {data.title} </Link>
-                <div className={classes.shareIcon} onClick={openShareDialog}>
-                    <ThreeDotsIconSvg />
-                </div>
+                {data.url ? (
+                    <>
+                        <Link target="_blank" to={data.url}>
+                            {data.title}
+                        </Link>
+                        <div className={classes.shareIcon} onClick={() => openShareDialog('link')}>
+                            <FontAwesomeIcon icon={faEllipsis} />
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <button onClick={() => openShareDialog('button')}>
+                            {data.title}
+                        </button>
+                    </>
+                )}
             </div>
-            {isOpenModal && <ShareDialogBox onClose={closeShareDialog} data={data} />}
+            {isOpenModal && <ShareDialogBox onClose={closeShareDialog} data={data} type={modalType} />}
         </>
     )
 }
 
-function ShareDialogBox({ onClose, data }) {
+function ShareDialogBox({ onClose, data, type }) {
+    return createPortal(
+        <div className={classes.overlay}>
+            <div className={classes.dialog}>
+                <div className={classes.header}>
+                    <button onClick={onClose}> <CloseIconSvg /> </button>
+                </div>
+                <div className={classes.body}>
+                    <div className={classes.content}>
+                        {type === 'link' && <LinkDialogContent data={data} />}
+                        {type === 'button' && <ButtonDialogContent data={data} />}
+                    </div>
+                </div>
+            </div>
+        </div>,
+        document.getElementById('modal')
+    )
+}
+
+function LinkDialogContent({ data }) {
     const [copyStatus, setCopyStatus] = useState(false);
     const { isAuthenticated } = useAuth();
 
@@ -141,70 +178,72 @@ function ShareDialogBox({ onClose, data }) {
         }, 2000);
     }
 
-    return createPortal(
-        <div className={classes.overlay}>
-            <div className={classes.dialog}>
-                <div className={classes.header}>
-                    <button onClick={onClose}> <CloseIconSvg /> </button>
+    return (
+        <>
+            <div className={classes.linkInformations}>
+                <p> {data.title} </p>
+                <span> {data.url} </span>
+            </div>
+            <div className={`${classes.buttons} flex-row-scroll`}>
+                <div className={classes.button}>
+                    <CopyToClipboard text={data.url} onCopy={onCopyText}>
+                        <button>
+                            {copyStatus ? <DoneIconSvg /> : <LinkIconSvg />}
+                        </button>
+                    </CopyToClipboard>
+                    <span> {copyStatus ? 'Kopyalandı' : 'Kopyala'} </span>
                 </div>
-                <div className={classes.body}>
-                    <div className={classes.content}>
-                        <div className={classes.linkInformations}>
-                            <p> {data.title} </p>
-                            <span> {data.url} </span>
-                        </div>
-                        <div className={`${classes.buttons} flex-row-scroll`}>
-                            <div className={classes.button}>
-                                <CopyToClipboard text={data.url} onCopy={onCopyText}>
-                                    <button>
-                                        {copyStatus ? <DoneIconSvg /> : <LinkIconSvg />}
-                                    </button>
-                                </CopyToClipboard>
-                                <span> {copyStatus ? 'Kopyalandı' : 'Kopyala'} </span>
-                            </div>
-                            <div className={classes.button}>
-                                <Link to={`https://api.whatsapp.com/send?text=${data.url} linkini sizinlə paylaşıram. İndi sən də https://linkim.az portalından qeydiyyatdan keçərək şəxsi linkini rahatlıqla yradıb paylaşa bilərsən :)`} target="_blank">
-                                    <WhatsAppIconSvg />
-                                </Link>
-                                <span> WhatsApp </span>
-                            </div>
-                            <div className={classes.button}>
-                                <Link to={`https://x.com/intent/tweet?=${data.url} linkini sizinlə paylaşıram. İndi sən də https://linkim.az portalından qeydiyyatdan keçərək şəxsi linkini rahatlıqla yradıb paylaşa bilərsən :)`} target="_blank">
-                                    <XIconSvg />
-                                </Link>
-                                <span> X </span>
-                            </div>
-                            <div className={classes.button}>
-                                <Link to={`https://www.linkedin.com/sharing/share-offsite/?url=${data.url}`} target="_blank">
-                                    <LinkedInSvgIcon />
-                                </Link>
-                                <span> LinkedIn </span>
-                            </div>
-                            <div className={classes.button}>
-                                <Link to={`https://www.facebook.com/sharer.php?u=${data.url}`} target="_blank">
-                                    <FacebookIconSvg />
-                                </Link>
-                                <span> Facebook </span>
-                            </div>
-                            <div className={classes.button}>
-                                <Link to={`https://telegram.me/share/url?url=${data.url}`} target="_blank">
-                                    <TelegramIconSvg />
-                                </Link>
-                                <span> Telegram </span>
-                            </div>
-                        </div>
-                        {!isAuthenticated && <div className={classes.authOptions}>
-                            <span> İndi sən də rahatlıqla öz şəxsi linkini yarada və paylaşa bilərsən! </span>
-                            <div className="d-flex align-items-center justify-content-center gap-3">
-                                <Link to='/p/register'> Qeydiyyat </Link>
-                                <Link to='/p/login'> Giriş </Link>
-                            </div>
-                        </div>}
-                    </div>
+                <div className={classes.button}>
+                    <Link to={`https://api.whatsapp.com/send?text=${data.url} linkini sizinlə paylaşıram. İndi sən də https://linkim.az portalından qeydiyyatdan keçərək şəxsi linkini rahatlıqla yradıb paylaşa bilərsən :)`} target="_blank">
+                        <WhatsAppIconSvg />
+                    </Link>
+                    <span> WhatsApp </span>
+                </div>
+                <div className={classes.button}>
+                    <Link to={`https://x.com/intent/tweet?=${data.url} linkini sizinlə paylaşıram. İndi sən də https://linkim.az portalından qeydiyyatdan keçərək şəxsi linkini rahatlıqla yradıb paylaşa bilərsən :)`} target="_blank">
+                        <XIconSvg />
+                    </Link>
+                    <span> X </span>
+                </div>
+                <div className={classes.button}>
+                    <Link to={`https://www.linkedin.com/sharing/share-offsite/?url=${data.url}`} target="_blank">
+                        <LinkedInSvgIcon />
+                    </Link>
+                    <span> LinkedIn </span>
+                </div>
+                <div className={classes.button}>
+                    <Link to={`https://www.facebook.com/sharer.php?u=${data.url}`} target="_blank">
+                        <FacebookIconSvg />
+                    </Link>
+                    <span> Facebook </span>
+                </div>
+                <div className={classes.button}>
+                    <Link to={`https://telegram.me/share/url?url=${data.url}`} target="_blank">
+                        <TelegramIconSvg />
+                    </Link>
+                    <span> Telegram </span>
                 </div>
             </div>
-        </div>,
-        document.getElementById('modal')
+            {!isAuthenticated && <div className={classes.authOptions}>
+                <span> İndi sən də rahatlıqla öz şəxsi linkini yarada və paylaşa bilərsən! </span>
+                <div className="d-flex align-items-center justify-content-center gap-3">
+                    <Link to='/p/register'> Qeydiyyat </Link>
+                    <Link to='/p/login'> Giriş </Link>
+                </div>
+            </div>}
+        </>
+    )
+}
+
+function ButtonDialogContent({ data }) {
+    return (
+        <div className={classes.userData}>
+            <div className={classes.userDetails}>
+                <h1 className={classes.userName}> {data.body.name} {data.body.surname} </h1>
+                <p className={classes.email}> {data.body.email} </p>
+                <p className={classes.bio}> {data.body.bio} </p>
+            </div>
+        </div>
     )
 }
 

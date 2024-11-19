@@ -82,9 +82,9 @@ function Profile() {
                                     <h5 className="mb-1">
                                         {user.name} {user.surname}
                                     </h5>
-                                    <p className="mb-0 font-weight-bold text-sm">
+                                    {/* <p className="mb-0 font-weight-bold text-sm">
                                         CEO / Co-Founder
-                                    </p>
+                                    </p> */}
                                 </div>
                             </div>
                         </div>
@@ -131,10 +131,10 @@ function Profile() {
                                                 <img src="../assets/img/kal-visuals-square.jpg" alt="kal" className="border-radius-lg shadow" />
                                             </div> */}
                                             <div className="d-flex align-items-start flex-column justify-content-center">
-                                                <h6 className="mb-0 text-sm"> <Link to={link.url} target="_blank"> {link.title} </Link> </h6>
+                                                <h6 className="mb-0 text-sm"> {link.title} </h6>
                                                 <p className="mb-0 text-xs"> {link.type} </p>
                                             </div>
-                                            <Button classList='btn btn-link pe-3 ps-0 mb-0 ms-auto' to='/'> Bax </Button>
+                                            <Button classList='btn btn-link pe-3 ps-0 mb-0 ms-auto' to={link.url} target="_blank"> Bax </Button>
                                         </ListGroupItem>
                                     ))}
                                 </ListGroupParent>
@@ -199,6 +199,9 @@ function ProfileEditForm({ onClose }) {
     const {
         value: usernameValue,
         setValue: setUsernameValue,
+        handleInputChange: handleUsernameChange,
+        handleInputBlur: handleUsernameBlur,
+        hasError: hasUsernameError,
     } = useInput('', () => { });
 
     const {
@@ -220,7 +223,6 @@ function ProfileEditForm({ onClose }) {
         setValue: setDataValue,
         handleInputChange: handleDataChange,
         handleInputBlur: handleDataBlur,
-        hasError: hasDataError,
     } = useInput('', (value) => isNotEmpty(value));
 
     useEffect(() => {
@@ -252,7 +254,7 @@ function ProfileEditForm({ onClose }) {
             url: `${process.env.REACT_APP_API_LINK}/api/user/update-userData`,
             method: 'POST',
             headers: { "Content-Type": "application/json", /* 'Authorization': `Bearer ${accessToken}` */ },
-            body: { nameValue, surnameValue, emailValue, passwordValue, dataValue, accessToken }
+            body: { nameValue, surnameValue, emailValue, usernameValue, passwordValue, dataValue, accessToken }
         });
 
         let data = response.data;
@@ -319,8 +321,11 @@ function ProfileEditForm({ onClose }) {
                             label='İstifadəçi adı'
                             placeholder='İstifadəçi adın'
                             required={true}
-                            disabled={true}
+                            disabled={user.username && true}
                             value={usernameValue}
+                            onChange={handleUsernameChange}
+                            onBlur={handleUsernameBlur}
+                            error={hasUsernameError}
                         />
                     </div>
                 </div>
@@ -364,7 +369,6 @@ function ProfileEditForm({ onClose }) {
                         value={dataValue}
                         onChange={handleDataChange}
                         onBlur={handleDataBlur}
-                        error={hasDataError}
                     />
                 </div>
             </form>
@@ -452,7 +456,7 @@ function ProfileLinkEditForm() {
     return (
         <div className="row">
             <div className="col-12">
-                <div className="card mb-4">
+                <div className="mb-4">
                     <div className="card-body px-0 pt-0 pb-2">
                         <div className="table-responsive p-0">
                             <table className="table align-items-center justify-content-center mb-0 overflow-auto">

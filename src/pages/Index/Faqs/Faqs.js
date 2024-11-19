@@ -1,9 +1,8 @@
 import classes from './Faqs.module.scss';
-import ArrowDownIconSvg from "../../../components/Icons/ArrowDownIconSvg";
 import { useEffect, useState } from "react";
 import Section from "../../../components/Section/Section";
-import ArrowUpIconSvg from '../../../components/Icons/ArrowUpIconSvg';
 import { apiRequest } from '../../../utils/apiRequest';
+import Accordion from '../../../components/Accordion/Accordion';
 
 
 function Faqs() {
@@ -13,10 +12,8 @@ function Faqs() {
     useEffect(() => {
         async function allFaqs() {
             setIsFetching(true);
-            const data = await apiRequest({
-                url: `${process.env.REACT_APP_API_LINK}/faqs`,
-            });
-            setFaqs(data);
+            const response = await apiRequest({ url: `${process.env.REACT_APP_API_LINK}/faqs` });
+            setFaqs(response.data);
             setIsFetching(false);
         }
         allFaqs();
@@ -32,37 +29,15 @@ function Faqs() {
                 </div>
                 <div className={classes.faqBody}>
                     { isFetching && <p> Məlumatlar yüklənir! </p> }
-                    { (!isFetching || faqs.length === 0) && <p> Hal-hazırda heç bir məlumat yoxdur! </p> }
+                    { (faqs.length === 0) && <p> Hal-hazırda heç bir məlumat yoxdur! </p> }
                     {
                         !isFetching && faqs.length > 0 && faqs.map((data) => (
-                            <Faq key={data.id} data={data} />
+                            <Accordion key={data.id} header={data.question} body={data.answer} />
                         ))
                     }
                 </div>
             </div>
         </Section>
-    )
-}
-
-function Faq({ data }) {
-    const [showFaq, setShowFaq] = useState(false);
-
-    function toggleShowFaq() {
-        setShowFaq(prevState => !prevState)
-    }
-
-    return (
-        <div className={classes.faqItem}>
-            <div className={classes.faqQuestion} onClick={toggleShowFaq}>
-                <p>{data.question}</p>
-                {showFaq ? <ArrowUpIconSvg color='#F5ADA6' /> : <ArrowDownIconSvg color='#F5ADA6' />}
-            </div>
-            {
-                showFaq && <div className={classes.faqAnswer}>
-                    <p>{data.answer}</p>
-                </div>
-            }
-        </div>
     )
 }
 
