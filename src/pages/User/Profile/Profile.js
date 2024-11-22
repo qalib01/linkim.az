@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import UserProfileCard from "../../../components/Card/UserProfileCard";
 import ListGroupParent from "../../../components/ListGroup/ListGroupParent";
 import ListGroupItem from "../../../components/ListGroup/ListGroupItem";
-import { faUserEdit, faPencilAlt, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faUserEdit, faPencilAlt, faEdit, faTrash, faLink, faAdd } from '@fortawesome/free-solid-svg-icons';
 import CardHeader from "../../../components/Card/CardHeader";
 import CardAction from "../../../components/Card/CardAction";
 import CardBody from "../../../components/Card/CardBody";
@@ -20,6 +20,7 @@ import { useInput } from "../../../hooks/useInput";
 import { hasMinLength, isEqualsToOtherValue, isNotEmpty } from "../../../utils/validation";
 import Input from "../../../components/Form/Input";
 import Textarea from "../../../components/Form/Textarea";
+import Select from "../../../components/Form/Select";
 
 
 function Profile() {
@@ -92,11 +93,11 @@ function Profile() {
                 </UserProfileCard>
             </div>
             <div className="container-fluid py-4">
-                <div className="row">
+                <div className="row" style={{ rowGap: '1rem' }}>
                     <div className="col-12 col-xl-4">
                         <UserProfileCard>
                             <CardHeader title='Profil məlumatları' >
-                                <CardAction icon={faUserEdit} title='Edit profile' classList='col-md-4 text-end' openModal={() => openModal('Profil məlumatları', <ProfileEditForm onClose={closeModal} />, 'lg')} />
+                                <CardAction icon={faUserEdit} title='Edit profile' classList='col-6 text-end' openModal={() => openModal('Profil məlumatları', <ProfileEditForm onClose={closeModal} />, 'lg')} />
                             </CardHeader>
                             <CardBody classList='p-3'>
                                 <p className="text-sm">
@@ -121,20 +122,23 @@ function Profile() {
                     <div className="col-12 col-xl-4">
                         <UserProfileCard>
                             <CardHeader title='Linklər'>
-                                <CardAction icon={faUserEdit} title='Edit profile' classList='col-md-4 text-end' openModal={() => openModal('Linklər', <ProfileLinkEditForm onClose={closeModal} />, 'lg')} />
+                                <CardAction icon={faAdd} title='Yarat' classList='col-6 text-end' openModal={() => openModal('Link yarat', <ProfileLinkEditForm onClose={closeModal} type='add' />, 'lg')} />
                             </CardHeader>
                             <CardBody classList='p-3'>
                                 <ListGroupParent>
                                     {user.userLinks.length > 0 && user.userLinks.map((link) => (
-                                        <ListGroupItem classList='border-0 d-flex align-items-center px-0 mb-2' key={link.id}>
-                                            {/* <div className="avatar me-3">
-                                                <img src="../assets/img/kal-visuals-square.jpg" alt="kal" className="border-radius-lg shadow" />
-                                            </div> */}
-                                            <div className="d-flex align-items-start flex-column justify-content-center">
+                                        <ListGroupItem classList='border-0 d-flex align-items-center justify-content-between px-0 mb-2' key={link.id}>
+                                            <div className="col-8 col-lg-9 d-flex align-items-start flex-column justify-content-center">
                                                 <h6 className="mb-0 text-sm"> {link.title} </h6>
                                                 <p className="mb-0 text-xs"> {link.type} </p>
                                             </div>
-                                            <Button classList='btn btn-link pe-3 ps-0 mb-0 ms-auto' to={link.url} target="_blank"> Bax </Button>
+                                            <div className="col-4 col-lg-3 d-flex align-items-center justify-content-between">
+                                                <Button classList='text-end' to={link.url} target="_blank">
+                                                    <FontAwesomeIcon icon={faLink} />
+                                                </Button>
+                                                <CardAction icon={faEdit} title='Düzəlt' classList='text-end' openModal={() => openModal('Linki düzəlt', <ProfileLinkEditForm onClose={closeModal} data={link} type='edit' />, 'lg')} />
+                                                <CardAction icon={faTrash} title='Sil' classList='text-end' openModal={() => openModal('Linki sil', <ProfileLinkEditForm onClose={closeModal} data={link} type='delete' />, 'md')} />
+                                            </div>
                                         </ListGroupItem>
                                     ))}
                                 </ListGroupParent>
@@ -450,51 +454,143 @@ function ProfilePictureEditForm({ onClose }) {
     )
 }
 
-function ProfileLinkEditForm() {
-    const { user } = useAuth();
-
+function ProfileLinkEditForm({ onClose, data, type }) {
     return (
-        <div className="row">
-            <div className="col-12">
-                <div className="mb-4">
-                    <div className="card-body px-0 pt-0 pb-2">
-                        <div className="table-responsive p-0">
-                            <table className="table align-items-center justify-content-center mb-0 overflow-auto">
-                                <thead>
-                                    <tr>
-                                        <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Adı</th>
-                                        <th className="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7">Təyinat</th>
-                                        <th className="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7">Statusu</th>
-                                        <th className="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7">Hərəkətlər</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        user.userLinks.length > 0 && user.userLinks.map((link) => (
-                                            <tr>
-                                                <td>
-                                                    <h6 className="mb-0 text-sm">{link.title}</h6>
-                                                </td>
-                                                <td class="align-middle text-center text-sm">
-                                                    { link.type }
-                                                </td>
-                                                <td class="align-middle text-center text-sm">
-                                                    <span class={`badge badge-sm ${link.is_active ? 'bg-gradient-success' : 'bg-gradient-danger'}`}>{ link.is_active ? 'Aktif' : 'Passiv' }</span>
-                                                </td>
-                                                <td class="align-middle d-flex justify-content-center">
-                                                    <CardAction icon={faEdit} title='Düzəlt' classList='col-md-3 text-end' />
-                                                    <CardAction icon={faTrash} title='Sil' classList='col-md-3 text-end' />
-                                                </td>
-                                            </tr>
-                                        ))
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+        <div className="card-body px-0 pt-0">
+            <div className="container-fluid">
+                {(type === 'add' || type==='edit') && <AddProfileLinkForm onClose={onClose} data={data} type={type} />}
             </div>
         </div>
+    )
+}
+
+function AddProfileLinkForm({ onClose, data, type }) {
+    const [isLoading, setIsLoading] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState([]);
+    const accessToken = localStorage.getItem('accessToken');
+    console.log(data.is_active)
+
+    const {
+        value: typeValue,
+        handleInputChange: handleTypeChange,
+        handleInputBlur: handleTypeBlur,
+        hasError: hasTypeError,
+    } = useInput(data ? data.type : '', (value) => isNotEmpty(value));
+
+    const {
+        value: titleValue,
+        handleInputChange: handleTitleChange,
+        handleInputBlur: handleTitleBlur,
+        hasError: hasTitleError,
+    } = useInput(data ? data.title : '', (value) => isNotEmpty(value));
+
+    const {
+        value: urlValue,
+        handleInputChange: handleUrlChange,
+        handleInputBlur: handleUrlBlur,
+        hasError: hasUrlError,
+    } = useInput(data ? data.url : '', (value) => isNotEmpty(value));
+
+    const {
+        value: isActiveValue,
+        handleInputChange: handleIsActiveChange,
+        handleInputBlur: handleIsActiveBlur,
+        hasError: hasIsActiveError,
+    } = useInput(data ? data.is_active : '', (value) => isNotEmpty(value));
+
+    async function handleSubmitUpdateUserData(e) {
+        e.preventDefault();
+        setIsLoading(true);
+
+        const response = await apiRequest({
+            url: `${process.env.REACT_APP_API_LINK}/api/user/update-userData`,
+            method: 'POST',
+            headers: { "Content-Type": "application/json", /* 'Authorization': `Bearer ${accessToken}` */ },
+            body: { typeValue, titleValue, urlValue, isActiveValue, accessToken }
+        });
+
+        let data = response.data;
+        setIsLoading(false);
+        if (response.status === 200) {
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+            return setSubmitStatus({ type: data.type, message: data.message });
+        } else return setSubmitStatus({ type: data.type, message: data.message });
+    }
+    return (
+        <>
+            <form onSubmit={handleSubmitUpdateUserData}>
+                <div className="row">
+                    <div className="col-12 col-lg-6 mb-2">
+                        <Input
+                            id='url'
+                            type='text'
+                            name='url'
+                            label='Linkin urli'
+                            placeholder='Linkin urli'
+                            required={true}
+                            value={urlValue}
+                            onChange={handleUrlChange}
+                            onBlur={handleUrlBlur}
+                            error={hasUrlError}
+                        />
+                    </div>
+                    <div className="col-12 col-lg-6 mb-2">
+                        <Input
+                            id='title'
+                            type='text'
+                            name='title'
+                            label='Linkin adı'
+                            placeholder='Linkin adı'
+                            required={true}
+                            value={titleValue}
+                            onChange={handleTitleChange}
+                            onBlur={handleTitleBlur}
+                            error={hasTitleError}
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-12 col-lg-6 mb-2">
+                        <Select id='type'
+                            name='type'
+                            label='Linkin tipi'
+                            required={true}
+                            value={typeValue}
+                            onChange={handleTypeChange}
+                            onBlur={handleTypeBlur}
+                            error={hasTypeError}
+                        >
+                            <option value='social'> Sosial </option>
+                            <option value='private'> Şəxsi </option>
+                            <option value='other'> Digər </option>
+                        </Select>
+                    </div>
+                    <div className="col-12 col-lg-6 mb-2">
+                        <Select id='isActive'
+                            name='isActive'
+                            label='Linkin statusu'
+                            required={true}
+                            value={isActiveValue}
+                            onChange={handleIsActiveChange}
+                            onBlur={handleIsActiveBlur}
+                            error={hasIsActiveError}
+                        >
+                            <option value={true}> Görünür </option>
+                            <option value={false}> Görünmür </option>
+                        </Select>
+                    </div>
+                </div>
+            </form>
+            <div className='text-end mt-3'>
+                <button type="submit" className='btn bg-gradient-primary mx-2' onClick={handleSubmitUpdateUserData} disabled={isLoading && true}>{isLoading ? 'Göndərilir' : 'Göndər'}</button>
+                <button type="button" className='btn bg-dark text-white' onClick={onClose}>Bağla</button>
+            </div>
+            {submitStatus && (
+                <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus(null)} />
+            )}
+        </>
     )
 }
 
