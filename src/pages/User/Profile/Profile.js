@@ -198,7 +198,7 @@ function ProfileEditForm({ onClose }) {
     const {
         value: emailValue,
         setValue: setEmailValue,
-    } = useInput('', () => { });
+    } = useInput('', (value) => isNotEmpty(value));
 
     const {
         value: usernameValue,
@@ -206,7 +206,7 @@ function ProfileEditForm({ onClose }) {
         handleInputChange: handleUsernameChange,
         handleInputBlur: handleUsernameBlur,
         hasError: hasUsernameError,
-    } = useInput('', () => { });
+    } = useInput('', (value) => isNotEmpty(value));
 
     const {
         value: passwordValue,
@@ -257,7 +257,7 @@ function ProfileEditForm({ onClose }) {
         const response = await apiRequest({
             url: `${process.env.REACT_APP_API_LINK}/api/user/update-userData`,
             method: 'POST',
-            headers: { "Content-Type": "application/json", /* 'Authorization': `Bearer ${accessToken}` */ },
+            headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${accessToken}` },
             body: { nameValue, surnameValue, emailValue, usernameValue, passwordValue, dataValue, accessToken }
         });
 

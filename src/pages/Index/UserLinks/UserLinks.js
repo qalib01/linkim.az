@@ -98,7 +98,7 @@ function UserLinks() {
                                             <UserLink key={userLink.id} data={userLink} />
                                         ))
                                     ) : (
-                                        <p> Hər hansı link yoxdur </p>
+                                        <p> Hər hansı aktif link tapılmadı </p>
                                     )}
                                 </div>
                             </div>
