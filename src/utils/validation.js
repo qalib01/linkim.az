@@ -1,9 +1,14 @@
 export function isEmail(value) {
-    return value.includes('@');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(value);
 }
 
 export function isNotEmpty(value) {
     return value.trim() !== '';
+}
+
+export function isBoolean(value) {
+    return typeof value === 'boolean';
 }
 
 export function hasMinLength(value, minLength) {

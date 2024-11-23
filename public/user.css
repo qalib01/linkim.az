@@ -22411,6 +22411,18 @@ html {
     width: 18px;
 }
 
+.sidenav.hide {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    background-color: #fff;
+}
+
+.sidenav.show {
+    transform: translateX(0);
+    transition: transform 0.3s ease-in-out;
+    background-color: #fff;
+}
+
 .navbar .sidenav-toggler-inner .sidenav-toggler-line {
     transition: all 0.15s ease;
     background: #67748e;

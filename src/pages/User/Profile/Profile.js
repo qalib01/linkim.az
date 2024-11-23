@@ -17,7 +17,7 @@ import { useUserProfile } from "../../../hooks/useUserProfile";
 import { apiRequest } from "../../../utils/apiRequest";
 import Alert from "../../../components/Alert/Alert";
 import { useInput } from "../../../hooks/useInput";
-import { hasMinLength, isEqualsToOtherValue, isNotEmpty } from "../../../utils/validation";
+import { hasMinLength, isBoolean, isEqualsToOtherValue, isNotEmpty } from "../../../utils/validation";
 import Input from "../../../components/Form/Input";
 import Textarea from "../../../components/Form/Textarea";
 import Select from "../../../components/Form/Select";
@@ -136,7 +136,7 @@ function Profile() {
                                                 <Button classList='text-end' to={link.url} target="_blank">
                                                     <FontAwesomeIcon icon={faLink} />
                                                 </Button>
-                                                <CardAction icon={faEdit} title='Düzəlt' classList='text-end' openModal={() => openModal('Linki düzəlt', <ProfileLinkEditForm onClose={closeModal} data={link} type='edit' />, 'lg')} />
+                                                <CardAction icon={faEdit} title='Düzəlt' classList='text-end' openModal={() => openModal('Linki düzəlt', <ProfileLinkEditForm onClose={closeModal} data={link} type='update' />, 'lg')} />
                                                 <CardAction icon={faTrash} title='Sil' classList='text-end' openModal={() => openModal('Linki sil', <ProfileLinkEditForm onClose={closeModal} data={link} type='delete' />, 'md')} />
                                             </div>
                                         </ListGroupItem>
@@ -181,32 +181,28 @@ function ProfileEditForm({ onClose }) {
 
     const {
         value: nameValue,
-        setValue: setNameValue,
         handleInputChange: handleNameChange,
         handleInputBlur: handleNameBlur,
         hasError: hasNameError,
-    } = useInput('', (value) => isNotEmpty(value));
+    } = useInput(user.name || '', (value) => isNotEmpty(value));
 
     const {
         value: surnameValue,
-        setValue: setSurnameValue,
         handleInputChange: handleSurnameChange,
         handleInputBlur: handleSurnameBlur,
         hasError: hasSurnameError,
-    } = useInput('', (value) => isNotEmpty(value));
+    } = useInput(user.surname || '', (value) => isNotEmpty(value));
 
     const {
         value: emailValue,
-        setValue: setEmailValue,
-    } = useInput('', (value) => isNotEmpty(value));
+    } = useInput(user.email || '', (value) => isNotEmpty(value));
 
     const {
         value: usernameValue,
-        setValue: setUsernameValue,
         handleInputChange: handleUsernameChange,
         handleInputBlur: handleUsernameBlur,
         hasError: hasUsernameError,
-    } = useInput('', (value) => isNotEmpty(value));
+    } = useInput(user.username || '', (value) => isNotEmpty(value));
 
     const {
         value: passwordValue,
@@ -224,18 +220,9 @@ function ProfileEditForm({ onClose }) {
 
     const {
         value: dataValue,
-        setValue: setDataValue,
         handleInputChange: handleDataChange,
         handleInputBlur: handleDataBlur,
-    } = useInput('', (value) => isNotEmpty(value));
-
-    useEffect(() => {
-        setNameValue(user.name || '');
-        setSurnameValue(user.surname || '');
-        setEmailValue(user.email || '');
-        setUsernameValue(user.username || '');
-        setDataValue(user.bio || '');
-    }, [user, setNameValue, setSurnameValue, setEmailValue, setUsernameValue, setDataValue]);
+    } = useInput(user.bio || '', (value) => isNotEmpty(value));
 
     async function handleSubmitUpdateUserData(e) {
         e.preventDefault();
@@ -258,7 +245,7 @@ function ProfileEditForm({ onClose }) {
             url: `${process.env.REACT_APP_API_LINK}/api/user/update-userData`,
             method: 'POST',
             headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${accessToken}` },
-            body: { nameValue, surnameValue, emailValue, usernameValue, passwordValue, dataValue, accessToken }
+            body: { ...updatedData }
         });
 
         let data = response.data;
@@ -419,10 +406,8 @@ function ProfilePictureEditForm({ onClose }) {
         const response = await apiRequest({
             url: `${process.env.REACT_APP_API_LINK}/api/user/upload-userPhoto`,
             method: 'POST',
-            // headers: {
-            //     'Authorization': `Bearer ${accessToken}`
-            // },
-            body: formData
+            // headers: { 'Authorization': `Bearer ${accessToken}` },
+            body: formData,
         });
 
         let data = response.data;
@@ -458,55 +443,73 @@ function ProfileLinkEditForm({ onClose, data, type }) {
     return (
         <div className="card-body px-0 pt-0">
             <div className="container-fluid">
-                {(type === 'add' || type==='edit') && <AddProfileLinkForm onClose={onClose} data={data} type={type} />}
+                {(type === 'add' || type === 'update') && <AddProfileLinkForm onClose={onClose} linkData={data} type={type} />}
+                {(type === 'delete') && <DeleteProfileLinkForm onClose={onClose} linkData={data} type={type} />}
             </div>
         </div>
     )
 }
 
-function AddProfileLinkForm({ onClose, data, type }) {
+function AddProfileLinkForm({ onClose, linkData, type }) {
     const [isLoading, setIsLoading] = useState(false);
     const [submitStatus, setSubmitStatus] = useState([]);
     const accessToken = localStorage.getItem('accessToken');
-    console.log(data.is_active)
 
     const {
         value: typeValue,
         handleInputChange: handleTypeChange,
         handleInputBlur: handleTypeBlur,
         hasError: hasTypeError,
-    } = useInput(data ? data.type : '', (value) => isNotEmpty(value));
+    } = useInput(linkData?.type || '', (value) => isNotEmpty(value));
 
     const {
         value: titleValue,
         handleInputChange: handleTitleChange,
         handleInputBlur: handleTitleBlur,
         hasError: hasTitleError,
-    } = useInput(data ? data.title : '', (value) => isNotEmpty(value));
+    } = useInput(linkData?.title || '', (value) => isNotEmpty(value));
 
     const {
         value: urlValue,
         handleInputChange: handleUrlChange,
         handleInputBlur: handleUrlBlur,
         hasError: hasUrlError,
-    } = useInput(data ? data.url : '', (value) => isNotEmpty(value));
+    } = useInput(linkData?.url || '', (value) => isNotEmpty(value));
 
     const {
         value: isActiveValue,
         handleInputChange: handleIsActiveChange,
         handleInputBlur: handleIsActiveBlur,
         hasError: hasIsActiveError,
-    } = useInput(data ? data.is_active : '', (value) => isNotEmpty(value));
+    } = useInput(linkData?.is_active ?? true, (value) => isBoolean(value));
 
-    async function handleSubmitUpdateUserData(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
         setIsLoading(true);
+        const updatedData = {};
+
+        if (type === 'update') {
+            if (typeValue !== linkData.type) updatedData.link_type = typeValue;
+            if (titleValue !== linkData.title) updatedData.link_title = titleValue;
+            if (urlValue !== linkData.url) updatedData.url = urlValue;
+            if (isActiveValue !== linkData.is_active) updatedData.is_active = isActiveValue;
+    
+            if (Object.keys(updatedData).length === 0) {
+                setIsLoading(false);
+                return setSubmitStatus({ type: 'error', message: 'Yenilənəcək məlumat tapılmadı!' });
+            }
+        } else {
+            if (typeValue) updatedData.link_type = typeValue;
+            if (titleValue) updatedData.link_title = titleValue;
+            if (urlValue) updatedData.url = urlValue;
+            if (isActiveValue) updatedData.is_active = isActiveValue;
+        }
 
         const response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}/api/user/update-userData`,
+            url: `${process.env.REACT_APP_API_LINK}/api/user/${type}-userLinks`,
             method: 'POST',
-            headers: { "Content-Type": "application/json", /* 'Authorization': `Bearer ${accessToken}` */ },
-            body: { typeValue, titleValue, urlValue, isActiveValue, accessToken }
+            headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${accessToken}` },
+            body: { ...(linkData?.id && { id: linkData.id }), ...updatedData }
         });
 
         let data = response.data;
@@ -520,71 +523,110 @@ function AddProfileLinkForm({ onClose, data, type }) {
     }
     return (
         <>
-            <form onSubmit={handleSubmitUpdateUserData}>
-                <div className="row">
-                    <div className="col-12 col-lg-6 mb-2">
-                        <Input
-                            id='url'
-                            type='text'
-                            name='url'
-                            label='Linkin urli'
-                            placeholder='Linkin urli'
-                            required={true}
-                            value={urlValue}
-                            onChange={handleUrlChange}
-                            onBlur={handleUrlBlur}
-                            error={hasUrlError}
-                        />
-                    </div>
-                    <div className="col-12 col-lg-6 mb-2">
-                        <Input
-                            id='title'
-                            type='text'
-                            name='title'
-                            label='Linkin adı'
-                            placeholder='Linkin adı'
-                            required={true}
-                            value={titleValue}
-                            onChange={handleTitleChange}
-                            onBlur={handleTitleBlur}
-                            error={hasTitleError}
-                        />
-                    </div>
+            <div className="row">
+                <div className="col-12 col-lg-6 mb-2">
+                    <Input
+                        id='url'
+                        type='text'
+                        name='url'
+                        label='Linkin urli'
+                        placeholder='Linkin urli'
+                        required={true}
+                        value={urlValue}
+                        onChange={handleUrlChange}
+                        onBlur={handleUrlBlur}
+                        error={hasUrlError}
+                    />
                 </div>
-                <div className="row">
-                    <div className="col-12 col-lg-6 mb-2">
-                        <Select id='type'
-                            name='type'
-                            label='Linkin tipi'
-                            required={true}
-                            value={typeValue}
-                            onChange={handleTypeChange}
-                            onBlur={handleTypeBlur}
-                            error={hasTypeError}
-                        >
-                            <option value='social'> Sosial </option>
-                            <option value='private'> Şəxsi </option>
-                            <option value='other'> Digər </option>
-                        </Select>
-                    </div>
-                    <div className="col-12 col-lg-6 mb-2">
-                        <Select id='isActive'
-                            name='isActive'
-                            label='Linkin statusu'
-                            required={true}
-                            value={isActiveValue}
-                            onChange={handleIsActiveChange}
-                            onBlur={handleIsActiveBlur}
-                            error={hasIsActiveError}
-                        >
-                            <option value={true}> Görünür </option>
-                            <option value={false}> Görünmür </option>
-                        </Select>
-                    </div>
+                <div className="col-12 col-lg-6 mb-2">
+                    <Input
+                        id='title'
+                        type='text'
+                        name='title'
+                        label='Linkin adı'
+                        placeholder='Linkin adı'
+                        required={true}
+                        value={titleValue}
+                        onChange={handleTitleChange}
+                        onBlur={handleTitleBlur}
+                        error={hasTitleError}
+                    />
                 </div>
-            </form>
+            </div>
+            <div className="row">
+                <div className="col-12 col-lg-6 mb-2">
+                    <Select id='type'
+                        name='type'
+                        label='Linkin tipi'
+                        required={true}
+                        value={typeValue}
+                        onChange={handleTypeChange}
+                        onBlur={handleTypeBlur}
+                        error={hasTypeError}
+                    >
+                        <option value='social'> Sosial </option>
+                        <option value='private'> Şəxsi </option>
+                        <option value='other'> Digər </option>
+                    </Select>
+                </div>
+                <div className="col-12 col-lg-6 mb-2">
+                    <Select id="isActive"
+                        name="isActive"
+                        label="Linkin statusu"
+                        required={true}
+                        value={isActiveValue}
+                        onChange={handleIsActiveChange}
+                        onBlur={handleIsActiveBlur}
+                        error={hasIsActiveError}
+                    >
+                        <option value={true}> Görünür </option>
+                        <option value={false}> Görünmür </option>
+                    </Select>
+                </div>
+            </div>
             <div className='text-end mt-3'>
-                <button type="submit" className='btn bg-gradient-primary mx-2' onClick={handleSubmitUpdateUserData} disabled={isLoading && true}>{isLoading ? 'Göndərilir' : 'Göndər'}</button>
+                <button type="submit" className='btn bg-gradient-primary mx-2' onClick={handleSubmit} disabled={isLoading && true}>{isLoading ? 'Göndərilir' : 'Göndər'}</button>
+                <button type="button" className='btn bg-dark text-white' onClick={onClose}>Bağla</button>
+            </div>
+            {submitStatus && (
+                <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus(null)} />
+            )}
+        </>
+    )
+}
+
+function DeleteProfileLinkForm({ onClose, linkData, type }) {
+    const [isLoading, setIsLoading] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState([]);
+    const accessToken = localStorage.getItem('accessToken');
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+        setIsLoading(true);
+
+        const response = await apiRequest({
+            url: `${process.env.REACT_APP_API_LINK}/api/user/${type}-userLinks`,
+            method: 'POST',
+            headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${accessToken}` },
+            body: { id: linkData.id }
+        });
+
+        let data = response.data;
+        setIsLoading(false);
+        if (response.status === 200) {
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+            return setSubmitStatus({ type: data.type, message: data.message });
+        } else return setSubmitStatus({ type: data.type, message: data.message });
+    }
+    return (
+        <>
+            <h6>
+                Sil düyməsini təsdiqi etdiyiniz zaman <strong>"{linkData.title}"</strong> linkini bir dəfəlik silmiş olacaqsınız!
+            </h6>
+            <div className='text-end mt-3'>
+                <button type="submit" className='btn bg-gradient-primary mx-2' onClick={handleSubmit} disabled={isLoading && true}>{isLoading ? 'Silinir' : 'Sil'}</button>
                 <button type="button" className='btn bg-dark text-white' onClick={onClose}>Bağla</button>
             </div>
             {submitStatus && (
