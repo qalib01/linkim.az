@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faSignOut } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faSignOut } from '@fortawesome/free-solid-svg-icons';
 import useSideNav from "../../../hooks/useSideNav";
 import { Link } from "react-router-dom";
 import Button from "../../Button/Button";
@@ -32,11 +32,7 @@ function Navbar() {
           </li>
           <li className="nav-item d-xl-none ps-3 d-flex align-items-center">
             <Button classList='bg-transparent border-0' asButton={true} onClick={toggleSideNav}>
-              <div className="sidenav-toggler-inner">
-                <i className="sidenav-toggler-line"></i>
-                <i className="sidenav-toggler-line"></i>
-                <i className="sidenav-toggler-line"></i>
-              </div>
+              <FontAwesomeIcon icon={faBars} />
             </Button>
           </li>
         </ul>

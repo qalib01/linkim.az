@@ -22411,16 +22411,14 @@ html {
     width: 18px;
 }
 
-.sidenav.hide {
-    transform: translateX(-100%);
-    transition: transform 0.3s ease-in-out;
-    background-color: #fff;
-}
-
 .sidenav.show {
     transform: translateX(0);
     transition: transform 0.3s ease-in-out;
-    background-color: #fff;
+}
+
+.sidenav.hide {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
 }
 
 .navbar .sidenav-toggler-inner .sidenav-toggler-line {
@@ -22551,6 +22549,15 @@ html {
         left: 0;
         right: auto;
     }
+
+    .navbar-vertical.navbar-expand-xs {
+        max-width: 100% !important;
+    }
+
+    .sidenav {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
 }
 
 @use "sass:math";
@@ -22614,10 +22621,11 @@ html {
     top: 0;
     bottom: 0;
     width: 100%;
-    max-width: 15.625rem !important;
+    max-width: 15.625rem;
     overflow-y: auto;
     padding: 0;
     box-shadow: none;
+    background-color: #fff;
 }
 
 .navbar-vertical.navbar-expand-xs .navbar-collapse {
