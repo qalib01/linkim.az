@@ -12,7 +12,6 @@ import Button from "../../../components/Button/Button";
 
 function ResetPasswordRequestPage() {
     const { token } = useParams();
-    console.log(token)
     const [loading, setLoading] = useState(false);
     const [emailValue, setEmailValue] = useState('')
     const [isTokenValid, setIsTokenValid] = useState(false)
@@ -36,7 +35,6 @@ function ResetPasswordRequestPage() {
         if (response.status === 200) {
             setIsTokenValid(true);
             setEmailValue(data.email);
-            console.log(response)
         } else {
             setSubmitStatus(data);
             setTimeout(() => {

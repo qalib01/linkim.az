@@ -232,6 +232,7 @@ function ProfileEditForm({ onClose }) {
         if (nameValue !== user.name) updatedData.name = nameValue;
         if (surnameValue !== user.surname) updatedData.surname = surnameValue;
         if (emailValue !== user.email) updatedData.email = emailValue;
+        if (usernameValue !== user.username) updatedData.username = usernameValue;
         if (dataValue.trim() !== user.bio) updatedData.bio = dataValue.trim();
         if (passwordValue) updatedData.password = passwordValue;
         if (hasPasswordError || hasPasswordConfirmError) return setSubmitStatus({ type: 'error', message: 'Şifrələr eyni olmalıdır!' });
@@ -564,9 +565,9 @@ function AddProfileLinkForm({ onClose, linkData, type }) {
                         onBlur={handleTypeBlur}
                         error={hasTypeError}
                     >
-                        <option value='social'> Sosial </option>
-                        <option value='private'> Şəxsi </option>
-                        <option value='other'> Digər </option>
+                        <option value='sosial'> Sosial </option>
+                        <option value='şəxsi'> Şəxsi </option>
+                        <option value='digər'> Digər </option>
                     </Select>
                 </div>
                 <div className="col-12 col-lg-6 mb-2">

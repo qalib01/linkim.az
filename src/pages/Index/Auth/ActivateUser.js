@@ -11,6 +11,7 @@ import Button from "../../../components/Button/Button";
 function ActivateUserPage() {
     const { token } = useParams();
     const [loading, setLoading] = useState(false);
+    const [btnLoading, setBtnLoading] = useState(false);
     const [isTokenValid, setIsTokenValid] = useState(false)
     const [submitStatus, setSubmitStatus] = useState(null);
     const navigate = useNavigate();
@@ -21,6 +22,7 @@ function ActivateUserPage() {
 
     async function activateUser(token) {
         setLoading(true)
+
         let response = await apiRequest({
             url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_USER_ACTIVATE_LINK_KEY}`,
             method: 'POST',
@@ -28,13 +30,33 @@ function ActivateUserPage() {
             body: { token },
         });
 
-        if (response.status === 200) {
-            navigate('/p/login');
-            setIsTokenValid(true);
-        } else {
-            setSubmitStatus(response.data);
+        setSubmitStatus(response.data, response.status);
+
+        if (response.status === 403) {
+            setIsTokenValid(403);
+        }
+
+        if (response.status !== 403) {
+            setTimeout(() => { navigate('/p/login') }, 4000);
+            setIsTokenValid(response.status);
         }
         setLoading(false);
+    }
+
+    async function createNewToken() {
+        setBtnLoading(true);
+
+        let response = await apiRequest({
+            url: `${process.env.REACT_APP_API_LINK}/resend-activate-user`,
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: { token },
+        });
+
+        const data = response.data;
+        setSubmitStatus(data);
+        setBtnLoading(false);
+        setTimeout(() => { navigate('/p/') }, 4000);
     }
 
     return (
@@ -47,12 +69,15 @@ function ActivateUserPage() {
                             <div className={`${classes.content} pe-md-0 mb-5`}>
                                 <h2 className={`title mt-3`}> Hesabını aktifləşdir </h2>
                             </div>
-                            {!isTokenValid && (
+                            {isTokenValid !== 200 && (
                                 <div className="row justify-content-center">
-                                    <div className="col-12 col-md-4">
+                                    {isTokenValid !== 403 && <div className="col-12 col-md-3">
                                         <Button to='/p/login'> Giriş </Button>
-                                    </div>
-                                    <div className="col-12 col-md-4">
+                                    </div>}
+                                    {isTokenValid === 403 && <div className="col-12 col-md-3">
+                                        <Button asButton={true} onClick={createNewToken}> {btnLoading ? 'Yaradılır' : 'Yenisini yarat'} </Button>
+                                    </div>}
+                                    <div className="col-12 col-md-3">
                                         <Button to='/'> Ana səhifə </Button>
                                     </div>
                                 </div>

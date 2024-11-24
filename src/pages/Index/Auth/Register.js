@@ -62,7 +62,10 @@ function RegisterPage() {
         event.preventDefault();
         setLoading(true);
 
-        if (hasNameError || hasSurnameError || hasEmailError || hasPasswordError || hasPasswordConfirmError) return setSubmitStatus({ type: 'error', message: 'Bütün xanalar tam doldurulmalıdır!' });
+        if (hasNameError || hasSurnameError || hasEmailError || hasPasswordError || hasPasswordConfirmError) {
+            setLoading(false);
+            return setSubmitStatus({ type: 'error', message: 'Bütün xanalar düzgün doldurulmalıdır!' });
+        };
 
         let response = await apiRequest({
             url: `${process.env.REACT_APP_API_LINK}/register`,
@@ -75,13 +78,13 @@ function RegisterPage() {
         setSubmitStatus(data);
         setLoading(false);
         
-        if (data.type === 'success') {
+        if (response.status === 200) {
             handleNameReset();
             handleSurnameReset();
             handleEmailReset();
             handlePasswordReset();
             handlePasswordConfirmReset();
-            navigate('/');
+            setTimeout(() => { navigate('/p/') }, 4000);
         }
     }
 
