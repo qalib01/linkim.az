@@ -24,7 +24,7 @@ function LoginPage() {
         handleInputChange: handleEmailChange,
         handleInputBlur: handleEmailBlur,
         hasError: hasEmailError,
-    } = useInput('', (value) => isEmail(value) && isNotEmpty(value));
+    } = useInput('', (value) => isEmail(value) && isNotEmpty(value), (value) => value.toLowerCase());
 
     const {
         value: passwordValue,

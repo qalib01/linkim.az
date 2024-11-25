@@ -17,7 +17,7 @@ import { useUserProfile } from "../../../hooks/useUserProfile";
 import { apiRequest } from "../../../utils/apiRequest";
 import Alert from "../../../components/Alert/Alert";
 import { useInput } from "../../../hooks/useInput";
-import { hasMinLength, isBoolean, isEqualsToOtherValue, isNotEmpty } from "../../../utils/validation";
+import { hasMaxLength, hasMinLength, isEqualsToOtherValue, isNotEmpty, isUsername, isValidURL } from "../../../utils/validation";
 import Input from "../../../components/Form/Input";
 import Textarea from "../../../components/Form/Textarea";
 import Select from "../../../components/Form/Select";
@@ -195,14 +195,14 @@ function ProfileEditForm({ onClose }) {
 
     const {
         value: emailValue,
-    } = useInput(user.email || '', (value) => isNotEmpty(value));
+    } = useInput(user.email || '', (value) => isNotEmpty(value), (value) => value.toLowerCase());
 
     const {
         value: usernameValue,
         handleInputChange: handleUsernameChange,
         handleInputBlur: handleUsernameBlur,
         hasError: hasUsernameError,
-    } = useInput(user.username || '', (value) => isNotEmpty(value));
+    } = useInput(user.username || '', (value) => isNotEmpty(value) && isUsername(value) && hasMinLength(value, 4) && hasMaxLength(value, 12), (value) => value.toLowerCase());
 
     const {
         value: passwordValue,
@@ -241,6 +241,11 @@ function ProfileEditForm({ onClose }) {
             setIsLoading(false);
             return setSubmitStatus({ type: 'error', message: 'Yenilənəcək məlumat tapılmadı!' });
         }
+
+        if (hasNameError || hasSurnameError || hasPasswordError || hasUsernameError || hasPasswordConfirmError) {
+            setIsLoading(false);
+            return setSubmitStatus({ type: 'error', message: 'Bütün xanalar düzgün doldurulmalıdır!' });
+        };
 
         const response = await apiRequest({
             url: `${process.env.REACT_APP_API_LINK}/api/user/update-userData`,
@@ -312,6 +317,7 @@ function ProfileEditForm({ onClose }) {
                             name='username'
                             label='İstifadəçi adı'
                             placeholder='İstifadəçi adın'
+                            info={`${!user.username ? 'İstifadəçi adı balaca hərflə olmalı və xüsusi işarələr olmamalıdır. min: 4, max: 12 xarakter ola bilər. Nümunə: link, link01, link_01' : ''}`}
                             required={true}
                             disabled={user.username && true}
                             value={usernameValue}
@@ -329,6 +335,7 @@ function ProfileEditForm({ onClose }) {
                             name='password'
                             label='Şifrə'
                             placeholder='Şifrən'
+                            info='Şifrə təhlükəsizliklə bağlı böyük, kiçik hərflər, rəqəm və xüsusi işarələr olmamalıdır. min: 8 xarakter ola bilər. Nümunə: Link01!!'
                             required={true}
                             value={passwordValue}
                             onChange={handlePasswordChange}
@@ -475,14 +482,14 @@ function AddProfileLinkForm({ onClose, linkData, type }) {
         handleInputChange: handleUrlChange,
         handleInputBlur: handleUrlBlur,
         hasError: hasUrlError,
-    } = useInput(linkData?.url || '', (value) => isNotEmpty(value));
+    } = useInput(linkData?.url || '', (value) => isNotEmpty(value) && isValidURL(value));
 
     const {
         value: isActiveValue,
         handleInputChange: handleIsActiveChange,
         handleInputBlur: handleIsActiveBlur,
         hasError: hasIsActiveError,
-    } = useInput(linkData?.is_active ?? true, (value) => isBoolean(value));
+    } = useInput(linkData?.is_active ?? true, (value) => value);
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -504,7 +511,17 @@ function AddProfileLinkForm({ onClose, linkData, type }) {
             if (titleValue) updatedData.link_title = titleValue;
             if (urlValue) updatedData.url = urlValue;
             if (isActiveValue) updatedData.is_active = isActiveValue;
+
+            if (!updatedData.link_title && !updatedData.url) {
+                setIsLoading(false);
+                return setSubmitStatus({ type: 'error', message: 'Bütün xanalar tam doldurulmalıdır!' });
+            }
         }
+
+        if (hasTypeError || hasTitleError || hasUrlError || hasIsActiveError) {
+            setIsLoading(false);
+            return setSubmitStatus({ type: 'error', message: 'Bütün xanalar düzgün doldurulmalıdır!' });
+        };
 
         const response = await apiRequest({
             url: `${process.env.REACT_APP_API_LINK}/api/user/${type}-userLinks`,
@@ -531,7 +548,8 @@ function AddProfileLinkForm({ onClose, linkData, type }) {
                         type='text'
                         name='url'
                         label='Linkin urli'
-                        placeholder='Linkin urli'
+                        placeholder='https://www.linkim.az'
+                        info='Link urli mütləqdir ki, http və ya https ilə başlasın. Nümunə: https://linkim.az, http://numune.az'
                         required={true}
                         value={urlValue}
                         onChange={handleUrlChange}

@@ -24,7 +24,7 @@ function ResetPasswordRequestPage() {
         handleInputBlur: handleEmailBlur,
         hasError: hasEmailError,
         handleInputReset: handleEmailReset,
-    } = useInput('', (value) => isEmail(value) && isNotEmpty(value));
+    } = useInput('', (value) => isEmail(value) && isNotEmpty(value), (value) => value.toLowerCase());
 
     async function handleSubmit(event) {
         event.preventDefault();

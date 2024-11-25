@@ -37,7 +37,7 @@ function ContactPage() {
     handleInputBlur: handleEmailBlur,
     hasError: hasEmailError,
     handleInputReset: handleEmailReset,
-  } = useInput(user ? user.email : '', (value) => isEmail(value) && isNotEmpty(value));
+  } = useInput(user ? user.email : '', (value) => isEmail(value) && isNotEmpty(value), (value) => value.toLowerCase());
 
   const {
     value: subjectValue,

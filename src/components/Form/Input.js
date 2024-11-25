@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 
-function Input({ id, error, label, type, disabled = false, ...props }) {
+function Input({ id, error, label, type, disabled = false, info, ...props }) {
     const [showPassword, setShowPassword] = useState(false);
 
     function toggleShowPassword() {
@@ -26,6 +26,7 @@ function Input({ id, error, label, type, disabled = false, ...props }) {
                     )
                 }
             </div>
+            {info && !error && ( <span className="text-muted" style={{ fontSize: '12px' }}> {info} </span> )}
             {error && <span className="text-danger" style={{ fontSize: '14px', marginTop: '2px' }}> {id === 'confirmPassword' ? `Hər iki şifrə də eyni olmalıdır!` : `Zəhmət olmasa, ${label} hissəsini düzgün daxil edin!`} </span>}
         </>
     )

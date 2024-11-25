@@ -40,7 +40,7 @@ function RegisterPage() {
         handleInputBlur: handleEmailBlur,
         hasError: hasEmailError,
         handleInputReset: handleEmailReset,
-    } = useInput('', (value) => isEmail(value) && isNotEmpty(value));
+    } = useInput('', (value) => isEmail(value) && isNotEmpty(value), (value) => value.toLowerCase());
 
     const {
         value: passwordValue,

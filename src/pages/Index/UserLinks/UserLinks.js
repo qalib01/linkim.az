@@ -194,13 +194,13 @@ function LinkDialogContent({ data }) {
                     <span> {copyStatus ? 'Kopyalandı' : 'Kopyala'} </span>
                 </div>
                 <div className={classes.button}>
-                    <Link to={`https://api.whatsapp.com/send?text=${data.url} linkini sizinlə paylaşıram. İndi sən də https://linkim.az portalından qeydiyyatdan keçərək şəxsi linkini rahatlıqla yradıb paylaşa bilərsən :)`} target="_blank">
+                    <Link to={`https://api.whatsapp.com/send?text=${data.url} linkini sizinlə paylaşıram. İndi sən də ${process.env.REACT_APP_PROJECT_LINK} portalından qeydiyyatdan keçərək şəxsi linkini rahatlıqla yradıb paylaşa bilərsən :)`} target="_blank">
                         <WhatsAppIconSvg />
                     </Link>
                     <span> WhatsApp </span>
                 </div>
                 <div className={classes.button}>
-                    <Link to={`https://x.com/intent/tweet?=${data.url} linkini sizinlə paylaşıram. İndi sən də https://linkim.az portalından qeydiyyatdan keçərək şəxsi linkini rahatlıqla yradıb paylaşa bilərsən :)`} target="_blank">
+                    <Link to={`https://x.com/intent/tweet?=${data.url} linkini sizinlə paylaşıram. İndi sən də ${process.env.REACT_APP_PROJECT_LINK} portalından qeydiyyatdan keçərək şəxsi linkini rahatlıqla yradıb paylaşa bilərsən :)`} target="_blank">
                         <XIconSvg />
                     </Link>
                     <span> X </span>
