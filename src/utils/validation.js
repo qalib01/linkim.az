@@ -8,7 +8,7 @@ export function isNotEmpty(value) {
 }
 
 export function isUsername(value) {
-    const usernameRegex = /^[0-9a-z_]+$/;
+    const usernameRegex = /^[0-9a-z_.]+$/;
     return usernameRegex.test(value);
 };
 

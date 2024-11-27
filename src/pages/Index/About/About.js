@@ -82,10 +82,8 @@ function Team() {
     useEffect(() => {
         async function allTeam() {
             setIsFetching(true);
-            const data = await apiRequest({
-                url: `${process.env.REACT_APP_API_LINK}/team`,
-            });
-            setTeam(data);
+            const response = await apiRequest({ url: `${process.env.REACT_APP_API_LINK}/team` });
+            setTeam(response.status === 200 && response.data);
             setIsFetching(false);
         }
         allTeam();
@@ -181,7 +179,7 @@ function WhyUs() {
                                 </div>
                                 <div className={classes.content}>
                                     <h3>Hərkəsə uyğun</h3>
-                                    <p>İstər influencer ol, istərsə də kiçik bir biznes sahibi, "linkim.az" hər kəs üçün ideal bir həll olacaq</p>
+                                    <p>İstər influencer ol, istər kiçik bir biznes sahibi, istərsə də fərdi istifadəçi "linkim.az" hər kəs üçün ideal bir həll olacaq</p>
                                 </div>
                             </div>
                         </div>

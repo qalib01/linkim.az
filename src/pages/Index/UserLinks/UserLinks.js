@@ -18,7 +18,7 @@ import Loader from "../../../components/Loader/Loader";
 import Error from "../../../error/UserErrorPage";
 import useAuth from "../../../hooks/useAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsis, faHome } from "@fortawesome/free-solid-svg-icons";
 
 
 function UserLinks() {
@@ -27,6 +27,7 @@ function UserLinks() {
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [modalType, setModalType] = useState('');
     const { username } = useParams();
+    const { isAuthenticated } = useAuth();
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -41,7 +42,7 @@ function UserLinks() {
             });
 
             let data = response.data;
-            setUserData(response.status !== 404 ? data : []);
+            setUserData(response.status === 200 && data);
             setIsFetching(false);
         }
         userLinks();
@@ -75,6 +76,9 @@ function UserLinks() {
                 <section className={classes.background}>
                     <div className={classes.container}>
                         <div className={classes.topbar}>
+                            <Link to={ isAuthenticated ? '/u/' : '/' }>
+                                <FontAwesomeIcon icon={faHome} color="#fff" />
+                            </Link>
                             <button onClick={() => openShareDialog('link')}>
                                 <ThreeDotsIconSvg color='#FFF' />
                             </button>
@@ -194,13 +198,13 @@ function LinkDialogContent({ data }) {
                     <span> {copyStatus ? 'Kopyalandı' : 'Kopyala'} </span>
                 </div>
                 <div className={classes.button}>
-                    <Link to={`https://api.whatsapp.com/send?text=${data.url} linkini sizinlə paylaşıram. İndi sən də ${process.env.REACT_APP_PROJECT_LINK} portalından qeydiyyatdan keçərək şəxsi linkini rahatlıqla yradıb paylaşa bilərsən :)`} target="_blank">
+                    <Link to={`https://api.whatsapp.com/send?text=${data.url} linkini səninlə paylaşıram. İndi sən də ${process.env.REACT_APP_PROJECT_LINK} portalından qeydiyyatdan keçərək şəxsi linkini rahatlıqla yaradıb paylaşa bilərsən :)`} target="_blank">
                         <WhatsAppIconSvg />
                     </Link>
                     <span> WhatsApp </span>
                 </div>
                 <div className={classes.button}>
-                    <Link to={`https://x.com/intent/tweet?=${data.url} linkini sizinlə paylaşıram. İndi sən də ${process.env.REACT_APP_PROJECT_LINK} portalından qeydiyyatdan keçərək şəxsi linkini rahatlıqla yradıb paylaşa bilərsən :)`} target="_blank">
+                    <Link to={`https://x.com/intent/tweet?=${data.url} linkini səninlə paylaşıram. İndi sən də ${process.env.REACT_APP_PROJECT_LINK} portalından qeydiyyatdan keçərək şəxsi linkini rahatlıqla yaradıb paylaşa bilərsən :)`} target="_blank">
                         <XIconSvg />
                     </Link>
                     <span> X </span>

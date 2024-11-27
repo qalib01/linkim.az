@@ -31,10 +31,7 @@ function ActivateUserPage() {
         });
 
         setSubmitStatus(response.data, response.status);
-
-        if (response.status === 403) {
-            setIsTokenValid(403);
-        }
+        if (response.status === 403) setIsTokenValid(403);
 
         if (response.status !== 403) {
             setTimeout(() => { navigate('/p/login') }, 4000);

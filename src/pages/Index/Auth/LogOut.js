@@ -10,14 +10,14 @@ function Logout() {
     const navigate = useNavigate();
 
     async function logoutUser(refreshToken) {
-        const data = await apiRequest({
+        const response = await apiRequest({
             url: `${process.env.REACT_APP_API_LINK}/logout`,
             headers: {
                 Authorization: `Bearer ${refreshToken}`
             }
         });
 
-        return data;
+        return response.data;
     }
 
     useEffect(() => {

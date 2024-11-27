@@ -69,16 +69,16 @@ function Instructions() {
                             </div>
                             <div className="col-6 col-lg-6">
                                 <div className={`${classes.instructionsBox} bg-white mt-3 px-4 py-4 py-md-5`}>
-                                    <LinkIconSvg />
-                                    <h4 className={`${classes.instructionsTitle} mt-3`}>Linkini əlavə et</h4>
-                                    <p className={`${classes.instructionsText} text-muted mb-0 small`}>bir neçə dəqiqə</p>
+                                    <TimeIconSvg />
+                                    <h4 className={`${classes.instructionsTitle} mt-3`}>Hesabı aktifləşdir</h4>
+                                    <p className={`${classes.instructionsText} text-muted mb-0 small`}>bir neçə saniyə</p>
                                 </div>
                             </div>
                             <div className="col-6 col-lg-6">
                                 <div className={`${classes.instructionsBox} bg-white mt-3 px-4 py-4 py-md-5`}>
-                                    <TimeIconSvg />
-                                    <h4 className={`${classes.instructionsTitle} mt-3`}>Hesabı aktifləşdir</h4>
-                                    <p className={`${classes.instructionsText} text-muted mb-0 small`}>bir neçə saniyə</p>
+                                    <LinkIconSvg />
+                                    <h4 className={`${classes.instructionsTitle} mt-3`}>Linkini əlavə et</h4>
+                                    <p className={`${classes.instructionsText} text-muted mb-0 small`}>bir neçə dəqiqə</p>
                                 </div>
                             </div>
                             <div className="col-6 col-lg-6">

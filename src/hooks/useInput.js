@@ -8,7 +8,6 @@ export function useInput(defaultValue, validationFn, transformFn = (value) => va
     
     function handleInputChange(event) {
         let value = transformFn(event.target.value);
-        console.log(value)
         setEnteredValue(value);
         setDidEdit(false);
     }

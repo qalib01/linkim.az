@@ -70,6 +70,9 @@ function ContactPage() {
       body: { fullnameValue, emailValue, subjectValue, messageValue }
     });
 
+    setLoading(false);
+    if (response.status !== 200) return setSubmitStatus({type: 'error', message: 'Texniki problem baş verdi!'});
+
     setSubmitStatus(response.data);
     handleFullnameReset();
     handleEmailReset();

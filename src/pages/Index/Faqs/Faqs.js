@@ -13,7 +13,7 @@ function Faqs() {
         async function allFaqs() {
             setIsFetching(true);
             const response = await apiRequest({ url: `${process.env.REACT_APP_API_LINK}/faqs` });
-            setFaqs(response.data);
+            setFaqs(response.status === 200 && response.data);
             setIsFetching(false);
         }
         allFaqs();
@@ -29,7 +29,7 @@ function Faqs() {
                 </div>
                 <div className={classes.faqBody}>
                     { isFetching && <p> Məlumatlar yüklənir! </p> }
-                    { (faqs.length === 0) && <p> Hal-hazırda heç bir məlumat yoxdur! </p> }
+                    { (!isFetching || faqs.length === 0) && <p> Hal-hazırda heç bir məlumat yoxdur! </p> }
                     {
                         !isFetching && faqs.length > 0 && faqs.map((data) => (
                             <Accordion key={data.id} header={data.question} body={data.answer} />
