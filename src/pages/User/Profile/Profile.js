@@ -65,12 +65,12 @@ function Profile() {
                 </div>
                 <UserProfileCard classList='blur shadow-blur mx-4 mt-n6 overflow-hidden'>
                     <CardBody>
-                        <div className="row gx-4">
+                        <div className={`row gx-4 ${window.innerWidth <= 375 ? 'align-items-center flex-column' : ''}`}>
                             <div className="col-auto">
                                 <CardAction title='Profil şəkili' openModal={() => openModal('Profil şəkili', <ProfilePictureEditForm onClose={closeModal} />, 'md')}>
                                     <div className="avatar-container">
-                                        <div className="avatar avatar-xl position-relative">
-                                            <img src={userImgUrl} alt="Profil şəkili" className="w-100 border-radius-lg shadow-sm" />
+                                        <div className={`avatar ${window.innerWidth > 375 ? 'avatar-xl' : 'avatar-xxl'} position-relative`}>
+                                            <img src={userImgUrl} alt="Profil şəkili" className="border-radius-lg shadow-sm" />
                                         </div>
                                         <div className="edit-icon">
                                             <FontAwesomeIcon icon={faPencilAlt} />
@@ -431,8 +431,8 @@ function ProfilePictureEditForm({ onClose }) {
     return (
         <div className="container-fluid">
             <div className="avatar-container mx-auto">
-                <div className=" position-relative" onClick={handleImageClick}>
-                    <img src={profileImgUrl} alt="Profil şəkili" title={isLoading ? 'Şəkil yüklənir...' : 'Yeni şəkil yükləmək üçün basın'} className="w-100 shadow-sm border" style={{ cursor: isLoading && 'progress' }} />
+                <div className="picture-container position-relative" onClick={handleImageClick}>
+                    <img src={profileImgUrl} alt="Profil şəkili" title={isLoading ? 'Şəkil yüklənir...' : 'Yeni şəkil yükləmək üçün basın'} className="shadow-sm border" style={{ cursor: isLoading && 'progress' }} />
                     <input type="file" onChange={handleImageChange} ref={fileInputRef} style={{ display: 'none', cursor: isLoading && 'progress' }} accept="image/png, image/jpeg, image/jpg" disabled={isLoading && true} />
                 </div>
             </div>
