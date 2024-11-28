@@ -26,7 +26,7 @@ function Dashboard() {
                                         <div className="numbers">
                                             <p className="text-sm mb-0 text-capitalize font-weight-bold">Link sayı</p>
                                             <h5 className="font-weight-bolder mb-0">
-                                                {user.userLinks.length}
+                                                { user.userLinks ? user.userLinks.length : 0 }
                                             </h5>
                                         </div>
                                     </div>
@@ -47,7 +47,7 @@ function Dashboard() {
                                         <div className="numbers">
                                             <p className="text-sm mb-0 text-capitalize font-weight-bold">Aktif link sayı</p>
                                             <h5 className="font-weight-bolder mb-0">
-                                                {user.userLinks.filter(link => link.is_active).length}
+                                                { user.userLinks ? user.userLinks.filter(link => link.is_active).length : 0 }
                                             </h5>
                                         </div>
                                     </div>

@@ -17,7 +17,7 @@ import { useUserProfile } from "../../../hooks/useUserProfile";
 import { apiRequest } from "../../../utils/apiRequest";
 import Alert from "../../../components/Alert/Alert";
 import { useInput } from "../../../hooks/useInput";
-import { hasMaxLength, hasMinLength, isEqualsToOtherValue, isNotEmpty, isUsername, isValidURL } from "../../../utils/validation";
+import { hasMaxTrimedLength, hasMinLength, isEqualsToOtherValue, isNotEmpty, isValidUsername, isValidURL, isValidPassword } from "../../../utils/validation";
 import Input from "../../../components/Form/Input";
 import Textarea from "../../../components/Form/Textarea";
 import Select from "../../../components/Form/Select";
@@ -95,8 +95,8 @@ function Profile() {
             <div className="container-fluid py-4">
                 <div className="row" style={{ rowGap: '1rem' }}>
                     <div className="col-12 col-xl-4">
-                        <UserProfileCard>
-                            <CardHeader title='Profil məlumatları' >
+                        <UserProfileCard classList='max-height-400 overflow-x-hidden'>
+                            <CardHeader title='Profil məlumatları'>
                                 <CardAction icon={faUserEdit} title='Edit profile' classList='col-6 text-end' openModal={() => openModal('Profil məlumatları', <ProfileEditForm onClose={closeModal} />, 'lg')} />
                             </CardHeader>
                             <CardBody classList='p-3'>
@@ -120,7 +120,7 @@ function Profile() {
                     </div>
 
                     <div className="col-12 col-xl-4">
-                        <UserProfileCard>
+                        <UserProfileCard classList='max-height-400 overflow-x-hidden'>
                             <CardHeader title='Linklər'>
                                 <CardAction icon={faAdd} title='Yarat' classList='col-6 text-end' openModal={() => openModal('Link yarat', <ProfileLinkEditForm onClose={closeModal} type='add' />, 'lg')} />
                             </CardHeader>
@@ -130,7 +130,15 @@ function Profile() {
                                         <ListGroupItem classList='border-0 d-flex align-items-center justify-content-between px-0 mb-2' key={link.id}>
                                             <div className="col-8 col-lg-9 d-flex align-items-start flex-column justify-content-center">
                                                 <h6 className="mb-0 text-sm"> {link.title} </h6>
-                                                <p className="mb-0 text-xs"> {link.type} </p>
+                                                <p className="mb-0 text-xs">
+                                                    <span> {link.type} </span>
+                                                    <span> - </span>
+                                                    <span> {link.is_active ? 
+                                                        <span className='text-success'>Aktif</span>
+                                                        : 
+                                                        <span className='text-danger'> Passiv </span>
+                                                    } </span>
+                                                </p>
                                             </div>
                                             <div className="col-4 col-lg-3 d-flex align-items-center justify-content-between">
                                                 <Button classList='text-end' to={link.url} target="_blank">
@@ -177,7 +185,8 @@ function ProfileEditForm({ onClose }) {
     const [isLoading, setIsLoading] = useState(false);
     const [submitStatus, setSubmitStatus] = useState([]);
     const accessToken = localStorage.getItem('accessToken');
-    const { user } = useAuth();
+    const { user, refreshAccessToken } = useAuth();
+    const maxDataLength = 300;
 
     const {
         value: nameValue,
@@ -202,14 +211,14 @@ function ProfileEditForm({ onClose }) {
         handleInputChange: handleUsernameChange,
         handleInputBlur: handleUsernameBlur,
         hasError: hasUsernameError,
-    } = useInput(user.username || '', (value) => isNotEmpty(value) && isUsername(value) && hasMinLength(value, 4) && hasMaxLength(value, 12), (value) => value.toLowerCase());
+    } = useInput(user.username || '', (value) => isNotEmpty(value) && isValidUsername(value) && hasMinLength(value, 4) && hasMaxTrimedLength(value, 12), (value) => value.toLowerCase());
 
     const {
         value: passwordValue,
         handleInputChange: handlePasswordChange,
         handleInputBlur: handlePasswordBlur,
         hasError: hasPasswordError,
-    } = useInput('', (value) => hasMinLength(value, 8) && isNotEmpty(value));
+    } = useInput('', (value) => hasMinLength(value, 8) && isNotEmpty(value) && isValidPassword(value));
 
     const {
         value: passwordConfirmValue,
@@ -222,7 +231,8 @@ function ProfileEditForm({ onClose }) {
         value: dataValue,
         handleInputChange: handleDataChange,
         handleInputBlur: handleDataBlur,
-    } = useInput(user.bio || '', (value) => isNotEmpty(value));
+        hasError: hasDataError,
+    } = useInput(user.bio || '', (value) => isNotEmpty(value) && hasMaxTrimedLength(value, maxDataLength));
 
     async function handleSubmitUpdateUserData(e) {
         e.preventDefault();
@@ -235,16 +245,20 @@ function ProfileEditForm({ onClose }) {
         if (usernameValue !== user.username) updatedData.username = usernameValue;
         if (dataValue.trim() !== user.bio) updatedData.bio = dataValue.trim();
         if (passwordValue) updatedData.password = passwordValue;
-        if (hasPasswordError || hasPasswordConfirmError) return setSubmitStatus({ type: 'error', message: 'Şifrələr eyni olmalıdır!' });
 
         if (Object.keys(updatedData).length === 0) {
             setIsLoading(false);
             return setSubmitStatus({ type: 'error', message: 'Yenilənəcək məlumat tapılmadı!' });
         }
 
-        if (hasNameError || hasSurnameError || hasPasswordError || hasUsernameError || hasPasswordConfirmError) {
+        if (hasNameError || hasSurnameError || hasPasswordError || hasUsernameError || hasPasswordConfirmError || hasDataError) {
             setIsLoading(false);
             return setSubmitStatus({ type: 'error', message: 'Bütün xanalar düzgün doldurulmalıdır!' });
+        };
+
+        if (hasPasswordError || hasPasswordConfirmError) {
+            setIsLoading(false);
+            return setSubmitStatus({ type: 'error', message: 'Şifrələr eyni olmalıdır!' })
         };
 
         const response = await apiRequest({
@@ -254,14 +268,18 @@ function ProfileEditForm({ onClose }) {
             body: { ...updatedData }
         });
 
+
         let data = response.data;
         setIsLoading(false);
         if (response.status === 200) {
             setTimeout(() => {
                 window.location.reload();
             }, 2000);
+            setIsLoading(false);
             return setSubmitStatus({ type: data.type, message: data.message });
-        } else return setSubmitStatus({ type: data.type, message: data.message });
+        }
+        setIsLoading(false);
+        return setSubmitStatus({ type: data.type, message: data.message });
     }
 
     return (
@@ -307,6 +325,7 @@ function ProfileEditForm({ onClose }) {
                             placeholder='Emailin'
                             required={true}
                             disabled={true}
+                            readonly='readonly'
                             value={emailValue}
                         />
                     </div>
@@ -320,6 +339,7 @@ function ProfileEditForm({ onClose }) {
                             info={`${!user.username ? 'İstifadəçi adı balaca hərflə olmalı və xüsusi işarələr olmamalıdır. min: 4, max: 12 xarakter ola bilər. Nümunə: link, link01, link_01' : ''}`}
                             required={true}
                             disabled={user.username && true}
+                            readonly={user.username && 'readonly'}
                             value={usernameValue}
                             onChange={handleUsernameChange}
                             onBlur={handleUsernameBlur}
@@ -366,8 +386,10 @@ function ProfileEditForm({ onClose }) {
                         placeholder='Şəxsi məlumat'
                         rows={3}
                         value={dataValue}
+                        maxLength={maxDataLength}
                         onChange={handleDataChange}
                         onBlur={handleDataBlur}
+                        error={hasDataError}
                     />
                 </div>
             </form>

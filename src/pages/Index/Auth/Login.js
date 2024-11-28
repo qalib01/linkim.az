@@ -51,12 +51,11 @@ function LoginPage() {
         const data = response.data;
 
         if ( response.status === 200 && response.data.tokens) {
-            const { accessToken, refreshToken } = data.tokens;
-            if (accessToken && refreshToken) {
+            const { accessToken } = data.tokens;
+            if (accessToken) {
                 setUser(data.user);
                 setIsAuthenticated(true);
                 localStorage.setItem('accessToken', accessToken);
-                localStorage.setItem('refreshToken', refreshToken);
                 navigate('/u/');
             } else {
                 setSubmitStatus({ type: 'error', message: 'Token alınması zamanı texniki problem baş verdi!' })

@@ -25,7 +25,6 @@ function Logout() {
         setIsAuthenticated(false);
         logoutUser(localStorage.getItem('refreshToken'));
         localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
         navigate('/');
     }, [user, setUser, isAuthenticated, setIsAuthenticated, navigate]);
 

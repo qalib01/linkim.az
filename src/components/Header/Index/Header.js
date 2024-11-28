@@ -33,9 +33,11 @@ function Header() {
                <li className="nav-item">
                   <NavLink className={({ isActive }) => isActive ? `${classes.navLink} ${classes.active}` : classes.navLink} to="/p/contact" end onClick={closeMenu}> Əlaqə </NavLink>
                </li>
-               <li className="nav-item">
+               {
+                  !isAuthenticated && <li className="nav-item">
                   <NavLink className={({ isActive }) => isActive ? `${classes.navLink} ${classes.active}` : classes.navLink} to="/p/login" end onClick={closeMenu}> Giriş </NavLink>
                </li>
+               }
                {
                   isAuthenticated && <li className="nav-item">
                      <Link className={classes.navLink} to="/p/logout"> Çıxış </Link>

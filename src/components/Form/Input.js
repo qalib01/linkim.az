@@ -15,7 +15,7 @@ function Input({ id, error, label, type, disabled = false, info, ...props }) {
     return (
         <>
             <div className="position-relative">
-                <input id={id} type={inputType} {...props} className={`form-control ${error && 'border border-danger'} ${classes.input}`} disabled={disabled} readOnly={disabled} />
+                <input id={id} type={inputType} {...props} className={`form-control ${error && 'border border-danger'} ${classes.input}`} disabled={disabled} alt={label} />
                 {
                     type === 'password' && (
                         <div onClick={toggleShowPassword} className={classes.showHidePasswordIcon}>
