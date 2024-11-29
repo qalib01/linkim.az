@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Textarea from "../../../components/Form/Textarea";
 import Input from "../../../components/Form/Input";
 import classes from './Contact.module.scss'
-import { isEmail, isNotEmpty } from "../../../utils/validation";
+import { hasMaxTrimedLength, isEmail, isNotEmpty } from "../../../utils/validation";
 import Section from "../../../components/Section/Section";
 import EmailIconSvg from "../../../components/Icons/EmailIconSvg";
 import LocationIconSvg from "../../../components/Icons/LocationIconSvg";
@@ -13,9 +13,11 @@ import Alert from "../../../components/Alert/Alert";
 import { apiRequest } from "../../../utils/apiRequest";
 import Button from "../../../components/Button/Button";
 import useAuth from "../../../hooks/useAuth";
+import errorMessages from "../../../statusMessages/error";
 
 function ContactPage() {
   const { user } = useAuth();
+  const maxDataLength = 300;
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -53,14 +55,14 @@ function ContactPage() {
     handleInputBlur: handleMessageBlur,
     hasError: hasMessageError,
     handleInputReset: handleMessageReset,
-  } = useInput('', (value) => isNotEmpty(value));
+  } = useInput('', (value) => isNotEmpty(value) && hasMaxTrimedLength(value, maxDataLength));
 
   async function handleSubmit(event) {
     event.preventDefault();
     setLoading(true);
 
     if (hasFullnameError || hasEmailError || hasSubjectError || hasMessageError) {
-      return setSubmitStatus({ type: 'error', message: 'Bütün xanalar tam doldurulmalıdır!' });
+      return setSubmitStatus(errorMessages.ALL_FIELDS_REQUIRED);
     }
 
     let response = await apiRequest({
@@ -71,7 +73,7 @@ function ContactPage() {
     });
 
     setLoading(false);
-    if (response.status !== 200) return setSubmitStatus({type: 'error', message: 'Texniki problem baş verdi!'});
+    if (response.status !== 200) return setSubmitStatus(response.data);
 
     setSubmitStatus(response.data);
     handleFullnameReset();
@@ -174,6 +176,7 @@ function ContactPage() {
                   placeholder='Mesajın'
                   rows={6}
                   value={messageValue}
+                  maxLength={maxDataLength}
                   onChange={handleMessageChange}
                   onBlur={handleMessageBlur}
                   error={hasMessageError}

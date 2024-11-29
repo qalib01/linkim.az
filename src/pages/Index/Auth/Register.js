@@ -8,6 +8,7 @@ import { useInput } from "../../../hooks/useInput";
 import Alert from "../../../components/Alert/Alert";
 import { apiRequest } from "../../../utils/apiRequest";
 import Button from "../../../components/Button/Button";
+import errorMessages from "../../../statusMessages/error";
 
 
 function RegisterPage() {
@@ -64,7 +65,7 @@ function RegisterPage() {
 
         if (hasNameError || hasSurnameError || hasEmailError || hasPasswordError || hasPasswordConfirmError) {
             setLoading(false);
-            return setSubmitStatus({ type: 'error', message: 'Bütün xanalar düzgün doldurulmalıdır!' });
+            return setSubmitStatus(errorMessages.ALL_FIELDS_REQUIRED);
         };
 
         let response = await apiRequest({

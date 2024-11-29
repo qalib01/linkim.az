@@ -8,6 +8,7 @@ import { useInput } from "../../../hooks/useInput";
 import Alert from "../../../components/Alert/Alert";
 import { apiRequest } from "../../../utils/apiRequest";
 import Button from "../../../components/Button/Button";
+import errorMessages from "../../../statusMessages/error";
 
 
 function ResetPasswordRequestPage() {
@@ -31,7 +32,7 @@ function ResetPasswordRequestPage() {
         setLoading(true);
 
         if (hasEmailError) {
-            return setSubmitStatus({ type: 'error', message: 'Bütün xanalar tam doldurulmalıdır!' });
+            return setSubmitStatus(errorMessages.ALL_FIELDS_REQUIRED);
         }
 
         let response = await apiRequest({

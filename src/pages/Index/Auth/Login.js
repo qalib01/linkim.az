@@ -9,6 +9,7 @@ import Alert from "../../../components/Alert/Alert";
 import { apiRequest } from "../../../utils/apiRequest";
 import useAuth from "../../../hooks/useAuth";
 import Button from "../../../components/Button/Button";
+import errorMessages from "../../../statusMessages/error";
 
 function LoginPage() {
     const [loading, setLoading] = useState(false);
@@ -38,7 +39,7 @@ function LoginPage() {
         setLoading(true);
 
         if (hasEmailError || hasPasswordError) {
-            return setSubmitStatus({ type: 'error', message: 'Bütün xanalar tam doldurulmalıdır!' });
+            return setSubmitStatus(errorMessages.ALL_FIELDS_REQUIRED);
         }
 
         let response = await apiRequest({
@@ -57,12 +58,8 @@ function LoginPage() {
                 setIsAuthenticated(true);
                 localStorage.setItem('accessToken', accessToken);
                 navigate('/u/');
-            } else {
-                setSubmitStatus({ type: 'error', message: 'Token alınması zamanı texniki problem baş verdi!' })
-            }
-        } else {
-            setSubmitStatus({ type: data.type, message: data.message })
-        }
+            } else { setSubmitStatus(errorMessages.TOKEN_CANNOT_GET) }
+        } else { setSubmitStatus({ type: data.type, message: data.message }) }
 
         setLoading(false);
     }

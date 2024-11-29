@@ -21,6 +21,7 @@ import { hasMaxTrimedLength, hasMinLength, isEqualsToOtherValue, isNotEmpty, isV
 import Input from "../../../components/Form/Input";
 import Textarea from "../../../components/Form/Textarea";
 import Select from "../../../components/Form/Select";
+import errorMessages from "../../../statusMessages/error";
 
 
 function Profile() {
@@ -185,7 +186,7 @@ function ProfileEditForm({ onClose }) {
     const [isLoading, setIsLoading] = useState(false);
     const [submitStatus, setSubmitStatus] = useState([]);
     const accessToken = localStorage.getItem('accessToken');
-    const { user, refreshAccessToken } = useAuth();
+    const { user } = useAuth();
     const maxDataLength = 300;
 
     const {
@@ -248,17 +249,17 @@ function ProfileEditForm({ onClose }) {
 
         if (Object.keys(updatedData).length === 0) {
             setIsLoading(false);
-            return setSubmitStatus({ type: 'error', message: 'Yenilənəcək məlumat tapılmadı!' });
+            return setSubmitStatus(errorMessages.CHANGES_NOT_FOUND);
         }
 
         if (hasNameError || hasSurnameError || hasPasswordError || hasUsernameError || hasPasswordConfirmError || hasDataError) {
             setIsLoading(false);
-            return setSubmitStatus({ type: 'error', message: 'Bütün xanalar düzgün doldurulmalıdır!' });
+            return setSubmitStatus(errorMessages.ALL_FIELDS_REQUIRED);
         };
 
         if (hasPasswordError || hasPasswordConfirmError) {
             setIsLoading(false);
-            return setSubmitStatus({ type: 'error', message: 'Şifrələr eyni olmalıdır!' })
+            return setSubmitStatus(errorMessages.PASSWORDS_MUST_BE_SAME)
         };
 
         const response = await apiRequest({

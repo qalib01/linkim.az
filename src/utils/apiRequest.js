@@ -1,3 +1,5 @@
+import errorMessages from "../statusMessages/error";
+
 export async function apiRequest({ url, method = 'GET', body, headers }) {
     try {
         const res = await fetch(url, {
@@ -14,9 +16,6 @@ export async function apiRequest({ url, method = 'GET', body, headers }) {
         };
     } catch (error) {
         console.error('API request error:', error.message);
-        return {
-            type: 'error',
-            message: 'Texniki problem baş verdi. Zəhmət olmasa, daha sonra yenidən cəhd edin!',
-        };
+        return errorMessages.GENERAL_ERROR;
     };
 };
