@@ -45,6 +45,7 @@ const router = createBrowserRouter([
                     { path: 'about', element: withSuspense(AboutPage) },
                     { path: 'contact', element: withSuspense(ContactPage) },
                     { path: 'logout', element: withSuspense(Logout) },
+                    { path: 'tvs', element: withSuspense(ContactPage) },
                     { 
                         path: 'register', 
                         element: <PublicRoute />,

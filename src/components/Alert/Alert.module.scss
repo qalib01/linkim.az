@@ -58,6 +58,16 @@
     color: #721c24;
 }
 
+.info {
+    background-color: #ddffff;
+    color: #2196F3;
+}
+
+.warning {
+    background-color: #ffffcc;
+    color: #ffeb3b;
+}
+
 @media (max-width: 575.98px) {
     .alert {
         bottom: 10px !important;

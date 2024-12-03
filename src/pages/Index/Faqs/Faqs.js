@@ -29,11 +29,10 @@ function Faqs() {
                 </div>
                 <div className={classes.faqBody}>
                     { isFetching && <p> Məlumatlar yüklənir! </p> }
-                    { !isFetching && faqs.length === 0 && <p> Hal-hazırda heç bir məlumat yoxdur! </p> }
                     {
-                        !isFetching && faqs.length > 0 && faqs.map((data) => (
+                        !isFetching && faqs.length > 0 ? faqs.map((data) => (
                             <Accordion key={data.id} header={data.question} body={data.answer} />
-                        ))
+                        )) : <p> Məlumat tapılmadı! </p>
                     }
                 </div>
             </div>

@@ -38,6 +38,9 @@ export default function Footer() {
                                     <li className="mb-2">
                                         <Link to="/p/goal"> Məqsəd </Link>
                                     </li>
+                                    <li className="mb-2">
+                                        <Link to="/p/tvs"> TVS </Link>
+                                    </li>
                                 </ul>
                             </div>
                         </div>

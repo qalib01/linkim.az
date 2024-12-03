@@ -6,6 +6,7 @@ const errorMessages = {
     PASSWORDS_MUST_BE_SAME: { type, message: 'Şifrələr eyni olmalıdır!' },
     CHANGES_NOT_FOUND: { type, message: 'Yenilənəcək məlumat tapılmadı!' },
     GENERAL_ERROR: { type, message: 'Texniki xəta baş verdi. Xahiş olunur ki, daha sonra yenidən yoxlayasınız!' },
+    USER_UP_TO_LINK_LIMIT: { type, message: 'Siz maksimal link sayı limitinə çatıbsınız!' },
 };
 
 module.exports = errorMessages;

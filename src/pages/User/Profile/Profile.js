@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import UserProfileCard from "../../../components/Card/UserProfileCard";
 import ListGroupParent from "../../../components/ListGroup/ListGroupParent";
 import ListGroupItem from "../../../components/ListGroup/ListGroupItem";
-import { faUserEdit, faPencilAlt, faEdit, faTrash, faLink, faAdd } from '@fortawesome/free-solid-svg-icons';
+import { faUserEdit, faPencilAlt, faEdit, faTrash, faLink, faAdd, faCopy } from '@fortawesome/free-solid-svg-icons';
 import CardHeader from "../../../components/Card/CardHeader";
 import CardAction from "../../../components/Card/CardAction";
 import CardBody from "../../../components/Card/CardBody";
@@ -22,6 +22,10 @@ import Input from "../../../components/Form/Input";
 import Textarea from "../../../components/Form/Textarea";
 import Select from "../../../components/Form/Select";
 import errorMessages from "../../../statusMessages/error";
+import CopyToClipboard from "react-copy-to-clipboard";
+import infoMessages from "../../../statusMessages/info";
+// import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+// import { DragDropContext, Droppable, Drag } from "react-beautiful-dnd";
 
 
 function Profile() {
@@ -30,8 +34,11 @@ function Profile() {
     const [modalContent, setModalContent] = useState(null);
     const [modalSize, setModalSize] = useState(null);
     const [modalButtons, setModalButtons] = useState([]);
+    const [submitStatus, setSubmitStatus] = useState([]);
     const { setProfileImgUrl } = useUserProfile();
+    const [ hasAlert, setHasAlert ] = useState(false);
     const { user } = useAuth();
+    // const [links, setLinks] = useState([ user.userLinks ])
     const userImgUrl = `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_USER_PHOTO_SERVER_URL}/${user.photo}`;
 
     useEffect(() => {
@@ -58,6 +65,20 @@ function Profile() {
         document.body.style.overflow = 'visible';
     }
 
+    // function onDragEnd() {
+
+    // }
+
+    function onCopyText() {
+        setHasAlert(true);
+        setSubmitStatus(infoMessages.USER_LINK_COPIED);
+    }
+
+    function onUserUpToLimit() {
+        setHasAlert(true);
+        setSubmitStatus(errorMessages.USER_UP_TO_LINK_LIMIT);
+    }
+
     return (
         <>
             <div className="container-fluid">
@@ -66,11 +87,11 @@ function Profile() {
                 </div>
                 <UserProfileCard classList='blur shadow-blur mx-4 mt-n6 overflow-hidden'>
                     <CardBody>
-                        <div className={`row gx-4 ${window.innerWidth <= 375 ? 'align-items-center flex-column' : ''}`}>
+                        <div className={`row gx-4 ${window.innerWidth <= 425 ? 'align-items-center flex-column' : ''}`}>
                             <div className="col-auto">
                                 <CardAction title='Profil şəkili' openModal={() => openModal('Profil şəkili', <ProfilePictureEditForm onClose={closeModal} />, 'md')}>
                                     <div className="avatar-container">
-                                        <div className={`avatar ${window.innerWidth > 375 ? 'avatar-xl' : 'avatar-xxl'} position-relative`}>
+                                        <div className={`avatar ${window.innerWidth > 425 ? 'avatar-xl' : 'avatar-xxl'} position-relative`}>
                                             <img src={userImgUrl} alt="Profil şəkili" className="border-radius-lg shadow-sm" />
                                         </div>
                                         <div className="edit-icon">
@@ -110,7 +131,14 @@ function Profile() {
                                         <strong className="text-dark">Tam adı:</strong> &nbsp; {user.name} {user.surname}
                                     </ListGroupItem>
                                     <ListGroupItem classList='border-0 ps-0 pt-0 text-sm' >
-                                        <strong className="text-dark">İstifadəçi adı:</strong> &nbsp; {user.username ? <Link to={`${process.env.REACT_APP_PROJECT_LINK}/${user.username}`}> {user.username} </Link> : 'Məlumat yoxdur'}
+                                        <strong className="text-dark">İstifadəçi adı:</strong> &nbsp; {user.username ? 
+                                            <>
+                                                <Link to={`${process.env.REACT_APP_PROJECT_LINK}/${user.username}`}> {user.username} </Link>
+                                                <CopyToClipboard text={`${process.env.REACT_APP_PROJECT_LINK}/${user.username}`} onCopy={onCopyText}>
+                                                    <FontAwesomeIcon icon={faCopy} size="lg" className="mx-2 cursor-pointer move-on-hover" title="Yaddaşda saxlamaq üçün klikləyin" />
+                                                </CopyToClipboard>
+                                            </>
+                                        : 'Məlumat yoxdur'}
                                     </ListGroupItem>
                                     <ListGroupItem classList='border-0 ps-0 pt-0 text-sm' >
                                         <strong className="text-dark">Email:</strong> &nbsp; {user.email}
@@ -123,39 +151,101 @@ function Profile() {
                     <div className="col-12 col-xl-4">
                         <UserProfileCard classList='max-height-400 overflow-x-hidden'>
                             <CardHeader title='Linklər'>
-                                <CardAction icon={faAdd} title='Yarat' classList='col-6 text-end' openModal={() => openModal('Link yarat', <ProfileLinkEditForm onClose={closeModal} type='add' />, 'lg')} />
+                                <CardAction icon={faAdd} title='Yarat' classList={`col-6 text-end`} openModal={ user.userLinks.length < 10 ? () => openModal('Link yarat', <ProfileLinkEditForm onClose={closeModal} type='add' />, 'lg') : onUserUpToLimit } />
                             </CardHeader>
+
                             <CardBody classList='p-3'>
                                 <ListGroupParent>
-                                    {user.userLinks.length > 0 && user.userLinks.map((link) => (
-                                        <ListGroupItem classList='border-0 d-flex align-items-center justify-content-between px-0 mb-2' key={link.id}>
+                                    {user.userLinks.length > 0 ? user.userLinks.map((link) => (
+                                        <ListGroupItem classList='list-group-item border-0 d-flex align-items-center justify-content-between px-0 mb-2' key={link.id} >
                                             <div className="col-8 col-lg-9 d-flex align-items-start flex-column justify-content-center">
                                                 <h6 className="mb-0 text-sm"> {link.title} </h6>
                                                 <p className="mb-0 text-xs">
                                                     <span> {link.type} </span>
                                                     <span> - </span>
-                                                    <span> {link.is_active ? 
+                                                    <span> {link.is_active ?
                                                         <span className='text-success'>Aktif</span>
-                                                        : 
+                                                        :
                                                         <span className='text-danger'> Passiv </span>
                                                     } </span>
                                                 </p>
                                             </div>
                                             <div className="col-4 col-lg-3 d-flex align-items-center justify-content-between">
                                                 <Button classList='text-end' to={link.url} target="_blank">
-                                                    <FontAwesomeIcon icon={faLink} />
+                                                    <FontAwesomeIcon icon={faLink} className="move-on-hover" />
                                                 </Button>
                                                 <CardAction icon={faEdit} title='Düzəlt' classList='text-end' openModal={() => openModal('Linki düzəlt', <ProfileLinkEditForm onClose={closeModal} data={link} type='update' />, 'lg')} />
                                                 <CardAction icon={faTrash} title='Sil' classList='text-end' openModal={() => openModal('Linki sil', <ProfileLinkEditForm onClose={closeModal} data={link} type='delete' />, 'md')} />
                                             </div>
                                         </ListGroupItem>
-                                    ))}
+                                    )) : <p> Məlumat tapılmadı! </p>}
                                 </ListGroupParent>
                             </CardBody>
                         </UserProfileCard>
                     </div>
+
+                    {/* <div className="col-12 col-xl-4">
+                        <UserProfileCard classList='max-height-400 overflow-x-hidden'>
+                            <CardHeader title='Linklər'>
+                                <CardAction icon={faAdd} title='Yarat' classList='col-6 text-end' openModal={() => openModal('Link yarat', <ProfileLinkEditForm onClose={closeModal} type='add' />, 'lg')} />
+                            </CardHeader>
+                            <DragDropContext
+                                onDragStart
+                                onDragUpdate
+                                onDragEnd={onDragEnd}
+                            >
+                                <CardBody classList='p-3'>
+                                    <Droppable droppableId="links">
+                                        {(provided) => (
+                                            <ul
+                                                ref={provided.innerRef}
+                                                {...provided.droppableProps}
+                                                className='list-group'
+                                            >
+                                                {user.userLinks.length > 0 && user.userLinks.map((link, index) => (
+                                                    <Draggable draggableId={link.id} index={index} key={index}>
+                                                        {(provided) => (
+                                                            <li
+                                                                ref={provided.innerRef}
+                                                                {...provided.draggableProps}
+                                                                {...provided.dragHandleProps}
+                                                                className='list-group-item border-0 d-flex align-items-center justify-content-between px-0 mb-2'
+                                                                key={link.id}
+                                                            >
+                                                                <div className="col-8 col-lg-9 d-flex align-items-start flex-column justify-content-center">
+                                                                    <h6 className="mb-0 text-sm"> {link.title} </h6>
+                                                                    <p className="mb-0 text-xs">
+                                                                        <span> {link.type} </span>
+                                                                        <span> - </span>
+                                                                        <span> {link.is_active ?
+                                                                            <span className='text-success'>Aktif</span>
+                                                                            :
+                                                                            <span className='text-danger'> Passiv </span>
+                                                                        } </span>
+                                                                    </p>
+                                                                </div>
+                                                                <div className="col-4 col-lg-3 d-flex align-items-center justify-content-between">
+                                                                    <Button classList='text-end' to={link.url} target="_blank">
+                                                                        <FontAwesomeIcon icon={faLink} />
+                                                                    </Button>
+                                                                    <CardAction icon={faEdit} title='Düzəlt' classList='text-end' openModal={() => openModal('Linki düzəlt', <ProfileLinkEditForm onClose={closeModal} data={link} type='update' />, 'lg')} />
+                                                                    <CardAction icon={faTrash} title='Sil' classList='text-end' openModal={() => openModal('Linki sil', <ProfileLinkEditForm onClose={closeModal} data={link} type='delete' />, 'md')} />
+                                                                </div>
+                                                            </li>
+                                                        )}
+                                                    </Draggable>
+                                                ))}
+                                                {provided.placeholder}
+                                            </ul>
+                                        )}
+                                    </Droppable>
+                                </CardBody>
+                            </DragDropContext>
+                        </UserProfileCard>
+                    </div> */}
                 </div>
             </div>
+            {hasAlert && <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setHasAlert(false)} />}
             {isOpen && <EditDialogBox onClose={closeModal} title={modalTitle} content={modalContent} size={modalSize} buttons={modalButtons} />}
         </>
     )
@@ -524,7 +614,7 @@ function AddProfileLinkForm({ onClose, linkData, type }) {
             if (titleValue !== linkData.title) updatedData.link_title = titleValue;
             if (urlValue !== linkData.url) updatedData.url = urlValue;
             if (isActiveValue !== linkData.is_active) updatedData.is_active = isActiveValue;
-    
+
             if (Object.keys(updatedData).length === 0) {
                 setIsLoading(false);
                 return setSubmitStatus({ type: 'error', message: 'Yenilənəcək məlumat tapılmadı!' });
