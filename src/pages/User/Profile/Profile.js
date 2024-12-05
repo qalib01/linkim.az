@@ -33,7 +33,6 @@ function Profile() {
     const [modalTitle, setModalTitle] = useState('');
     const [modalContent, setModalContent] = useState(null);
     const [modalSize, setModalSize] = useState(null);
-    const [modalButtons, setModalButtons] = useState([]);
     const [submitStatus, setSubmitStatus] = useState([]);
     const { setProfileImgUrl } = useUserProfile();
     const [ hasAlert, setHasAlert ] = useState(false);
@@ -45,12 +44,11 @@ function Profile() {
         window.scrollTo(0, 0);
     }, []);
 
-    function openModal(title, content, size, buttons) {
+    function openModal(title, content, size) {
         setIsOpen(true);
         setModalTitle(title);
         setModalContent(content);
         setModalSize(size);
-        setModalButtons(buttons);
         setProfileImgUrl(userImgUrl);
         document.body.style.overflow = 'hidden';
     }
@@ -60,7 +58,6 @@ function Profile() {
         setModalTitle('');
         setModalContent(null);
         setModalSize(null);
-        setModalButtons([]);
         setProfileImgUrl('');
         document.body.style.overflow = 'visible';
     }
@@ -246,7 +243,7 @@ function Profile() {
                 </div>
             </div>
             {hasAlert && <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setHasAlert(false)} />}
-            {isOpen && <EditDialogBox onClose={closeModal} title={modalTitle} content={modalContent} size={modalSize} buttons={modalButtons} />}
+            {isOpen && <EditDialogBox onClose={closeModal} title={modalTitle} content={modalContent} size={modalSize} />}
         </>
     )
 }
