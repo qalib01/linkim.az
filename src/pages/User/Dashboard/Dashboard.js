@@ -102,8 +102,8 @@ function Dashboard() {
                     </div>
                 </div>
             </div>
-            <Modal onClose={closeModal} title='istifadəçi adın' size='md'>
-                <Form config={formConfigs.updateUserData} user={user} onClose={closeModal} />
+            <Modal onClose={closeModal} title='İstifadəçi adını yarat' size='md'>
+                <Form config={formConfigs.updateUserName} user={user || {}} onClose={closeModal} />
             </Modal>
             {/* { isOpen && <Modal onClose={closeModal} content={ProfileEditForm} title='İstifadəçi adı' size='md' /> } */}
         </>
