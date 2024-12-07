@@ -68,7 +68,7 @@ function Profile() {
 
     function onCopyText() {
         setHasAlert(true);
-        setSubmitStatus(infoMessages.USER_LINK_COPIED);
+        setSubmitStatus(infoMessages.LINK_COPIED);
     }
 
     function onUserUpToLimit() {
@@ -658,7 +658,7 @@ function AddProfileLinkForm({ onClose, linkData, type }) {
                         type='text'
                         name='url'
                         label='Linkin urli'
-                        placeholder='https://www.linkim.az'
+                        placeholder='Linkin urli'
                         info='Link urli mütləqdir ki, http və ya https ilə başlasın. Nümunə: https://linkim.az, http://numune.az'
                         required={true}
                         value={urlValue}

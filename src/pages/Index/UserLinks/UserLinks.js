@@ -38,7 +38,7 @@ function UserLinks() {
                 url: `${process.env.REACT_APP_API_LINK}/user-data`,
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
-                body: { username }
+                body: JSON.stringify({ username })
             });
 
             let data = response.data;

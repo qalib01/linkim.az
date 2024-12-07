@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faCalendar, faLink } from '@fortawesome/free-solid-svg-icons'
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import UserProfileCard from "../../../components/Card/UserProfileCard";
 import CardBody from "../../../components/Card/CardBody";
 import useAuth from "../../../hooks/useAuth";
@@ -19,7 +19,7 @@ import Modal from "../../../components/Modal/Modal";
 library.add(faLink)
 
 function Dashboard() {
-    // const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
     const { user } = useAuth();
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -31,6 +31,7 @@ function Dashboard() {
 
     function closeModal() {
         document.body.style.overflow = 'visible';
+        setIsOpen(false)
     }
 
     return (
@@ -102,9 +103,11 @@ function Dashboard() {
                     </div>
                 </div>
             </div>
-            <Modal onClose={closeModal} title='İstifadəçi adını yarat' size='md'>
-                <Form config={formConfigs.updateUserName} user={user || {}} onClose={closeModal} />
-            </Modal>
+            {
+                !user.username && isOpen && <Modal onClose={closeModal} title='İstifadəçi adını yarat' size='md'>
+                    <Form config={formConfigs.updateUserName} initialData={user} onClose={closeModal} />
+                </Modal>
+            }
             {/* { isOpen && <Modal onClose={closeModal} content={ProfileEditForm} title='İstifadəçi adı' size='md' /> } */}
         </>
     )

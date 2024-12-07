@@ -1,4 +1,4 @@
-import { hasMaxTrimedLength, hasMinLength, isEqualsToOtherValue, isNotEmpty, isValidPassword, isValidUsername } from "./validation";
+import { hasMaxTrimedLength, hasMinLength, isEqualsToOtherValue, isNotEmpty, isValidPassword, isValidURL, isValidUsername } from "./validation";
 const maxDataLength = 300;
 
 const formConfigs = {
@@ -90,10 +90,38 @@ const formConfigs = {
                 placeholder: 'İstifadəçi adın',
                 value: (user) => user?.username || '',
                 validation: (value) => isNotEmpty(value) && isValidUsername(value) && hasMinLength(value, 4) && hasMaxTrimedLength(value, 12),
-                info: (user) => user?.username ? '' : 'İstifadəçi adı balaca hərflə olmalı və xüsusi işarələr olmamalıdır. min: 4, max: 12 xarakter ola bilər. Nümunə: link, link01, link_01',
+                info: 'İstifadəçi adı balaca hərflə olmalı və xüsusi işarələr olmamalıdır. min: 4, max: 12 xarakter ola bilər. Nümunə: link, link01, link_01',
                 required: true,
                 disabled: (user) => !!user?.username,
                 readonly: (user) => !!user?.username,
+            }
+        ],
+        submitUrl: `${process.env.REACT_APP_API_LINK}/api/user/update-userData`,
+        submitMethod: 'POST',
+    },
+    userLinkAddUpdate: {
+        fields: [
+            {
+                id: 'url',
+                name: 'url',
+                type: 'text',
+                label: 'Linkin urli',
+                placeholder: 'Linkin urli',
+                value: (link) => link?.url || '',
+                validation: (value) => isNotEmpty(value) && isValidURL(value),
+                info: 'Link urli mütləqdir ki, http və ya https ilə başlasın. Nümunə: https://linkim.az, http://numune.az',
+                required: true,
+            },
+            {
+                id: 'type',
+                name: 'type',
+                type: 'text',
+                label: 'Linkin urli',
+                placeholder: 'Linkin urli',
+                value: (link) => link?.url || '',
+                validation: (value) => isNotEmpty(value) && isValidURL(value),
+                info: 'Link urli mütləqdir ki, http və ya https ilə başlasın. Nümunə: https://linkim.az, http://numune.az',
+                required: true,
             }
         ],
         submitUrl: `${process.env.REACT_APP_API_LINK}/api/user/update-userData`,

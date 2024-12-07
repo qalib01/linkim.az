@@ -2,6 +2,7 @@ const type = 'success';
 
 const successMessages = {
     PASSWORD_CHANGED: { type, message: 'Şifrə uğurla yeniləndi!' },
+    USERNAME_CHANGED: { type, message: 'İstifadəçi adı yeniləndi!' },
     PASSWORD_CHANGE_REQUEST_HAS_SENT: { type, message: 'Şifrə yenilənmə linki email hesabına göndərildi!' },
     REGISTRATION_SUCCESSFUL: { type, message: 'Qeydiyyat uğurlu oldu. Emailə göndərilən təsdiq linkinə keçid edərək hesabı aktifləşdirin!'},
     USER_ACTIVATED: { type, message: 'Hesabın uğurla aktifləşdirildi. İstifadəçi panelinə daxil ola bilərsən!' },

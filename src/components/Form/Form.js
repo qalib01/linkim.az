@@ -3,6 +3,8 @@ import { apiRequest } from '../../utils/apiRequest';
 import Alert from '../Alert/Alert';
 import Input from './Input';
 import { useInput } from '../../hooks/useInput';
+import errorMessages from '../../statusMessages/error';
+import successMessages from '../../statusMessages/success';
 
 // const Form = ({ config, initialData, onClose }) => {
 //     const [submitStatus, setSubmitStatus] = useState(null);
@@ -133,14 +135,13 @@ import { useInput } from '../../hooks/useInput';
 // };
 
 const generateInputs = (fields, initialData) => {
-    fields.map((field) => {
-        console.log(field)
+    return fields.map((field) =>
         useInput(
-            initialData[field.value] || '',
+            initialData[field.id] || '',
             field.validation,
             field.transform || ((value) => value),
-        );
-    });
+        )
+    );
 };
 
 const createFormData = (formData) => {
@@ -151,12 +152,11 @@ const createFormData = (formData) => {
     return form;
 };
 
-const Form = ({ config, initialData, onClose }) => {
+function Form ({ config, initialData, onClose }) {
     const [submitStatus, setSubmitStatus] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
     const inputHooks = generateInputs(config.fields, initialData);
-    console.log(inputHooks)
     const inputs = config.fields.reduce((acc, field, index) => {
         acc[field.id] = inputHooks[index];
         return acc;
@@ -175,36 +175,32 @@ const Form = ({ config, initialData, onClose }) => {
         const hasError = config.fields.some((field) => field.required && inputs[field.id].hasError);
         if (hasError) {
             setIsLoading(false);
-            return setSubmitStatus({ type: 'error', message: 'Xahiş olunur bütün sahələri düzgün doldurun.' });
+            return setSubmitStatus(errorMessages.ALL_FIELDS_REQUIRED);
         }
 
-        const body = config.fields.some((field) => field.type === 'file')
-            ? createFormData(formData)
-            : JSON.stringify(formData);
+        const body = config.fields.some((field) => field.type === 'file') ? createFormData(formData) : JSON.stringify(formData);
 
         try {
             const response = await apiRequest({
                 url: config.submitUrl,
                 method: config.submitMethod,
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     ...(body instanceof FormData ? {} : { 'Content-Type': 'application/json' }),
                 },
                 body,
             });
-
-            const data = await response.json();
             setIsLoading(false);
 
-            if (response.ok) {
-                setSubmitStatus({ type: 'success', message: data.message });
+            if (response.status === 200) {
+                setSubmitStatus(successMessages.USERNAME_CHANGED);
                 setTimeout(() => window.location.reload(), 2000);
             } else {
-                setSubmitStatus({ type: 'error', message: data.message });
+                setSubmitStatus(response.data);
             }
-        } catch {
+        } catch (err) {
             setIsLoading(false);
-            setSubmitStatus({ type: 'error', message: 'Bir xəta baş verdi!' });
+            setSubmitStatus(errorMessages.GENERAL_ERROR);
         }
     };
 
@@ -226,9 +222,11 @@ const Form = ({ config, initialData, onClose }) => {
                             disabled={typeof field.disabled === 'function' ? field.disabled(initialData) : field.disabled}
                             readOnly={typeof field.readonly === 'function' ? field.readonly(initialData) : field.readonly}
                             className={`form-control ${input.hasError ? 'is-invalid' : ''}`}
+                            info={field.info}
+                            error={input.hasError}
                         />
-                        {input.hasError && <div className="invalid-feedback">{field.errorMessage || 'Bu sahəni düzgün doldurun.'}</div>}
-                        {field.info && <small className="form-text text-muted">{field.info}</small>}
+                        {/* {input.hasError && <div className="invalid-feedback">{field.errorMessage || 'Bu sahəni düzgün doldurun.'}</div>} */}
+                        {/* {field.info && <small className="form-text text-muted">{field.info}</small>} */}
                     </div>
                 );
             })}
@@ -246,8 +244,5 @@ const Form = ({ config, initialData, onClose }) => {
         </form>
     );
 };
-
-
-
 
 export default Form;

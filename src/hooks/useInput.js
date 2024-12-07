@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-export function useInput(defaultValue, validationFn, transformFn) {
-    const [enteredValue, setEnteredValue] = useState(defaultValue);
+export function useInput(initialData, validationFn, transformFn = (value) => value) {
+    const [enteredValue, setEnteredValue] = useState(initialData);
     const [didEdit, setDidEdit] = useState(false);
 
-    const valueIsValid = validationFn(enteredValue);
+    const valueIsValid = validationFn ? validationFn(enteredValue) : true;
 
     function handleInputChange(event) {
         let value = transformFn(event.target.value);
