@@ -139,9 +139,9 @@ const generateInputs = (fields, initialData) => {
             initialData[field.value] || '',
             field.validation,
             field.transform || ((value) => value),
-        )
+        );
     });
-}
+};
 
 const createFormData = (formData) => {
     const form = new FormData();

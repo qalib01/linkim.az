@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faCalendar, faLink } from '@fortawesome/free-solid-svg-icons'
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import UserProfileCard from "../../../components/Card/UserProfileCard";
 import CardBody from "../../../components/Card/CardBody";
 import useAuth from "../../../hooks/useAuth";
