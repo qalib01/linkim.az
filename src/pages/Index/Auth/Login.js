@@ -46,7 +46,7 @@ function LoginPage() {
             url: `${process.env.REACT_APP_API_LINK}/login`,
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: { emailValue, passwordValue }
+            body: JSON.stringify({emailValue, passwordValue})
         });
 
         const data = response.data;

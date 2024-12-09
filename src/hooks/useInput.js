@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export function useInput(initialData, validationFn, transformFn = (value) => value) {
-    const [enteredValue, setEnteredValue] = useState(initialData);
+    const [enteredValue, setEnteredValue] = useState(initialData || '');
     const [didEdit, setDidEdit] = useState(false);
 
     const valueIsValid = validationFn ? validationFn(enteredValue) : true;
@@ -17,7 +17,7 @@ export function useInput(initialData, validationFn, transformFn = (value) => val
     }
 
     function handleInputReset() {
-        setEnteredValue('');
+        setEnteredValue(initialData || '');
         setDidEdit(false);
     }
 

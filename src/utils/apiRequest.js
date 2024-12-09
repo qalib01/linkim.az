@@ -1,8 +1,6 @@
 import errorMessages from "../statusMessages/error";
 
 export async function apiRequest({ url, method = 'GET', body, headers }) {
-    console.log(headers);
-    console.log(body)
     try {
         const res = await fetch(url, {
             method,

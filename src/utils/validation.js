@@ -4,6 +4,7 @@ export function isEmail(value) {
 }
 
 export function isNotEmpty(value) {
+    if (typeof value !== 'string') { return !!value }
     return value.trim() !== '';
 }
 

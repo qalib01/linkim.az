@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import UserProfileCard from "../../../components/Card/UserProfileCard";
 import ListGroupParent from "../../../components/ListGroup/ListGroupParent";
 import ListGroupItem from "../../../components/ListGroup/ListGroupItem";
-import { faUserEdit, faPencilAlt, faEdit, faTrash, faLink, faAdd, faCopy } from '@fortawesome/free-solid-svg-icons';
 import CardHeader from "../../../components/Card/CardHeader";
 import CardAction from "../../../components/Card/CardAction";
 import CardBody from "../../../components/Card/CardBody";
@@ -13,17 +12,19 @@ import { createPortal } from "react-dom";
 import useAuth from "../../../hooks/useAuth";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserEdit, faPencilAlt, faEdit, faTrash, faLink, faAdd, faCopy } from '@fortawesome/free-solid-svg-icons';
 import { useUserProfile } from "../../../hooks/useUserProfile";
 import { apiRequest } from "../../../utils/apiRequest";
 import Alert from "../../../components/Alert/Alert";
 import { useInput } from "../../../hooks/useInput";
-import { hasMaxTrimedLength, hasMinLength, isEqualsToOtherValue, isNotEmpty, isValidUsername, isValidURL, isValidPassword } from "../../../utils/validation";
+import { hasMaxTrimedLength, hasMinLength, isEqualsToOtherValue, isNotEmpty, isValidUsername, isValidPassword } from "../../../utils/validation";
 import Input from "../../../components/Form/Input";
 import Textarea from "../../../components/Form/Textarea";
-import Select from "../../../components/Form/Select";
 import errorMessages from "../../../statusMessages/error";
 import CopyToClipboard from "react-copy-to-clipboard";
 import infoMessages from "../../../statusMessages/info";
+import Form from "../../../components/Form/Form";
+import { ConfigGenerator } from "../../../utils/formConfigs";
 // import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 // import { DragDropContext, Droppable, Drag } from "react-beautiful-dnd";
 
@@ -148,7 +149,7 @@ function Profile() {
                     <div className="col-12 col-xl-4">
                         <UserProfileCard classList='max-height-400 overflow-x-hidden'>
                             <CardHeader title='Linklər'>
-                                <CardAction icon={faAdd} title='Yarat' classList={`col-6 text-end`} openModal={ user.userLinks.length < 10 ? () => openModal('Link yarat', <ProfileLinkEditForm onClose={closeModal} type='add' />, 'lg') : onUserUpToLimit } />
+                                <CardAction icon={faAdd} title='Yarat' classList={`col-6 text-end`} openModal={ user.userLinks.length < 10 ? () => openModal('Link yarat', <ProfileLinkEditForm onClose={closeModal} data='' type='add' />, 'md') : onUserUpToLimit } />
                             </CardHeader>
 
                             <CardBody classList='p-3'>
@@ -558,169 +559,15 @@ function ProfilePictureEditForm({ onClose }) {
 }
 
 function ProfileLinkEditForm({ onClose, data, type }) {
+    let {user} = useAuth();
     return (
         <div className="card-body px-0 pt-0">
             <div className="container-fluid">
-                {(type === 'add' || type === 'update') && <AddProfileLinkForm onClose={onClose} linkData={data} type={type} />}
+                {(type === 'add') && <Form config={new ConfigGenerator().generateUserLinks('add', user.id)} initialData={data} onClose={onClose} />}
+                {(type === 'update') && <Form config={new ConfigGenerator().generateUserLinks('update', data.id)} initialData={data} onClose={onClose} />}
                 {(type === 'delete') && <DeleteProfileLinkForm onClose={onClose} linkData={data} type={type} />}
             </div>
         </div>
-    )
-}
-
-function AddProfileLinkForm({ onClose, linkData, type }) {
-    const [isLoading, setIsLoading] = useState(false);
-    const [submitStatus, setSubmitStatus] = useState([]);
-    const accessToken = localStorage.getItem('accessToken');
-
-    const {
-        value: typeValue,
-        handleInputChange: handleTypeChange,
-        handleInputBlur: handleTypeBlur,
-        hasError: hasTypeError,
-    } = useInput(linkData?.type || '', (value) => isNotEmpty(value));
-
-    const {
-        value: titleValue,
-        handleInputChange: handleTitleChange,
-        handleInputBlur: handleTitleBlur,
-        hasError: hasTitleError,
-    } = useInput(linkData?.title || '', (value) => isNotEmpty(value));
-
-    const {
-        value: urlValue,
-        handleInputChange: handleUrlChange,
-        handleInputBlur: handleUrlBlur,
-        hasError: hasUrlError,
-    } = useInput(linkData?.url || '', (value) => isNotEmpty(value) && isValidURL(value));
-
-    const {
-        value: isActiveValue,
-        handleInputChange: handleIsActiveChange,
-        handleInputBlur: handleIsActiveBlur,
-        hasError: hasIsActiveError,
-    } = useInput(linkData?.is_active ?? true, (value) => value);
-
-    async function handleSubmit(e) {
-        e.preventDefault();
-        setIsLoading(true);
-        const updatedData = {};
-
-        if (type === 'update') {
-            if (typeValue !== linkData.type) updatedData.link_type = typeValue;
-            if (titleValue !== linkData.title) updatedData.link_title = titleValue;
-            if (urlValue !== linkData.url) updatedData.url = urlValue;
-            if (isActiveValue !== linkData.is_active) updatedData.is_active = isActiveValue;
-
-            if (Object.keys(updatedData).length === 0) {
-                setIsLoading(false);
-                return setSubmitStatus({ type: 'error', message: 'Yenilənəcək məlumat tapılmadı!' });
-            }
-        } else {
-            if (typeValue) updatedData.link_type = typeValue;
-            if (titleValue) updatedData.link_title = titleValue;
-            if (urlValue) updatedData.url = urlValue;
-            if (isActiveValue) updatedData.is_active = isActiveValue;
-
-            if (!updatedData.link_title && !updatedData.url) {
-                setIsLoading(false);
-                return setSubmitStatus({ type: 'error', message: 'Bütün xanalar tam doldurulmalıdır!' });
-            }
-        }
-
-        if (hasTypeError || hasTitleError || hasUrlError || hasIsActiveError) {
-            setIsLoading(false);
-            return setSubmitStatus({ type: 'error', message: 'Bütün xanalar düzgün doldurulmalıdır!' });
-        };
-
-        const response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}/api/user/${type}-userLinks`,
-            method: 'POST',
-            headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${accessToken}` },
-            body: { ...(linkData?.id && { id: linkData.id }), ...updatedData }
-        });
-
-        let data = response.data;
-        setIsLoading(false);
-        if (response.status === 200) {
-            setTimeout(() => {
-                window.location.reload();
-            }, 2000);
-            return setSubmitStatus({ type: data.type, message: data.message });
-        } else return setSubmitStatus({ type: data.type, message: data.message });
-    }
-    return (
-        <>
-            <div className="row">
-                <div className="col-12 col-lg-6 mb-2">
-                    <Input
-                        id='url'
-                        type='text'
-                        name='url'
-                        label='Linkin urli'
-                        placeholder='Linkin urli'
-                        info='Link urli mütləqdir ki, http və ya https ilə başlasın. Nümunə: https://linkim.az, http://numune.az'
-                        required={true}
-                        value={urlValue}
-                        onChange={handleUrlChange}
-                        onBlur={handleUrlBlur}
-                        error={hasUrlError}
-                    />
-                </div>
-                <div className="col-12 col-lg-6 mb-2">
-                    <Input
-                        id='title'
-                        type='text'
-                        name='title'
-                        label='Linkin adı'
-                        placeholder='Linkin adı'
-                        required={true}
-                        value={titleValue}
-                        onChange={handleTitleChange}
-                        onBlur={handleTitleBlur}
-                        error={hasTitleError}
-                    />
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-12 col-lg-6 mb-2">
-                    <Select id='type'
-                        name='type'
-                        label='Linkin tipi'
-                        required={true}
-                        value={typeValue}
-                        onChange={handleTypeChange}
-                        onBlur={handleTypeBlur}
-                        error={hasTypeError}
-                    >
-                        <option value='sosial'> Sosial </option>
-                        <option value='şəxsi'> Şəxsi </option>
-                        <option value='digər'> Digər </option>
-                    </Select>
-                </div>
-                <div className="col-12 col-lg-6 mb-2">
-                    <Select id="isActive"
-                        name="isActive"
-                        label="Linkin statusu"
-                        required={true}
-                        value={isActiveValue}
-                        onChange={handleIsActiveChange}
-                        onBlur={handleIsActiveBlur}
-                        error={hasIsActiveError}
-                    >
-                        <option value={true}> Görünür </option>
-                        <option value={false}> Görünmür </option>
-                    </Select>
-                </div>
-            </div>
-            <div className='text-end mt-3'>
-                <button type="submit" className='btn bg-gradient-primary mx-2' onClick={handleSubmit} disabled={isLoading && true}>{isLoading ? 'Göndərilir' : 'Göndər'}</button>
-                <button type="button" className='btn bg-dark text-white' onClick={onClose}>Bağla</button>
-            </div>
-            {submitStatus && (
-                <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus(null)} />
-            )}
-        </>
     )
 }
 
@@ -737,7 +584,7 @@ function DeleteProfileLinkForm({ onClose, linkData, type }) {
             url: `${process.env.REACT_APP_API_LINK}/api/user/${type}-userLinks`,
             method: 'POST',
             headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${accessToken}` },
-            body: { id: linkData.id }
+            body: JSON.stringify({id: linkData.id}),
         });
 
         let data = response.data;
