@@ -29,7 +29,6 @@ const createFormData = (formData) => {
 function Form({ config, initialData, onClose }) {
     const [submitStatus, setSubmitStatus] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    console.log(config)
 
     const inputHooks = generateInputs(config.fields, initialData);
     const inputs = config.fields.reduce((acc, field, index) => {
@@ -82,71 +81,78 @@ function Form({ config, initialData, onClose }) {
 
     return (
         <form onSubmit={handleSubmit}>
-            {config.fields.map((field) => {
-                const input = inputs[field.id];
-                return (
-                    <div key={field.id} className="form-group">
-                        <label htmlFor={field.id}>{field.label}</label>
-                        {field.type === 'select' ? (
-                            <Select
-                                id={field.id}
-                                type={field.type || 'text'}
-                                name={field.name}
-                                label={field.label}
-                                value={input.value}
-                                required={field.required}
-                                onChange={input.handleInputChange}
-                                onBlur={input.handleInputBlur}
-                                disabled={typeof field.disabled === 'function' ? field.disabled(initialData) : field.disabled}
-                                readOnly={typeof field.readonly === 'function' ? field.readonly(initialData) : field.readonly}
-                                className={`form-control ${input.hasError ? 'is-invalid' : ''}`}
-                                error={input.hasError}
-                            >
-                                {field.options.map((option) => (
-                                    <option key={option.key} value={option.value}>
-                                        { option.label }
-                                    </option>
-                                ))}
-                            </Select>
-                        ) : field.type === 'textarea' ? (
-                            <Textarea
-                                id={field.id}
-                                type={field.type || 'text'}
-                                name={field.name}
-                                label={field.label}
-                                placeholder={field.placeholder}
-                                value={input.value}
-                                rows={input.row}
-                                required={field.required}
-                                onChange={input.handleInputChange}
-                                onBlur={input.handleInputBlur}
-                                disabled={typeof field.disabled === 'function' ? field.disabled(initialData) : field.disabled}
-                                readOnly={typeof field.readonly === 'function' ? field.readonly(initialData) : field.readonly}
-                                className={`form-control ${input.hasError ? 'is-invalid' : ''}`}
-                                info={field.info}
-                                error={input.hasError}
-                            />
-                        ) : (
-                            <Input
-                                id={field.id}
-                                type={field.type || 'text'}
-                                name={field.name}
-                                label={field.label}
-                                placeholder={field.placeholder}
-                                value={input.value}
-                                required={field.required}
-                                onChange={input.handleInputChange}
-                                onBlur={input.handleInputBlur}
-                                disabled={typeof field.disabled === 'function' ? field.disabled(initialData) : field.disabled}
-                                readOnly={typeof field.readonly === 'function' ? field.readonly(initialData) : field.readonly}
-                                className={`form-control ${input.hasError ? 'is-invalid' : ''}`}
-                                info={field.info}
-                                error={input.hasError}
-                            />
-                        )}
-                    </div>
-                );
-            })}
+            <div className='row'>
+                {config.fields.map((field) => {
+                    const input = inputs[field.id];
+                    return (
+                        <div className={'col-md-12' + field.grid ? `col-${field.grid.col}` : 'col-12'}>
+                            <div key={field.id} className="">
+                                <label htmlFor={field.id}>{field.label}</label>
+                                {field.type === 'select' ? (
+                                    <Select
+                                        id={field.id}
+                                        type={field.type || 'text'}
+                                        name={field.name}
+                                        label={field.label}
+                                        value={input.value}
+                                        required={field.required}
+                                        onChange={input.handleInputChange}
+                                        onBlur={input.handleInputBlur}
+                                        disabled={typeof field.disabled === 'function' ? field.disabled(initialData) : field.disabled}
+                                        readOnly={typeof field.readOnly === 'function' ? field.readOnly(initialData) : field.readOnly}
+                                        className={`form-control ${input.hasError ? 'is-invalid' : ''}`}
+                                        error={input.hasError}
+                                    >
+                                        {field.options.map((option) => (
+                                            <option key={option.key} value={option.value}>
+                                                {option.label}
+                                            </option>
+                                        ))}
+                                    </Select>
+                                ) : field.type === 'textarea' ? (
+                                    <Textarea
+                                        id={field.id}
+                                        type={field.type || 'text'}
+                                        name={field.name}
+                                        label={field.label}
+                                        placeholder={field.placeholder}
+                                        value={input.value}
+                                        rows={field.rows}
+                                        maxLength={field.maxLength}
+                                        required={field.required}
+                                        onChange={input.handleInputChange}
+                                        onBlur={input.handleInputBlur}
+                                        disabled={typeof field.disabled === 'function' ? field.disabled(initialData) : field.disabled}
+                                        readOnly={typeof field.readonly === 'function' ? field.readonly(initialData) : field.readonly}
+                                        className={`form-control ${input.hasError ? 'is-invalid' : ''}`}
+                                        info={field.info}
+                                        error={input.hasError}
+                                    />
+                                ) : (
+                                    <Input
+                                        id={field.id}
+                                        type={field.type || 'text'}
+                                        name={field.name}
+                                        label={field.label}
+                                        placeholder={field.placeholder}
+                                        value={input.value}
+                                        maxLength={field.maxLength}
+                                        required={field.required}
+                                        onChange={input.handleInputChange}
+                                        onBlur={input.handleInputBlur}
+                                        disabled={typeof field.disabled === 'function' ? field.disabled(initialData) : field.disabled}
+                                        readOnly={typeof field.readonly === 'function' ? field.readonly(initialData) : field.readonly}
+                                        className={`form-control ${input.hasError ? 'is-invalid' : ''}`}
+                                        info={field.info}
+                                        error={input.hasError}
+                                    />
+                                )}
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+
             <div className="text-end mt-3">
                 <button type="submit" className="btn bg-gradient-primary mx-2" disabled={isLoading}>
                     {isLoading ? 'Göndərilir...' : 'Göndər'}
