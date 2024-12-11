@@ -14,10 +14,6 @@ import { faUserEdit, faPencilAlt, faEdit, faTrash, faLink, faAdd, faCopy } from 
 import { useUserProfile } from "../../../hooks/useUserProfile";
 import { apiRequest } from "../../../utils/apiRequest";
 import Alert from "../../../components/Alert/Alert";
-import { useInput } from "../../../hooks/useInput";
-import { hasMaxTrimedLength, hasMinLength, isEqualsToOtherValue, isNotEmpty, isValidUsername, isValidPassword } from "../../../utils/validation";
-import Input from "../../../components/Form/Input";
-import Textarea from "../../../components/Form/Textarea";
 import errorMessages from "../../../statusMessages/error";
 import CopyToClipboard from "react-copy-to-clipboard";
 import infoMessages from "../../../statusMessages/info";
@@ -37,7 +33,6 @@ function Profile() {
     const { setProfileImgUrl } = useUserProfile();
     const [ hasAlert, setHasAlert ] = useState(false);
     const { user } = useAuth();
-    // const [links, setLinks] = useState([ user.userLinks ])
     const userImgUrl = `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_USER_PHOTO_SERVER_URL}/${user.photo}`;
 
     useEffect(() => {
@@ -61,10 +56,6 @@ function Profile() {
         setProfileImgUrl('');
         document.body.style.overflow = 'visible';
     }
-
-    // function onDragEnd() {
-
-    // }
 
     function onCopyText() {
         setHasAlert(true);
@@ -116,7 +107,6 @@ function Profile() {
                     <div className="col-12 col-xl-4">
                         <UserProfileCard classList='max-height-400 overflow-x-hidden'>
                             <CardHeader title='Profil məlumatları'>
-                                {/* <CardAction icon={faUserEdit} title='Edit profile' classList='col-6 text-end' openModal={() => openModal('Profil məlumatları', <ProfileEditForm onClose={closeModal} />, 'lg')} /> */}
                                 <CardAction icon={faUserEdit} title='Edit profile' classList='col-6 text-end' openModal={() => openModal('Profil məlumatları', <Form config={new ConfigGenerator().generateUserData('update', user.id)} initialData={user} onClose={closeModal} />, 'lg')} />
                             </CardHeader>
                             <CardBody classList='p-3'>
@@ -181,66 +171,6 @@ function Profile() {
                             </CardBody>
                         </UserProfileCard>
                     </div>
-
-                    {/* <div className="col-12 col-xl-4">
-                        <UserProfileCard classList='max-height-400 overflow-x-hidden'>
-                            <CardHeader title='Linklər'>
-                                <CardAction icon={faAdd} title='Yarat' classList='col-6 text-end' openModal={() => openModal('Link yarat', <ProfileLinkEditForm onClose={closeModal} type='add' />, 'lg')} />
-                            </CardHeader>
-                            <DragDropContext
-                                onDragStart
-                                onDragUpdate
-                                onDragEnd={onDragEnd}
-                            >
-                                <CardBody classList='p-3'>
-                                    <Droppable droppableId="links">
-                                        {(provided) => (
-                                            <ul
-                                                ref={provided.innerRef}
-                                                {...provided.droppableProps}
-                                                className='list-group'
-                                            >
-                                                {user.userLinks.length > 0 && user.userLinks.map((link, index) => (
-                                                    <Draggable draggableId={link.id} index={index} key={index}>
-                                                        {(provided) => (
-                                                            <li
-                                                                ref={provided.innerRef}
-                                                                {...provided.draggableProps}
-                                                                {...provided.dragHandleProps}
-                                                                className='list-group-item border-0 d-flex align-items-center justify-content-between px-0 mb-2'
-                                                                key={link.id}
-                                                            >
-                                                                <div className="col-8 col-lg-9 d-flex align-items-start flex-column justify-content-center">
-                                                                    <h6 className="mb-0 text-sm"> {link.title} </h6>
-                                                                    <p className="mb-0 text-xs">
-                                                                        <span> {link.type} </span>
-                                                                        <span> - </span>
-                                                                        <span> {link.is_active ?
-                                                                            <span className='text-success'>Aktif</span>
-                                                                            :
-                                                                            <span className='text-danger'> Passiv </span>
-                                                                        } </span>
-                                                                    </p>
-                                                                </div>
-                                                                <div className="col-4 col-lg-3 d-flex align-items-center justify-content-between">
-                                                                    <Button classList='text-end' to={link.url} target="_blank">
-                                                                        <FontAwesomeIcon icon={faLink} />
-                                                                    </Button>
-                                                                    <CardAction icon={faEdit} title='Düzəlt' classList='text-end' openModal={() => openModal('Linki düzəlt', <ProfileLinkEditForm onClose={closeModal} data={link} type='update' />, 'lg')} />
-                                                                    <CardAction icon={faTrash} title='Sil' classList='text-end' openModal={() => openModal('Linki sil', <ProfileLinkEditForm onClose={closeModal} data={link} type='delete' />, 'md')} />
-                                                                </div>
-                                                            </li>
-                                                        )}
-                                                    </Draggable>
-                                                ))}
-                                                {provided.placeholder}
-                                            </ul>
-                                        )}
-                                    </Droppable>
-                                </CardBody>
-                            </DragDropContext>
-                        </UserProfileCard>
-                    </div> */}
                 </div>
             </div>
             {hasAlert && <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setHasAlert(false)} />}
@@ -248,229 +178,6 @@ function Profile() {
         </>
     )
 }
-
-// function ProfileEditForm({ onClose }) {
-//     const [isLoading, setIsLoading] = useState(false);
-//     const [submitStatus, setSubmitStatus] = useState([]);
-//     const accessToken = localStorage.getItem('accessToken');
-//     const { user } = useAuth();
-//     const maxDataLength = 300;
-
-//     const {
-//         value: nameValue,
-//         handleInputChange: handleNameChange,
-//         handleInputBlur: handleNameBlur,
-//         hasError: hasNameError,
-//     } = useInput(user.name || '', (value) => isNotEmpty(value));
-
-//     const {
-//         value: surnameValue,
-//         handleInputChange: handleSurnameChange,
-//         handleInputBlur: handleSurnameBlur,
-//         hasError: hasSurnameError,
-//     } = useInput(user.surname || '', (value) => isNotEmpty(value));
-
-//     const {
-//         value: emailValue,
-//     } = useInput(user.email || '', (value) => isNotEmpty(value), (value) => value.toLowerCase());
-
-//     const {
-//         value: usernameValue,
-//         handleInputChange: handleUsernameChange,
-//         handleInputBlur: handleUsernameBlur,
-//         hasError: hasUsernameError,
-//     } = useInput(user.username || '', (value) => isNotEmpty(value) && isValidUsername(value) && hasMinLength(value, 4) && hasMaxTrimedLength(value, 12), (value) => value.toLowerCase());
-
-//     const {
-//         value: passwordValue,
-//         handleInputChange: handlePasswordChange,
-//         handleInputBlur: handlePasswordBlur,
-//         hasError: hasPasswordError,
-//     } = useInput('', (value) => hasMinLength(value, 8) && isNotEmpty(value) && isValidPassword(value));
-
-//     const {
-//         value: passwordConfirmValue,
-//         handleInputChange: handlePasswordConfirmChange,
-//         handleInputBlur: handlePasswordConfirmBlur,
-//         hasError: hasPasswordConfirmError,
-//     } = useInput('', (value) => isEqualsToOtherValue(value, passwordValue) && isNotEmpty(value));
-
-//     const {
-//         value: dataValue,
-//         handleInputChange: handleDataChange,
-//         handleInputBlur: handleDataBlur,
-//         hasError: hasDataError,
-//     } = useInput(user.bio || '', (value) => isNotEmpty(value) && hasMaxTrimedLength(value, maxDataLength));
-
-//     async function handleSubmitUpdateUserData(e) {
-//         e.preventDefault();
-//         setIsLoading(true);
-//         const updatedData = {};
-
-//         if (nameValue !== user.name) updatedData.name = nameValue;
-//         if (surnameValue !== user.surname) updatedData.surname = surnameValue;
-//         if (emailValue !== user.email) updatedData.email = emailValue;
-//         if (usernameValue !== user.username) updatedData.username = usernameValue;
-//         if (dataValue.trim() !== user.bio) updatedData.bio = dataValue.trim();
-//         if (passwordValue) updatedData.password = passwordValue;
-
-//         if (Object.keys(updatedData).length === 0) {
-//             setIsLoading(false);
-//             return setSubmitStatus(errorMessages.CHANGES_NOT_FOUND);
-//         }
-
-//         if (hasNameError || hasSurnameError || hasPasswordError || hasUsernameError || hasPasswordConfirmError || hasDataError) {
-//             setIsLoading(false);
-//             return setSubmitStatus(errorMessages.ALL_FIELDS_REQUIRED);
-//         };
-
-//         if (hasPasswordError || hasPasswordConfirmError) {
-//             setIsLoading(false);
-//             return setSubmitStatus(errorMessages.PASSWORDS_MUST_BE_SAME)
-//         };
-
-//         const response = await apiRequest({
-//             url: `${process.env.REACT_APP_API_LINK}/api/user/update-userData`,
-//             method: 'POST',
-//             headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${accessToken}` },
-//             body: { ...updatedData }
-//         });
-
-
-//         let data = response.data;
-//         setIsLoading(false);
-//         if (response.status === 200) {
-//             setTimeout(() => {
-//                 window.location.reload();
-//             }, 2000);
-//             setIsLoading(false);
-//             return setSubmitStatus({ type: data.type, message: data.message });
-//         }
-//         setIsLoading(false);
-//         return setSubmitStatus({ type: data.type, message: data.message });
-//     }
-
-//     return (
-//         <div className="container-fluid">
-//             <form onSubmit={handleSubmitUpdateUserData}>
-//                 <div className="row">
-//                     <div className="col-12 col-lg-6 mb-2">
-//                         <Input
-//                             id='name'
-//                             type='text'
-//                             name='name'
-//                             label='Ad'
-//                             placeholder='Adın'
-//                             required={true}
-//                             value={nameValue}
-//                             onChange={handleNameChange}
-//                             onBlur={handleNameBlur}
-//                             error={hasNameError}
-//                         />
-//                     </div>
-//                     <div className="col-12 col-lg-6">
-//                         <Input
-//                             id='surname'
-//                             type='text'
-//                             name='surname'
-//                             label='Soyad'
-//                             placeholder='Soyadın'
-//                             required={true}
-//                             value={surnameValue}
-//                             onChange={handleSurnameChange}
-//                             onBlur={handleSurnameBlur}
-//                             error={hasSurnameError}
-//                         />
-//                     </div>
-//                 </div>
-//                 <div className="row my-2">
-//                     <div className="col-12 col-lg-6 mb-2">
-//                         <Input
-//                             id='email'
-//                             type='email'
-//                             name='email'
-//                             label='Email'
-//                             placeholder='Emailin'
-//                             required={true}
-//                             disabled={true}
-//                             readOnly='readonly'
-//                             value={emailValue}
-//                         />
-//                     </div>
-//                     <div className="col-12 col-lg-6">
-//                         <Input
-//                             id='username'
-//                             type='text'
-//                             name='username'
-//                             label='İstifadəçi adı'
-//                             placeholder='İstifadəçi adın'
-//                             info={`${!user.username ? 'İstifadəçi adı balaca hərflə olmalı və xüsusi işarələr olmamalıdır. min: 4, max: 12 xarakter ola bilər. Nümunə: link, link01, link_01' : ''}`}
-//                             required={true}
-//                             disabled={user.username && true}
-//                             readOnly={user.username && 'readonly'}
-//                             value={usernameValue}
-//                             onChange={handleUsernameChange}
-//                             onBlur={handleUsernameBlur}
-//                             error={hasUsernameError}
-//                         />
-//                     </div>
-//                 </div>
-//                 <div className="row my-2">
-//                     <div className="col-12 col-lg-6 mb-2">
-//                         <Input
-//                             id='password'
-//                             type='password'
-//                             name='password'
-//                             label='Şifrə'
-//                             placeholder='Şifrən'
-//                             info='Şifrə təhlükəsizliklə bağlı böyük, kiçik hərflər, rəqəm və xüsusi işarələr olmamalıdır. min: 8 xarakter ola bilər. Nümunə: Link01!!'
-//                             required={true}
-//                             value={passwordValue}
-//                             onChange={handlePasswordChange}
-//                             onBlur={handlePasswordBlur}
-//                             error={hasPasswordError}
-//                         />
-//                     </div>
-//                     <div className="col-12 col-lg-6">
-//                         <Input
-//                             id='confirmPassword'
-//                             type='password'
-//                             name='password'
-//                             label='Şifrə təkrar'
-//                             placeholder='Şifrənin təkrar'
-//                             required={true}
-//                             value={passwordConfirmValue}
-//                             onChange={handlePasswordConfirmChange}
-//                             onBlur={handlePasswordConfirmBlur}
-//                             error={hasPasswordConfirmError}
-//                         />
-//                     </div>
-//                 </div>
-//                 <div className="row my-3">
-//                     <Textarea
-//                         id='bio'
-//                         name='bio'
-//                         label='Şəxsi məlumat'
-//                         placeholder='Şəxsi məlumat'
-//                         rows={3}
-//                         value={dataValue}
-//                         maxLength={maxDataLength}
-//                         onChange={handleDataChange}
-//                         onBlur={handleDataBlur}
-//                         error={hasDataError}
-//                     />
-//                 </div>
-//             </form>
-//             <div className='text-end mt-3'>
-//                 <button type="submit" className='btn bg-gradient-primary mx-2' onClick={handleSubmitUpdateUserData} disabled={isLoading && true}>{isLoading ? 'Göndərilir' : 'Göndər'}</button>
-//                 <button type="button" className='btn bg-dark text-white' onClick={onClose}>Bağla</button>
-//             </div>
-//             {submitStatus && (
-//                 <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus(null)} />
-//             )}
-//         </div>
-//     )
-// }
 
 function ProfilePictureEditForm({ onClose }) {
     const { profileImgUrl, setProfileImgUrl } = useUserProfile(undefined);

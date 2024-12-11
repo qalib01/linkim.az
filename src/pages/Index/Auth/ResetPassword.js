@@ -28,7 +28,7 @@ function ResetPasswordRequestPage() {
             url: `${process.env.REACT_APP_API_LINK}/validate-token`,
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: { token }
+            body: JSON.stringify({ token })
         });
 
         const data = response.data;
@@ -73,7 +73,7 @@ function ResetPasswordRequestPage() {
             url: `${process.env.REACT_APP_API_LINK}/reset-password`,
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: { emailValue, passwordValue }
+            body: JSON.stringify({ emailValue, passwordValue })
         });
 
         const data = response.data;

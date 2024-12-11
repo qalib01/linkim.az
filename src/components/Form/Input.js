@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 
-function Input({ id, error, label, type, value, disabled = false, maxLength, info, ...props }) {
+function Input({ id, error, label, type, value, maxLength, info, ...props }) {
     const [showPassword, setShowPassword] = useState(false);
 
     const toggleShowPassword = () => setShowPassword(prevState => !prevState);
@@ -13,7 +13,7 @@ function Input({ id, error, label, type, value, disabled = false, maxLength, inf
     return (
         <>
             <div className="position-relative">
-                <input id={id} type={inputType} {...props} className={`form-control ${error && 'border border-danger'} ${classes.input}`} disabled={disabled} alt={label} aria-describedby={`${id}-info`} value={value} maxLength={maxLength} />
+                <input id={id} type={inputType} {...props} className={`form-control ${error && 'border border-danger'} ${classes.input}`}  alt={label} aria-describedby={`${id}-info`} value={value} maxLength={maxLength} />
                 {
                     type === 'password' && (
                         <div onClick={toggleShowPassword} className={classes.showHidePasswordIcon} role="button" aria-label="Şifrəni göstər/gizlət">
@@ -25,8 +25,8 @@ function Input({ id, error, label, type, value, disabled = false, maxLength, inf
                 }
             </div>
             {info && !error && ( <span className="text-muted" style={{ fontSize: '12px' }}> {info} </span> )}
-            { maxLength ? <p className='text-sm mt-1 text-end mb-0'> Hərf sayı: <span className='text-bold'> {value.trim().length} / {maxLength} </span> </p> : '' }
             {error && <span className="text-danger" style={{ fontSize: '14px', marginTop: '2px' }}> {id === 'confirmPassword' ? `Hər iki şifrə də eyni olmalıdır!` : `Zəhmət olmasa, ${label} hissəsini düzgün daxil edin!`} </span>}
+            { maxLength ? <p className='text-sm mt-1 text-end mb-0'> Hərf sayı: <span className='text-bold'> {value.trim().length} / {maxLength} </span> </p> : '' }
         </>
     )
 }

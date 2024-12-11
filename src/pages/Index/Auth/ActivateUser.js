@@ -27,7 +27,7 @@ function ActivateUserPage() {
             url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_USER_ACTIVATE_LINK_KEY}`,
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: { token },
+            body: JSON.stringify({ token }),
         });
 
         setSubmitStatus(response.data, response.status);

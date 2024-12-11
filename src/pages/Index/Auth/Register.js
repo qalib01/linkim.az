@@ -72,7 +72,7 @@ function RegisterPage() {
             url: `${process.env.REACT_APP_API_LINK}/register`,
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: { nameValue, surnameValue, emailValue, passwordValue }
+            body: JSON.stringify({nameValue, surnameValue, emailValue, passwordValue})
         });
 
         const data = response.data;
