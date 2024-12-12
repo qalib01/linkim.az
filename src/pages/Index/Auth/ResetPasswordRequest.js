@@ -36,7 +36,7 @@ function ResetPasswordRequestPage() {
         }
 
         let response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}/reset-password-request`,
+            url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/reset-password-request`,
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ emailValue })

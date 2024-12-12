@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
     const validateToken = useCallback(async (accessToken) => {
         try {
             const response = await apiRequest({
-                url: `${process.env.REACT_APP_API_LINK}/validate-login`,
+                url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/validate-login`,
                 method: 'POST',
                 withCredentials: true,
                 headers: {
@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
     async function refreshAccessToken() {
         try {
             const response = await apiRequest({
-                url: `${process.env.REACT_APP_API_LINK}/refresh-token`,
+                url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/refresh-token`,
                 withCredentials: true,
                 method: 'GET',
             });

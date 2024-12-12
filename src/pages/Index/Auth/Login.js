@@ -43,7 +43,7 @@ function LoginPage() {
         }
 
         let response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}/login`,
+            url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/login`,
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({emailValue, passwordValue})

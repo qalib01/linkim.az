@@ -20,8 +20,6 @@ import infoMessages from "../../../statusMessages/info";
 import Form from "../../../components/Form/Form";
 import { ConfigGenerator } from "../../../utils/formConfigs";
 import Modal from "../../../components/Modal/Modal";
-// import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-// import { DragDropContext, Droppable, Drag } from "react-beautiful-dnd";
 
 
 function Profile() {
@@ -209,7 +207,7 @@ function ProfilePictureEditForm({ onClose }) {
         formData.append("accessToken", accessToken);
 
         const response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}/api/user/upload-userPhoto`,
+            url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_USER_API_ENDPOINT}/upload-userPhoto`,
             method: 'POST',
             // headers: { 'Authorization': `Bearer ${accessToken}` },
             body: formData,
@@ -267,7 +265,7 @@ function DeleteProfileLinkForm({ onClose, linkData, type }) {
         setIsLoading(true);
 
         const response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}/api/user/${type}-userLinks`,
+            url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_USER_API_ENDPOINT}/${type}-userLinks`,
             method: 'POST',
             headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${accessToken}` },
             body: JSON.stringify({id: linkData.id}),

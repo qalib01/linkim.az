@@ -25,7 +25,7 @@ function ResetPasswordRequestPage() {
 
     async function validateToken(token) {
         let response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}/validate-token`,
+            url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/validate-token`,
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ token })
@@ -70,7 +70,7 @@ function ResetPasswordRequestPage() {
         }
 
         let response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}/reset-password`,
+            url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/reset-password`,
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ emailValue, passwordValue })

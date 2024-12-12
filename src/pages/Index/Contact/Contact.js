@@ -66,7 +66,7 @@ function ContactPage() {
     }
 
     let response = await apiRequest({
-      url: `${process.env.REACT_APP_API_LINK}/contact`,
+      url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/contact`,
       method: 'POST',
       headers: { "Content-Type": "application/json" },
       body: { fullnameValue, emailValue, subjectValue, messageValue }

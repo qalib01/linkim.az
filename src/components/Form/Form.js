@@ -165,7 +165,6 @@ function Form({ config, initialData, onClose }) {
                                     disabled={typeof field.disabled === 'function' ? field.disabled(initialData) : field.disabled}
                                     readOnly={typeof field.readonly === 'function' ? field.readonly(initialData) : field.readonly}
                                     className={`form-control ${input.hasError ? 'is-invalid' : ''}`}
-                                    // info={field.id !== 'username' && !input.value ? field.info : ''}
                                     info={!input.value ? field.info : ''}
                                     error={input.hasError}
                                 />
@@ -176,10 +175,19 @@ function Form({ config, initialData, onClose }) {
             </div>
 
             <div className="text-end mt-3">
-                <button type="submit" className="btn bg-gradient-primary mx-2" disabled={isLoading}> {isLoading ? 'Göndərilir...' : 'Göndər'} </button>
-                <button type="button" className="btn bg-dark text-white" onClick={onClose}> Bağla </button>
+                {config.buttons.map((button, index) => {
+                    return (<button
+                        key={index}
+                        type={button.type}
+                        className={button.className}
+                        disabled={typeof button.disabled === 'function' ? button.disabled(isLoading) : button.disabled}
+                        onClick={typeof button.onClick === 'function' ? button.onClick(onClose) : undefined}
+                    > 
+                        {typeof button.children === 'function' ? button.children(isLoading) : button.children}
+                    </button>)
+                })}
             </div>
-            {submitStatus && ( <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus(null)} /> )}
+            {submitStatus && (<Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus(null)} />)}
         </form>
     );
 };

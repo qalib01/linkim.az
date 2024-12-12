@@ -35,7 +35,7 @@ function UserLinks() {
         async function userLinks() {
             setIsFetching(true);
             const response = await apiRequest({
-                url: `${process.env.REACT_APP_API_LINK}/user-data`,
+                url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/user-data`,
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username })

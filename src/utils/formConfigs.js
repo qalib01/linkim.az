@@ -4,21 +4,21 @@ const maxRows = 3;
 
 export class ConfigGenerator {
     constructor(baseApiUrl) {
-        this.baseApiUrl = baseApiUrl || `${process.env.REACT_APP_API_LINK}/api/user`
+        this.baseApiUrl = baseApiUrl || `${process.env.REACT_APP_API_LINK}`
     }
 
     generateUserData(mode, linkId) {
         const modes = {
             add: {
-                url: `${this.baseApiUrl}/add-userData`,
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/add-userData`,
                 method: 'POST',
             },
             update: {
-                url: `${this.baseApiUrl}/update-userData/${linkId}`,
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-userData/${linkId}`,
                 method: 'POST',
             },
             delete: {
-                url: `${this.baseApiUrl}/delete-userData/${linkId}`,
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-userData/${linkId}`,
                 method: 'DELETE'
             },
         }
@@ -110,6 +110,20 @@ export class ConfigGenerator {
                     grid: { col: 12 },
                 }
             ],
+            buttons: [
+                {
+                    type: 'submit',
+                    className: 'btn bg-gradient-primary mx-2',
+                    disabled: (isLoading) => isLoading,
+                    children: (isLoading) => isLoading ? 'Göndərilir...' : 'Göndər',
+                },
+                {
+                    type: 'button',
+                    className: 'btn bg-dark text-white',
+                    onClick: (onClose) => onClose,
+                    children: 'Bağla',
+                }
+            ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',
         }
@@ -118,15 +132,15 @@ export class ConfigGenerator {
     generateUserName(mode, linkId) {
         const modes = {
             add: {
-                url: `${this.baseApiUrl}/add-userData`,
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/add-userData`,
                 method: 'POST',
             },
             update: {
-                url: `${this.baseApiUrl}/update-userData/${linkId}`,
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-userData/${linkId}`,
                 method: 'POST',
             },
             delete: {
-                url: `${this.baseApiUrl}/delete-userData/${linkId}`,
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-userData/${linkId}`,
                 method: 'DELETE'
             },
         }
@@ -148,6 +162,20 @@ export class ConfigGenerator {
                     readOnly: (user) => !!user?.username,
                 }
             ],
+            buttons: [
+                {
+                    type: 'submit',
+                    className: 'btn bg-gradient-primary mx-2',
+                    disabled: (isLoading) => isLoading,
+                    children: (isLoading) => isLoading ? 'Göndərilir...' : 'Göndər',
+                },
+                {
+                    type: 'button',
+                    className: 'btn bg-dark text-white',
+                    onClick: (onClose) => onClose,
+                    children: 'Bağla',
+                }
+            ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',
         }
@@ -156,15 +184,15 @@ export class ConfigGenerator {
     generateUserLinks(mode, linkId) {
         const modes = {
             add: {
-                url: `${this.baseApiUrl}/add-userLinks/${linkId}`,
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/add-userLinks/${linkId}`,
                 method: 'POST',
             },
             update: {
-                url: `${this.baseApiUrl}/update-userLinks/${linkId}`,
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-userLinks/${linkId}`,
                 method: 'POST',
             },
             delete: {
-                url: `${this.baseApiUrl}/delete-userLinks/${linkId}`,
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-userLinks/${linkId}`,
                 method: 'DELETE'
             },
         }
@@ -213,15 +241,64 @@ export class ConfigGenerator {
                     name: 'is_active',
                     type: 'select',
                     label: 'Linkin statusu',
-                    value: (link) => link?.is_active || '',
+                    value: (link) => link?.is_active.toString() || '',
                     validation: (value) => isNotEmpty(value),
                     required: true,
                     options: [
                         { key: '', value: '', label: 'Seçim edin' },
-                        { key: '1', value: true, label: 'Aktif' },
-                        { key: '0', value: false, label: 'Passif' },
+                        { key: '1', value: 'true', label: 'Aktif' },
+                        { key: '0', value: 'false', label: 'Passif' },
                     ],
                 },
+            ],
+            buttons: [
+                {
+                    type: 'submit',
+                    className: 'btn bg-gradient-primary mx-2',
+                    disabled: (isLoading) => isLoading,
+                    children: (isLoading) => isLoading ? 'Göndərilir...' : 'Göndər',
+                },
+                {
+                    type: 'button',
+                    className: 'btn bg-dark text-white',
+                    onClick: (onClose) => onClose,
+                    children: 'Bağla',
+                }
+            ],
+            submitUrl: modes[mode]?.url || '',
+            submitMethod: modes[mode]?.method || '',
+        }
+    }
+    
+    generateUsernameAvaliability(mode, linkId) {
+        const modes = {
+            find: {
+                url: `${this.baseApiUrl}${process.env.REACT_APP_API_ENDPOINT}/check-userName/${linkId}`,
+                method: 'POST',
+            },
+        }
+
+        return {
+            fields: [
+                {
+                    id: 'username',
+                    name: 'username',
+                    type: 'text',
+                    label: 'İstifadəçi adı',
+                    placeholder: 'İstifadəçi adı',
+                    value: (link) => link?.url || '',
+                    validation: (value) => isNotEmpty(value) && isValidUsername(value),
+                    info: 'İstifadəçi adı balaca hərflə, minimum 4, maksimum 12 xarakter olmalı və xüsusi işarələr istifadə olmamalıdır. Nümunə: link, link01, link_01, link.01',
+                    required: true,
+                },
+            ],
+            buttons: [
+                {
+                    type: 'submit',
+                    className: 'btn bg-gradient-primary mx-2',
+                    disabled: (isLoading) => isLoading,
+                    children: (isLoading) => isLoading ? 'Göndərilir...' : 'Göndər',
+                }
             ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',

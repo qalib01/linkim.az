@@ -11,7 +11,7 @@ function Logout() {
 
     async function logoutUser(refreshToken) {
         const response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}/logout`,
+            url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/logout`,
             headers: {
                 Authorization: `Bearer ${refreshToken}`
             }

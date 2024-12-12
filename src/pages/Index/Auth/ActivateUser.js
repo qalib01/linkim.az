@@ -24,7 +24,7 @@ function ActivateUserPage() {
         setLoading(true)
 
         let response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_USER_ACTIVATE_LINK_KEY}`,
+            url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/activate-user`,
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ token }),
@@ -44,7 +44,7 @@ function ActivateUserPage() {
         setBtnLoading(true);
 
         let response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}/resend-activate-user`,
+            url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_API_ENDPOINT}/resend-activate-user`,
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: { token },
