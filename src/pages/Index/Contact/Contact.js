@@ -69,7 +69,7 @@ function ContactPage() {
       url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/contact`,
       method: 'POST',
       headers: { "Content-Type": "application/json" },
-      body: { fullnameValue, emailValue, subjectValue, messageValue }
+      body: JSON.stringify({ fullnameValue, emailValue, subjectValue, messageValue }),
     });
 
     setLoading(false);

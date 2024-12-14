@@ -1,6 +1,8 @@
 import { hasMaxTrimedLength, hasMinLength, isEqualsToOtherValue, isNotEmpty, isValidPassword, isValidURL, isValidUsername } from "./validation";
 const maxDataLength = 300;
 const maxRows = 3;
+const usernameMinLength = 3;
+const usernameMaxLength = 12;
 
 export class ConfigGenerator {
     constructor(baseApiUrl) {
@@ -69,10 +71,10 @@ export class ConfigGenerator {
                     type: 'text',
                     label: 'İstifadəçi adı',
                     placeholder: 'İstifadəçi adın',
-                    maxLength: 12,
+                    maxLength: usernameMaxLength,
                     value: (user) => user?.username || '',
-                    validation: (value) => isNotEmpty(value) && isValidUsername(value) && hasMinLength(value, 4) && hasMaxTrimedLength(value, 12),
-                    info: 'İstifadəçi adı balaca hərflə, minimum 4, maksimum 12 xarakter olmalı və xüsusi işarələr istifadə olmamalıdır. Nümunə: link, link01, link_01, link.01',
+                    validation: (value) => isNotEmpty(value) && isValidUsername(value) && hasMinLength(value, usernameMinLength) && hasMaxTrimedLength(value, usernameMaxLength),
+                    info: `İstifadəçi adı balaca hərflə, minimum ${usernameMinLength}, maksimum ${usernameMaxLength} xarakter olmalı və xüsusi işarələr istifadə olmamalıdır. Nümunə: link, link01, link_01, link.01`,
                     required: true,
                     disabled: (user) => !!user?.username,
                     readOnly: (user) => !!user?.username,
@@ -153,14 +155,14 @@ export class ConfigGenerator {
                     type: 'text',
                     label: 'İstifadəçi adı',
                     placeholder: 'İstifadəçi adın',
+                    maxLength: usernameMaxLength,
                     value: (user) => user?.username || '',
-                    maxLength: 12,
-                    validation: (value) => isNotEmpty(value) && isValidUsername(value) && hasMinLength(value, 4) && hasMaxTrimedLength(value, 12),
-                    info: 'İstifadəçi adı balaca hərflə, minimum 4, maksimum 12 xarakter olmalı və xüsusi işarələr istifadə olmamalıdır. Nümunə: link, link01, link_01, link.01',
+                    validation: (value) => isNotEmpty(value) && isValidUsername(value) && hasMinLength(value, usernameMinLength) && hasMaxTrimedLength(value, usernameMaxLength),
+                    info: `İstifadəçi adı balaca hərflə, minimum ${usernameMinLength}, maksimum ${usernameMaxLength} xarakter olmalı və xüsusi işarələr istifadə olmamalıdır. Nümunə: link, link01, link_01, link.01`,
                     required: true,
                     disabled: (user) => !!user?.username,
                     readOnly: (user) => !!user?.username,
-                }
+                },
             ],
             buttons: [
                 {
@@ -237,11 +239,11 @@ export class ConfigGenerator {
                     ],
                 },
                 {
-                    id: 'is_active',
-                    name: 'is_active',
+                    id: 'active',
+                    name: 'active',
                     type: 'select',
                     label: 'Linkin statusu',
-                    value: (link) => link?.is_active.toString() || '',
+                    value: (link) => link?.active.toString() || '',
                     validation: (value) => isNotEmpty(value),
                     required: true,
                     options: [

@@ -149,7 +149,7 @@ function Profile() {
                                                 <p className="mb-0 text-xs">
                                                     <span> {link.type} </span>
                                                     <span> - </span>
-                                                    <span> {link.is_active ?
+                                                    <span> {link.active ?
                                                         <span className='text-success'>Aktif</span>
                                                         :
                                                         <span className='text-danger'> Passiv </span>
