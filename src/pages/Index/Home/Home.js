@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Faqs from "../Faqs/Faqs";
+// import Faqs from "../Faqs/Faqs";
 import Section from "../../../components/Section/Section";
 import classes from './Home.module.scss'
 import RegisterIconSvg from "../../../components/Icons/RegisterIconSvg";
@@ -42,7 +42,7 @@ function HomePage() {
             </Hero>
             <Instructions />
             <CheckAvaliableUserLink />
-            <Faqs />
+            {/* <Faqs /> */}
         </>
 
     )

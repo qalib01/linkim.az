@@ -14,6 +14,7 @@ const RegisterPage = lazy(() => import('./pages/Index/Auth/Register'));
 const ResetPasswordRequestPage = lazy(() => import('./pages/Index/Auth/ResetPasswordRequest'));
 const ResetPasswordPage = lazy(() => import('./pages/Index/Auth/ResetPassword'));
 const LoginPage = lazy(() => import('./pages/Index/Auth/Login'));
+const FaqPage = lazy(() => import('./pages/Index/Faqs/Faqs'));
 const Logout = lazy(() => import('./pages/Index/Auth/Logout'));
 const ActivateUserPage = lazy(() => import('./pages/Index/Auth/ActivateUser'));
 const UserLinks = lazy(() => import('./pages/Index/UserLinks/UserLinks'));
@@ -45,7 +46,7 @@ const router = createBrowserRouter([
                     { path: 'about', element: withSuspense(AboutPage) },
                     { path: 'contact', element: withSuspense(ContactPage) },
                     { path: 'logout', element: withSuspense(Logout) },
-                    { path: 'tvs', element: withSuspense(ContactPage) },
+                    { path: 'tvs', element: withSuspense(FaqPage) },
                     { 
                         path: 'register', 
                         element: <PublicRoute />,

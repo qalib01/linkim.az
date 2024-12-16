@@ -56,6 +56,12 @@ a {
 .flex-row-scroll::-webkit-scrollbar {
     display: none;
 }
+.cursor-pointer {
+	cursor: pointer;
+}
+.font-weight-bold {
+	font-weight: bold;
+}
 /*-- Min Width Media Queries --*/
 @media (min-width: 992px) {
 	.primary-nav .dropdown:hover .dropdown-menu {
