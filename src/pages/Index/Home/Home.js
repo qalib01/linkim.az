@@ -2,10 +2,6 @@ import { useEffect, useState } from "react";
 // import Faqs from "../Faqs/Faqs";
 import Section from "../../../components/Section/Section";
 import classes from './Home.module.scss'
-import RegisterIconSvg from "../../../components/Icons/RegisterIconSvg";
-import LinkIconSvg from "../../../components/Icons/LinkIconSvg";
-import ShareIconSvg from "../../../components/Icons/ShareIconSvg";
-import TimeIconSvg from "../../../components/Icons/TimeIconSvg";
 import Hero from "../../../components/Hero/Hero";
 import Button from "../../../components/Button/Button";
 import useAuth from "../../../hooks/useAuth";
@@ -15,6 +11,8 @@ import { isNotEmpty, isValidUsername } from "../../../utils/validation";
 import errorMessages from "../../../statusMessages/error";
 import { apiRequest } from "../../../utils/apiRequest";
 import Alert from "../../../components/Alert/Alert";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLink, faShareFromSquare, faStopwatch, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 
 
 function HomePage() {
@@ -42,7 +40,6 @@ function HomePage() {
             </Hero>
             <Instructions />
             <CheckAvaliableUserLink />
-            {/* <Faqs /> */}
         </>
 
     )
@@ -68,28 +65,28 @@ function Instructions() {
                         <div className="row gx-3">
                             <div className="col-6 col-lg-6">
                                 <div className={`${classes.instructionsBox} bg-white mt-3 px-4 py-4 py-md-5`}>
-                                    <RegisterIconSvg />
+                                    <FontAwesomeIcon icon={faUserPlus} />
                                     <h4 className={`${classes.instructionsTitle} mt-3`}>Qeydiyyatdan keç</h4>
                                     <p className={`${classes.instructionsText} text-muted mb-0 small`}>10 saniyə</p>
                                 </div>
                             </div>
                             <div className="col-6 col-lg-6">
                                 <div className={`${classes.instructionsBox} bg-white mt-3 px-4 py-4 py-md-5`}>
-                                    <TimeIconSvg />
+                                    <FontAwesomeIcon icon={faStopwatch} />
                                     <h4 className={`${classes.instructionsTitle} mt-3`}>Hesabı aktifləşdir</h4>
                                     <p className={`${classes.instructionsText} text-muted mb-0 small`}>bir neçə saniyə</p>
                                 </div>
                             </div>
                             <div className="col-6 col-lg-6">
                                 <div className={`${classes.instructionsBox} bg-white mt-3 px-4 py-4 py-md-5`}>
-                                    <LinkIconSvg />
+                                    <FontAwesomeIcon icon={faLink} />
                                     <h4 className={`${classes.instructionsTitle} mt-3`}>Linkini əlavə et</h4>
                                     <p className={`${classes.instructionsText} text-muted mb-0 small`}>bir neçə dəqiqə</p>
                                 </div>
                             </div>
                             <div className="col-6 col-lg-6">
                                 <div className={`${classes.instructionsBox} bg-white mt-3 px-4 py-4 py-md-5`}>
-                                    <ShareIconSvg />
+                                    <FontAwesomeIcon icon={faShareFromSquare} />
                                     <h4 className={`${classes.instructionsTitle} mt-3`}>Paylaş</h4>
                                     <p className={`${classes.instructionsText} text-muted mb-0 small`}>5 saniyə</p>
                                 </div>

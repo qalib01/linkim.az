@@ -4,16 +4,15 @@ import Input from "../../../components/Form/Input";
 import classes from './Contact.module.scss'
 import { hasMaxTrimedLength, isEmail, isNotEmpty } from "../../../utils/validation";
 import Section from "../../../components/Section/Section";
-import EmailIconSvg from "../../../components/Icons/EmailIconSvg";
-import LocationIconSvg from "../../../components/Icons/LocationIconSvg";
-import PhoneIconSvg from "../../../components/Icons/PhoneIconSvg";
 import WorkHoursIconSvg from "../../../components/Icons/WorkHoursIconSvg";
 import { useInput } from "../../../hooks/useInput";
 import Alert from "../../../components/Alert/Alert";
 import { apiRequest } from "../../../utils/apiRequest";
-import Button from "../../../components/Button/Button";
 import useAuth from "../../../hooks/useAuth";
 import errorMessages from "../../../statusMessages/error";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope, faLocationDot, faPhone } from "@fortawesome/free-solid-svg-icons";
+import Button from "../../../components/Button/Button";
 
 function ContactPage() {
   const { user } = useAuth();
@@ -96,7 +95,7 @@ function ContactPage() {
             <div className="row gy-4">
               <div className="col-md-6">
                 <div className={classes.infoItem}>
-                  <LocationIconSvg />
+                  <FontAwesomeIcon icon={faLocationDot} />
                   <h3>Ofisimiz</h3>
                   <p>Bakı şəhəri</p>
                   <p>Onlayn fəaliyyət göstərir</p>
@@ -104,15 +103,14 @@ function ContactPage() {
               </div>
               <div className="col-md-6">
                 <div className={classes.infoItem}>
-                  <PhoneIconSvg />
+                  <FontAwesomeIcon icon={faPhone} />
                   <h3>Mobil nömrərlərimiz</h3>
-                  <p>+1 5589 55488 55</p>
-                  <p>+1 6678 254445 41</p>
+                  <p>+994 (50) 703 84 81</p>
                 </div>
               </div>
               <div className="col-md-6">
                 <div className={classes.infoItem}>
-                  <EmailIconSvg />
+                  <FontAwesomeIcon icon={faEnvelope} />
                   <h3>Email hesablarımız</h3>
                   <p>info@linkim.az</p>
                   <p>contact@linkim.az</p>
