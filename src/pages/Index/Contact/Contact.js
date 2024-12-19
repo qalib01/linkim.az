@@ -4,14 +4,13 @@ import Input from "../../../components/Form/Input";
 import classes from './Contact.module.scss'
 import { hasMaxTrimedLength, isEmail, isNotEmpty } from "../../../utils/validation";
 import Section from "../../../components/Section/Section";
-import WorkHoursIconSvg from "../../../components/Icons/WorkHoursIconSvg";
 import { useInput } from "../../../hooks/useInput";
 import Alert from "../../../components/Alert/Alert";
 import { apiRequest } from "../../../utils/apiRequest";
 import useAuth from "../../../hooks/useAuth";
 import errorMessages from "../../../statusMessages/error";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faLocationDot, faPhone } from "@fortawesome/free-solid-svg-icons";
+import { faClock, faEnvelope, faLocationDot, faPhone } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../../components/Button/Button";
 
 function ContactPage() {
@@ -118,7 +117,7 @@ function ContactPage() {
               </div>
               <div className="col-md-6">
                 <div className={classes.infoItem}>
-                  <WorkHoursIconSvg />
+                  <FontAwesomeIcon icon={faClock} />
                   <h3>İş saatları</h3>
                   <p>Hərgün</p>
                   <p>9:00 - 18:00</p>

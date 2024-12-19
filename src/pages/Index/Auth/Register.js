@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Section from "../../../components/Section/Section";
 import { hasMinLength, isEmail, isEqualsToOtherValue, isNotEmpty } from "../../../utils/validation";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Input from "../../../components/Form/Input";
 import classes from './Auth.module.scss';
 import { useInput } from "../../../hooks/useInput";
@@ -15,6 +15,8 @@ function RegisterPage() {
     const [loading, setLoading] = useState(false);
     const [submitStatus, setSubmitStatus] = useState(null);
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const username = searchParams.get('username');
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -59,6 +61,8 @@ function RegisterPage() {
         handleInputReset: handlePasswordConfirmReset,
     } = useInput('', (value) => isEqualsToOtherValue(value, passwordValue) && isNotEmpty(value));
 
+    const userData = { nameValue, surnameValue, emailValue, passwordValue, username }
+
     async function handleSubmit(event) {
         event.preventDefault();
         setLoading(true);
@@ -72,7 +76,7 @@ function RegisterPage() {
             url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/register`,
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({nameValue, surnameValue, emailValue, passwordValue})
+            body: JSON.stringify(userData)
         });
 
         const data = response.data;

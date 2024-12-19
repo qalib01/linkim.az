@@ -13,6 +13,7 @@ import { apiRequest } from "../../../utils/apiRequest";
 import Alert from "../../../components/Alert/Alert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLink, faShareFromSquare, faStopwatch, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 
 function HomePage() {
@@ -149,6 +150,12 @@ function CheckAvaliableUserLink() {
                                 onBlur={handleUsernameBlur}
                                 error={hasUsernameError}
                             />
+                            {
+                                submitStatus && submitStatus.type === 'success' && <div className={classes.hasAccount}>
+                                <p> Qeyd etdiyin istifadəçi adıyla davam etmək istəyirsənsə, <Link to={`/p/register?username=${username}`}>buradan</Link> qeydiyyat edə bilərsən. </p>
+                            </div>
+                            }
+                            
                             <div className="text-center">
                                 <Button asButton={true} type="submit" disabled={loading && true}>{loading ? 'Göndərilir...' : 'Göndər'}</Button>
                             </div>
