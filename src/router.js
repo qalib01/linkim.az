@@ -46,7 +46,7 @@ const router = createBrowserRouter([
                     { path: 'about', element: withSuspense(AboutPage) },
                     { path: 'contact', element: withSuspense(ContactPage) },
                     { path: 'logout', element: withSuspense(Logout) },
-                    { path: 'tvs', element: withSuspense(FaqPage) },
+                    { path: 'faqs', element: withSuspense(FaqPage) },
                     { 
                         path: 'register', 
                         element: <PublicRoute />,
@@ -86,7 +86,7 @@ const router = createBrowserRouter([
                             { path: 'profile', element: withSuspense(Profile) },
                         ],
                     }
-                ]
+                ],
             },
         ],
     },

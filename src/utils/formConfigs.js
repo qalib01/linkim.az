@@ -128,6 +128,7 @@ export class ConfigGenerator {
             ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',
+            submitBody: modes[mode]?.body || null,
         }
     }
 
@@ -180,6 +181,7 @@ export class ConfigGenerator {
             ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',
+            submitBody: modes[mode]?.body || null,
         }
     }
 
@@ -188,14 +190,17 @@ export class ConfigGenerator {
             add: {
                 url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/add-userLinks/${linkId}`,
                 method: 'POST',
+                body: { type: 'add-link' }
             },
             update: {
                 url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-userLinks/${linkId}`,
                 method: 'POST',
+                body: { type: 'edit_link' }
             },
             delete: {
                 url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-userLinks/${linkId}`,
-                method: 'DELETE'
+                method: 'DELETE',
+                body: { type: 'delete_link' }
             },
         }
 
@@ -269,6 +274,7 @@ export class ConfigGenerator {
             ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',
+            submitBody: modes[mode]?.body || null,
         }
     }
     
@@ -304,6 +310,7 @@ export class ConfigGenerator {
             ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',
+            submitBody: modes[mode]?.body || null,
         }
     }
 }

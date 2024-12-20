@@ -70,6 +70,8 @@ function Form({ config, initialData, onClose }) {
             return setSubmitStatus(errorMessages.PASSWORDS_MUST_BE_SAME);
         }
 
+        if (config.submitBody) { formData.actionType = config.submitBody.type }
+
         const hasError = config.fields.some((field) => inputs[field.id].hasError);
         if (hasError) {
             setIsLoading(false);

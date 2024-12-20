@@ -40,8 +40,9 @@ function FaqPage() {
                     </div>
                 </div>
                 <div className='row mb-5 m-0'>
+                    {isFetching && <p> Məlumatlar yüklənir! </p>}
                     {
-                        !isFetching && groups.map((group) => (
+                        !isFetching && groups.length > 0 ? groups.map((group) => (
                             <div key={group.id} className='col-md-3 col-lg-3'>
                                 <div className='rounded overflow-hidden mb-2'>
                                     <div className='bg-warning p-4 text-center font-weight-bold cursor-pointer' onClick={() => handleSelect(group.id)}>
@@ -49,7 +50,7 @@ function FaqPage() {
                                     </div>
                                 </div>
                             </div>
-                        ))
+                        )) : <p> Məlumat tapılmadı! </p>
                     }
                 </div>
                 <div className={`${classes.faqBody} mb-5`}>

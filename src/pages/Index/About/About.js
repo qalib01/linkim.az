@@ -101,7 +101,6 @@ function Team() {
 
             <div className="row flex-row-scroll">
                 { isFetching && <p> Məlumatlar yüklənir! </p> }
-                {/* { (!isFetching || team.length === 0) && <p> Hal-hazırda heç bir məlumat yoxdur! </p> } */}
                 {
                     !isFetching && team.length > 0 ? team.map((data) => (
                         <div key={data.id} className="col-8 col-md-6 col-lg-3">
