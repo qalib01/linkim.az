@@ -139,7 +139,6 @@ function Profile() {
                             <CardHeader title='Linklər'>
                                 <CardAction icon={faAdd} title='Yarat' classList={`col-6 text-end`} openModal={ user.userLinks.length < 10 ? () => openModal('Link yarat', <ProfileLinkEditForm onClose={closeModal} data='' type='add' />, 'md') : onUserUpToLimit } />
                             </CardHeader>
-
                             <CardBody classList='p-3'>
                                 <ListGroupParent>
                                     {user.userLinks.length > 0 ? user.userLinks.map((link) => (
@@ -249,50 +248,9 @@ function ProfileLinkEditForm({ onClose, data, type }) {
             <div className="container-fluid">
                 {(type === 'add') && <Form config={new ConfigGenerator().generateUserLinks('add', user.id)} initialData={data} onClose={onClose} />}
                 {(type === 'update') && <Form config={new ConfigGenerator().generateUserLinks('update', data.id)} initialData={data} onClose={onClose} />}
-                {(type === 'delete') && <DeleteProfileLinkForm onClose={onClose} linkData={data} type={type} />}
+                {(type === 'delete') && <Form config={new ConfigGenerator().deleteUserLinks('delete', data.id)} initialData={data} onClose={onClose} />}
             </div>
         </div>
-    )
-}
-
-function DeleteProfileLinkForm({ onClose, linkData, type }) {
-    const [isLoading, setIsLoading] = useState(false);
-    const [submitStatus, setSubmitStatus] = useState([]);
-    const accessToken = localStorage.getItem('accessToken');
-
-    async function handleSubmit(e) {
-        e.preventDefault();
-        setIsLoading(true);
-
-        const response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_USER_API_ENDPOINT}/${type}-userLinks`,
-            method: 'POST',
-            headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${accessToken}` },
-            body: JSON.stringify({id: linkData.id}),
-        });
-
-        let data = response.data;
-        setIsLoading(false);
-        if (response.status === 200) {
-            setTimeout(() => {
-                window.location.reload();
-            }, 2000);
-            return setSubmitStatus({ type: data.type, message: data.message });
-        } else return setSubmitStatus({ type: data.type, message: data.message });
-    }
-    return (
-        <>
-            <h6>
-                Sil düyməsini təsdiqi etdiyiniz zaman <strong>"{linkData.title}"</strong> linkini bir dəfəlik silmiş olacaqsınız!
-            </h6>
-            <div className='text-end mt-3'>
-                <button type="submit" className='btn bg-gradient-primary mx-2' onClick={handleSubmit} disabled={isLoading && true}>{isLoading ? 'Silinir' : 'Sil'}</button>
-                <button type="button" className='btn bg-dark text-white' onClick={onClose}>Bağla</button>
-            </div>
-            {submitStatus && (
-                <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus(null)} />
-            )}
-        </>
     )
 }
 

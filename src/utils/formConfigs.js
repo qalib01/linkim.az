@@ -190,17 +190,12 @@ export class ConfigGenerator {
             add: {
                 url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/add-userLinks/${linkId}`,
                 method: 'POST',
-                body: { type: 'add-link' }
+                body: { type: 'add_link' }
             },
             update: {
                 url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-userLinks/${linkId}`,
                 method: 'POST',
                 body: { type: 'edit_link' }
-            },
-            delete: {
-                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-userLinks/${linkId}`,
-                method: 'DELETE',
-                body: { type: 'delete_link' }
             },
         }
 
@@ -257,6 +252,39 @@ export class ConfigGenerator {
                         { key: '0', value: 'false', label: 'Passif' },
                     ],
                 },
+            ],
+            buttons: [
+                {
+                    type: 'submit',
+                    className: 'btn bg-gradient-primary mx-2',
+                    disabled: (isLoading) => isLoading,
+                    children: (isLoading) => isLoading ? 'Göndərilir...' : 'Göndər',
+                },
+                {
+                    type: 'button',
+                    className: 'btn bg-dark text-white',
+                    onClick: (onClose) => onClose,
+                    children: 'Bağla',
+                }
+            ],
+            submitUrl: modes[mode]?.url || '',
+            submitMethod: modes[mode]?.method || '',
+            submitBody: modes[mode]?.body || null,
+        }
+    }
+
+    deleteUserLinks(mode, linkId) {
+        const modes = {
+            delete: {
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-userLinks/${linkId}`,
+                method: 'DELETE',
+                body: { type: 'delete_link' }
+            },
+        }
+
+        return {
+            contents: [
+                (data) => <p> Sil düyməsini təsdiqi etdiyin zaman <strong> {data.title} </strong> linkini bir dəfəlik silmiş olacaqsan və bunun geri qayıdışı olmayacaq, daha sonra yenisini yarada bilərsən! </p>
             ],
             buttons: [
                 {

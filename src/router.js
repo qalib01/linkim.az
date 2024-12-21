@@ -22,6 +22,7 @@ const IndexErrorPage = lazy(() => import('./error/IndexErrorPage'));
 
 const Dashboard = lazy(() => import('./pages/User/Dashboard/Dashboard'));
 const Profile = lazy(() => import('./pages/User/Profile/Profile'));
+const Users = lazy(() => import('./pages/User/Users/Users'));
 const UserErrorPage = lazy(() => import('./error/UserErrorPage'));
 
 const router = createBrowserRouter([
@@ -84,6 +85,14 @@ const router = createBrowserRouter([
                             { index: true, element: withSuspense(Dashboard) },
                             { path: 'dashboard', element: withSuspense(Dashboard) },
                             { path: 'profile', element: withSuspense(Profile) },
+                            { 
+                                path: 'users', 
+                                element: <ProtectedRoute allowedRoles='Admin' />,
+                                children: [
+                                    { path: '', element: withSuspense(Users) },
+                                    { path: ':id', element: withSuspense(Profile) },
+                                ]
+                            },
                         ],
                     }
                 ],

@@ -39,10 +39,11 @@ const createFormData = (formData) => {
 
 function Form({ config, initialData, onClose }) {
     const [submitStatus, setSubmitStatus] = useState(null);
+    console.log(config)
     const [isLoading, setIsLoading] = useState(false);
 
-    const inputHooks = generateInputs(config.fields, initialData);
-    const inputs = config.fields.reduce((acc, field, index) => {
+    const inputHooks = config.fields && generateInputs(config.fields, initialData);
+    const inputs = config.fields && config.fields.reduce((acc, field, index) => {
         acc[field.id] = inputHooks[index];
         return acc;
     }, {});
@@ -52,15 +53,14 @@ function Form({ config, initialData, onClose }) {
         setIsLoading(true);
         let formData = {};
 
-        config.fields.some((field) => {
+        config.fields && config.fields.some((field) => {
             const { value } = inputs[field.id];
             if (value !== initialData[field.id]) formData[field.id] = value;
         })
 
         if (formData.password === '') delete formData.password;
         if (formData.confirmPassword === '') delete formData.confirmPassword;
-
-        if (Object.keys(formData).length === 0) {
+        if (config.fields && Object.keys(formData).length === 0) {
             setIsLoading(false);
             return setSubmitStatus(errorMessages.CHANGES_NOT_FOUND)
         }
@@ -72,13 +72,13 @@ function Form({ config, initialData, onClose }) {
 
         if (config.submitBody) { formData.actionType = config.submitBody.type }
 
-        const hasError = config.fields.some((field) => inputs[field.id].hasError);
+        const hasError = config.fields && config.fields.some((field) => inputs[field.id].hasError);
         if (hasError) {
             setIsLoading(false);
             return setSubmitStatus(errorMessages.ALL_FIELDS_REQUIRED);
         }
 
-        const body = config.fields.some((field) => field.type === 'file') ? createFormData(formData) : JSON.stringify(formData);
+        const body = config.fields && config.fields.some((field) => field.type === 'file') ? createFormData(formData) : JSON.stringify(formData);
 
         try {
             const res = await apiRequest({
@@ -90,11 +90,14 @@ function Form({ config, initialData, onClose }) {
                 },
                 body,
             });
-            setIsLoading(false);
+            
 
             if (res.status === 200) {
                 setSubmitStatus(res.data);
-                setTimeout(() => window.location.reload(), 2000);
+                setTimeout(() => {
+                    window.location.reload();
+                    setIsLoading(false);
+                }, 2000);
             } else {
                 setSubmitStatus(res.data);
             }
@@ -107,7 +110,7 @@ function Form({ config, initialData, onClose }) {
     return (
         <form onSubmit={handleSubmit}>
             <div className='row'>
-                {config.fields.map((field) => {
+                {config.fields && config.fields.map((field) => {
                     const input = inputs[field.id];
                     return (
                         <div key={field.id} className={`mb-2 ${field.grid ? `col-${field.grid.col}` : 'col-12'}`}>
@@ -175,6 +178,13 @@ function Form({ config, initialData, onClose }) {
                     );
                 })}
             </div>
+            {config.contents && config.contents.map((content, index) => {
+                return (
+                    <div key={index}>
+                        { typeof content === 'function' ? content({ title: initialData.title }) : content}
+                    </div>
+                )
+            })}
 
             <div className="text-end mt-3">
                 {config.buttons.map((button, index) => {
@@ -184,7 +194,7 @@ function Form({ config, initialData, onClose }) {
                         className={button.className}
                         disabled={typeof button.disabled === 'function' ? button.disabled(isLoading) : button.disabled}
                         onClick={typeof button.onClick === 'function' ? button.onClick(onClose) : undefined}
-                    > 
+                    >
                         {typeof button.children === 'function' ? button.children(isLoading) : button.children}
                     </button>)
                 })}

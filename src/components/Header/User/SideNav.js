@@ -5,13 +5,16 @@ import OfficeIconSvg from "../../Icons/OfficeIconSvg";
 import useSideNav from "../../../hooks/useSideNav";
 import Button from "../../Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faAddressCard, faHouse, faUser, faXmark } from "@fortawesome/free-solid-svg-icons";
 import useIsSmallScreen from "../../../hooks/useIsSmallScreen";
+import useAuth from "../../../hooks/useAuth";
+import ProtectedNavLink from "../../ProtectedRoute/ProtectedNavLink";
 
 function SideNav() {
     const location = useLocation();
     const { isSideNavOpen, setIsSideNavOpen } = useSideNav();
     const isSmallScreen = useIsSmallScreen();
+    const { user } = useAuth();
 
     function toggleSideNav() {
         setIsSideNavOpen(!isSideNavOpen);
@@ -46,6 +49,7 @@ function SideNav() {
                         <NavLink className={({ isActive }) => location.pathname === '/u/' || isActive ? `nav-link mb-2 active` : `nav-link mb-2`} onClick={() => isSmallScreen && setIsSideNavOpen(false)} to='/u/dashboard'>
                             <div className="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <ShopIconSvg />
+                                <FontAwesomeIcon icon={faHouse} />
                             </div>
                             <span className="nav-link-text ms-1">Dashboard</span>
                         </NavLink>
@@ -53,11 +57,17 @@ function SideNav() {
                     <li className="nav-item">
                         <NavLink className={({ isActive }) => isActive ? `nav-link mb-2 active` : `nav-link mb-2`} onClick={() => isSmallScreen && setIsSideNavOpen(false)} to='/u/profile'>
                             <div className="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <OfficeIconSvg />
+                                <FontAwesomeIcon icon={faAddressCard} />
                             </div>
                             <span className="nav-link-text ms-1">Profil</span>
                         </NavLink>
                     </li>
+                    <ProtectedNavLink to='/u/users' allowedRoles={['Admin']} onClick={() => isSmallScreen && setIsSideNavOpen(false)}>
+                        <div className="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <FontAwesomeIcon icon={faUser} />
+                        </div>
+                        <span className="nav-link-text ms-1">İstifadəçilər</span>
+                    </ProtectedNavLink>
                 </ul>
             </div>
         </aside>
