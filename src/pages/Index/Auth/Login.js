@@ -14,7 +14,7 @@ import errorMessages from "../../../statusMessages/error";
 function LoginPage() {
     const [loading, setLoading] = useState(false);
     const [submitStatus, setSubmitStatus] = useState(null);
-    const { setUser, setIsAuthenticated } = useAuth();
+    const { setLocalUser, setIsAuthenticated } = useAuth();
     const navigate = useNavigate();
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -54,7 +54,7 @@ function LoginPage() {
         if ( response.status === 200 && response.data.tokens) {
             const { accessToken } = data.tokens;
             if (accessToken) {
-                setUser(data.user);
+                setLocalUser(data.user);
                 setIsAuthenticated(true);
                 localStorage.setItem('accessToken', accessToken);
                 navigate('/u/');

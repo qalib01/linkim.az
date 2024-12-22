@@ -5,7 +5,7 @@ import { apiRequest } from "../../../utils/apiRequest";
 
 
 function Logout() {
-    const { user, setUser } = useAuth();
+    const { localUser, setLocalUser } = useAuth();
     const { isAuthenticated, setIsAuthenticated } = useAuth();
     const navigate = useNavigate();
 
@@ -21,12 +21,12 @@ function Logout() {
     }
 
     useEffect(() => {
-        setUser(null);
+        setLocalUser(null);
         setIsAuthenticated(false);
         logoutUser(localStorage.getItem('refreshToken'));
         localStorage.removeItem('accessToken');
         navigate('/');
-    }, [user, setUser, isAuthenticated, setIsAuthenticated, navigate]);
+    }, [localUser, setLocalUser, isAuthenticated, setIsAuthenticated, navigate]);
 
     return null;
 }

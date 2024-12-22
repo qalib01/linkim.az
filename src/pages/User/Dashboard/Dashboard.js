@@ -13,7 +13,7 @@ library.add(faLink)
 
 function Dashboard() {
     const [isOpen, setIsOpen] = useState(true);
-    const { user } = useAuth();
+    const { localUser } = useAuth();
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -35,7 +35,7 @@ function Dashboard() {
                                         <div className="numbers">
                                             <p className="text-sm mb-0 text-capitalize font-weight-bold">Link sayı</p>
                                             <h5 className="font-weight-bolder mb-0">
-                                                {user.userLinks ? user.userLinks.length : 0}
+                                                {localUser.userLinks ? localUser.userLinks.length : 0}
                                             </h5>
                                         </div>
                                     </div>
@@ -56,7 +56,7 @@ function Dashboard() {
                                         <div className="numbers">
                                             <p className="text-sm mb-0 text-capitalize font-weight-bold">Aktif link sayı</p>
                                             <h5 className="font-weight-bolder mb-0">
-                                                {user.userLinks ? user.userLinks.filter(link => link.active).length : 0}
+                                                {localUser.userLinks ? localUser.userLinks.filter(link => link.active).length : 0}
                                             </h5>
                                         </div>
                                     </div>
@@ -77,7 +77,7 @@ function Dashboard() {
                                         <div className="numbers">
                                             <p className="text-sm mb-0 text-capitalize font-weight-bold">Qeydiyyat tarixi</p>
                                             <h5 className="font-weight-bolder mb-0">
-                                                {moment(user.createdAt).format('DD-MM-YYYY')}
+                                                {moment(localUser.createdAt).format('DD-MM-YYYY')}
                                             </h5>
                                         </div>
                                     </div>
@@ -93,8 +93,8 @@ function Dashboard() {
                 </div>
             </div>
             {
-                !user.username && isOpen && <Modal onClose={closeModal} title='İstifadəçi adını yarat' size='md'>
-                    <Form config={new ConfigGenerator().generateUserName('update', user.id)} initialData={user} onClose={closeModal} />
+                !localUser.username && isOpen && <Modal onClose={closeModal} title='İstifadəçi adını yarat' size='md'>
+                    <Form config={new ConfigGenerator().generateUserName('update', localUser.id)} initialData={localUser} onClose={closeModal} />
                 </Modal>
             }
         </>

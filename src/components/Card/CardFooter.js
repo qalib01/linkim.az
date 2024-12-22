@@ -1,7 +1,5 @@
 function CardFooter() {
-    return (
-        
-    )
+    return;
 }
 
 export default CardFooter;

@@ -14,7 +14,7 @@ import { faClock, faEnvelope, faLocationDot, faPhone } from "@fortawesome/free-s
 import Button from "../../../components/Button/Button";
 
 function ContactPage() {
-  const { user } = useAuth();
+  const { localUser } = useAuth();
   const maxDataLength = 300;
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -29,7 +29,7 @@ function ContactPage() {
     handleInputBlur: handleFullnameBlur,
     hasError: hasFullnameError,
     handleInputReset: handleFullnameReset,
-  } = useInput(user ? user.name + ' ' + user.surname : '', (value) => isNotEmpty(value));
+  } = useInput(localUser ? localUser.name + ' ' + localUser.surname : '', (value) => isNotEmpty(value));
 
   const {
     value: emailValue,
@@ -37,7 +37,7 @@ function ContactPage() {
     handleInputBlur: handleEmailBlur,
     hasError: hasEmailError,
     handleInputReset: handleEmailReset,
-  } = useInput(user ? user.email : '', (value) => isEmail(value) && isNotEmpty(value), (value) => value.toLowerCase());
+  } = useInput(localUser ? localUser.email : '', (value) => isEmail(value) && isNotEmpty(value), (value) => value.toLowerCase());
 
   const {
     value: subjectValue,
@@ -135,11 +135,11 @@ function ContactPage() {
                   label='Tam ad'
                   placeholder='Tam adın'
                   required={true}
-                  value={user ? user.name + ' ' + user.surname : fullnameValue}
+                  value={localUser ? localUser.name + ' ' + localUser.surname : fullnameValue}
                   onChange={handleFullnameChange}
                   onBlur={handleFullnameBlur}
                   error={hasFullnameError}
-                  disabled={user && true}
+                  disabled={localUser && true}
                 />
                 <Input
                   id='email'
@@ -148,11 +148,11 @@ function ContactPage() {
                   label='Email'
                   placeholder='Emailin'
                   required={true}
-                  value={user ? user.email : emailValue}
+                  value={localUser ? localUser.email : emailValue}
                   onChange={handleEmailChange}
                   onBlur={handleEmailBlur}
                   error={hasEmailError}
-                  disabled={user && true}
+                  disabled={localUser && true}
                 />
                 <Input
                   id='subject'

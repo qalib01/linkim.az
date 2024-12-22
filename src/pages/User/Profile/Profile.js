@@ -8,7 +8,7 @@ import CardBody from "../../../components/Card/CardBody";
 import Line from "../../../components/Line/Line";
 import Button from "../../../components/Button/Button";
 import useAuth from "../../../hooks/useAuth";
-import { Link } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserEdit, faPencilAlt, faEdit, faTrash, faLink, faAdd, faCopy } from '@fortawesome/free-solid-svg-icons';
 import { useUserProfile } from "../../../hooks/useUserProfile";
@@ -20,6 +20,7 @@ import infoMessages from "../../../statusMessages/info";
 import Form from "../../../components/Form/Form";
 import { ConfigGenerator } from "../../../utils/formConfigs";
 import Modal from "../../../components/Modal/Modal";
+import Loader from "../../../components/Loader/Loader";
 
 
 function Profile() {
@@ -29,13 +30,38 @@ function Profile() {
     const [modalSize, setModalSize] = useState(null);
     const [submitStatus, setSubmitStatus] = useState([]);
     const { setProfileImgUrl } = useUserProfile();
-    const [ hasAlert, setHasAlert ] = useState(false);
-    const { user } = useAuth();
+    const [hasAlert, setHasAlert] = useState(false);
+    const { localUser } = useAuth();
+    const { id } = useParams();
+    const [isFetching, setIsFetching] = useState(false);
+    const [user, setUser] = useState({});
     const userImgUrl = `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_USER_PHOTO_SERVER_URL}/${user.photo}`;
 
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, []);
+        if(!id) return setUser(localUser);
+
+        async function getData() {
+            setIsFetching(true);
+            const response = await apiRequest({
+                url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_USER_API_ENDPOINT}/get-selectedUser/${id}`,
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    "Content-Type": "application/json"
+                },
+            });
+
+            let data = response.data;
+            if (response.status === 200 && data) {
+                setUser(data)
+            } else {
+                setSubmitStatus(data);
+            }
+            setIsFetching(false);
+        }
+        getData();
+    }, [id, localUser]);
 
     function openModal(title, content, size) {
         setIsOpen(true);
@@ -67,6 +93,7 @@ function Profile() {
 
     return (
         <>
+            { isFetching && <Loader /> }
             <div className="container-fluid">
                 <div className="page-header min-height-300 border-radius-xl mt-4">
                     <span className="mask bg-gradient-primary opacity-6"></span>
@@ -117,14 +144,14 @@ function Profile() {
                                         <strong className="text-dark">Tam adı:</strong> &nbsp; {user.name} {user.surname}
                                     </ListGroupItem>
                                     <ListGroupItem classList='border-0 ps-0 pt-0 text-sm' >
-                                        <strong className="text-dark">İstifadəçi adı:</strong> &nbsp; {user.username ? 
+                                        <strong className="text-dark">İstifadəçi adı:</strong> &nbsp; {user.username ?
                                             <>
                                                 <Link to={`${process.env.REACT_APP_PROJECT_LINK}/${user.username}`}> {user.username} </Link>
                                                 <CopyToClipboard text={`${process.env.REACT_APP_PROJECT_LINK}/${user.username}`} onCopy={onCopyText}>
                                                     <FontAwesomeIcon icon={faCopy} size="lg" className="mx-2 cursor-pointer move-on-hover" title="Yaddaşda saxlamaq üçün klikləyin" />
                                                 </CopyToClipboard>
                                             </>
-                                        : 'Məlumat yoxdur'}
+                                            : 'Məlumat yoxdur'}
                                     </ListGroupItem>
                                     <ListGroupItem classList='border-0 ps-0 pt-0 text-sm' >
                                         <strong className="text-dark">Email:</strong> &nbsp; {user.email}
@@ -137,11 +164,11 @@ function Profile() {
                     <div className="col-12 col-xl-4">
                         <UserProfileCard classList='max-height-400 overflow-x-hidden'>
                             <CardHeader title='Linklər'>
-                                <CardAction icon={faAdd} title='Yarat' classList={`col-6 text-end`} openModal={ user.userLinks.length < 10 ? () => openModal('Link yarat', <ProfileLinkEditForm onClose={closeModal} data='' type='add' />, 'md') : onUserUpToLimit } />
+                                <CardAction icon={faAdd} title='Yarat' classList={`col-6 text-end`} openModal={user.userLinks?.length < 10 ? () => openModal('Link yarat', <ProfileLinkEditForm onClose={closeModal} data={user} type='add' />, 'md') : onUserUpToLimit} />
                             </CardHeader>
                             <CardBody classList='p-3'>
                                 <ListGroupParent>
-                                    {user.userLinks.length > 0 ? user.userLinks.map((link) => (
+                                    {user.userLinks?.length > 0 ? user.userLinks.map((link) => (
                                         <ListGroupItem classList='list-group-item border-0 d-flex align-items-center justify-content-between px-0 mb-2' key={link.id} >
                                             <div className="col-8 col-lg-9 d-flex align-items-start flex-column justify-content-center">
                                                 <h6 className="mb-0 text-sm"> {link.title} </h6>
@@ -163,7 +190,7 @@ function Profile() {
                                                 <CardAction icon={faTrash} title='Sil' classList='text-end' openModal={() => openModal('Linki sil', <ProfileLinkEditForm onClose={closeModal} data={link} type='delete' />, 'md')} />
                                             </div>
                                         </ListGroupItem>
-                                    )) : <p> Məlumat tapılmadı! </p>}
+                                    )) : <p> Məlumat yoxdur </p>}
                                 </ListGroupParent>
                             </CardBody>
                         </UserProfileCard>
@@ -242,11 +269,10 @@ function ProfilePictureEditForm({ onClose }) {
 }
 
 function ProfileLinkEditForm({ onClose, data, type }) {
-    let {user} = useAuth();
     return (
         <div className="card-body px-0 pt-0">
             <div className="container-fluid">
-                {(type === 'add') && <Form config={new ConfigGenerator().generateUserLinks('add', user.id)} initialData={data} onClose={onClose} />}
+                {(type === 'add') && <Form config={new ConfigGenerator().generateUserLinks('add', data.id)} initialData={data} onClose={onClose} />}
                 {(type === 'update') && <Form config={new ConfigGenerator().generateUserLinks('update', data.id)} initialData={data} onClose={onClose} />}
                 {(type === 'delete') && <Form config={new ConfigGenerator().deleteUserLinks('delete', data.id)} initialData={data} onClose={onClose} />}
             </div>

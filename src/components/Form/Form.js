@@ -39,7 +39,6 @@ const createFormData = (formData) => {
 
 function Form({ config, initialData, onClose }) {
     const [submitStatus, setSubmitStatus] = useState(null);
-    console.log(config)
     const [isLoading, setIsLoading] = useState(false);
 
     const inputHooks = config.fields && generateInputs(config.fields, initialData);
@@ -70,8 +69,6 @@ function Form({ config, initialData, onClose }) {
             return setSubmitStatus(errorMessages.PASSWORDS_MUST_BE_SAME);
         }
 
-        if (config.submitBody) { formData.actionType = config.submitBody.type }
-
         const hasError = config.fields && config.fields.some((field) => inputs[field.id].hasError);
         if (hasError) {
             setIsLoading(false);
@@ -96,15 +93,14 @@ function Form({ config, initialData, onClose }) {
                 setSubmitStatus(res.data);
                 setTimeout(() => {
                     window.location.reload();
-                    setIsLoading(false);
                 }, 2000);
             } else {
                 setSubmitStatus(res.data);
             }
         } catch (err) {
-            setIsLoading(false);
             setSubmitStatus(errorMessages.GENERAL_ERROR);
         }
+        setIsLoading(false);
     };
 
     return (

@@ -2,9 +2,9 @@ import { NavLink } from "react-router-dom";
 import useAuth from "../../hooks/useAuth"
 
 const ProtectedNavLink = ({ to, allowedRoles, children, ...rest }) => {
-    const { user } = useAuth();
+    const { localUser } = useAuth();
 
-    if (!allowedRoles.includes(user?.role?.name)) return null;
+    if (!allowedRoles.includes(localUser?.role?.name)) return null;
 
     return (
         <li className="nav-item">

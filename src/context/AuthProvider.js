@@ -5,7 +5,7 @@ import Loader from "../components/Loader/Loader";
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
+    const [localUser, setLocalUser] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
     let accessToken = localStorage.getItem('accessToken');
@@ -80,7 +80,7 @@ export const AuthProvider = ({ children }) => {
             validateToken(accessToken).then((user) => {
                 if (user) {
                     setIsAuthenticated(true);
-                    setUser(user);
+                    setLocalUser(user);
                 } else {
                     setIsAuthenticated(false);
                 }
@@ -94,7 +94,7 @@ export const AuthProvider = ({ children }) => {
     if (loading) return <div><Loader /></div>;
 
     return (
-        <AuthContext.Provider value={{ user, setUser, isAuthenticated, setIsAuthenticated, refreshAccessToken }}>
+        <AuthContext.Provider value={{ localUser, setLocalUser, isAuthenticated, setIsAuthenticated, refreshAccessToken }}>
             {children}
         </AuthContext.Provider>
     );

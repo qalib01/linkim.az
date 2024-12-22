@@ -90,7 +90,7 @@ const router = createBrowserRouter([
                                 element: <ProtectedRoute allowedRoles='Admin' />,
                                 children: [
                                     { path: '', element: withSuspense(Users) },
-                                    { path: ':id', element: withSuspense(Profile) },
+                                    { path: 'profile/:id', element: withSuspense(Profile) },
                                 ]
                             },
                         ],
