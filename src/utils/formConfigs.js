@@ -61,8 +61,9 @@ export class ConfigGenerator {
                     validation: (value) => isNotEmpty(value),
                     transform: (value) => value.toLowerCase(),
                     required: true,
-                    disabled: (user) => !!user.email,
-                    readOnly: (user) => !!user.email,
+                    // disabled: (user) => !!user.email,
+                    disabled: (user) => !!user?.email && user?.role?.name !== 'Admin',
+                    readOnly: (user) => !!user?.email && user?.role?.name !== 'Admin',
                     grid: { col: 6 },
                 },
                 {
@@ -76,8 +77,8 @@ export class ConfigGenerator {
                     validation: (value) => isNotEmpty(value) && isValidUsername(value) && hasMinLength(value, usernameMinLength) && hasMaxTrimedLength(value, usernameMaxLength),
                     info: `İstifadəçi adı balaca hərflə, minimum ${usernameMinLength}, maksimum ${usernameMaxLength} xarakter olmalı və xüsusi işarələr istifadə olmamalıdır. Nümunə: link, link01, link_01, link.01`,
                     required: true,
-                    disabled: (user) => !!user?.username,
-                    readOnly: (user) => !!user?.username,
+                    disabled: (user) => !!user?.username && user?.role?.name !== 'Admin',
+                    readOnly: (user) => !!user?.username && user?.role?.name !== 'Admin',
                     grid: { col: 6 },
                 },
                 {

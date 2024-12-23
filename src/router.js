@@ -22,6 +22,7 @@ const IndexErrorPage = lazy(() => import('./error/IndexErrorPage'));
 
 const Dashboard = lazy(() => import('./pages/User/Dashboard/Dashboard'));
 const Profile = lazy(() => import('./pages/User/Profile/Profile'));
+const Faqs = lazy(() => import('./pages/User/Faqs/Faqs'));
 const Users = lazy(() => import('./pages/User/Users/Users'));
 const UserErrorPage = lazy(() => import('./error/UserErrorPage'));
 
@@ -85,6 +86,7 @@ const router = createBrowserRouter([
                             { index: true, element: withSuspense(Dashboard) },
                             { path: 'dashboard', element: withSuspense(Dashboard) },
                             { path: 'profile', element: withSuspense(Profile) },
+                            { path: 'faqs', element: withSuspense(Faqs) },
                             { 
                                 path: 'users', 
                                 element: <ProtectedRoute allowedRoles='Admin' />,

@@ -4,7 +4,7 @@ import ShopIconSvg from "../../Icons/ShopIconSvg";
 import useSideNav from "../../../hooks/useSideNav";
 import Button from "../../Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAddressCard, faHouse, faUser, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faAddressCard, faHouse, faQuestionCircle, faUser, faXmark } from "@fortawesome/free-solid-svg-icons";
 import useIsSmallScreen from "../../../hooks/useIsSmallScreen";
 import ProtectedNavLink from "../../ProtectedRoute/ProtectedNavLink";
 
@@ -60,6 +60,12 @@ function SideNav() {
                             <FontAwesomeIcon icon={faUser} />
                         </div>
                         <span className="nav-link-text ms-1">İstifadəçilər</span>
+                    </ProtectedNavLink>
+                    <ProtectedNavLink to='/u/faqs' allowedRoles={['Admin']} onClick={() => isSmallScreen && setIsSideNavOpen(false)}>
+                        <div className="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <FontAwesomeIcon icon={faQuestionCircle} />
+                        </div>
+                        <span className="nav-link-text ms-1">TVS</span>
                     </ProtectedNavLink>
                 </ul>
             </div>

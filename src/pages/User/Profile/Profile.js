@@ -8,7 +8,7 @@ import CardBody from "../../../components/Card/CardBody";
 import Line from "../../../components/Line/Line";
 import Button from "../../../components/Button/Button";
 import useAuth from "../../../hooks/useAuth";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserEdit, faPencilAlt, faEdit, faTrash, faLink, faAdd, faCopy } from '@fortawesome/free-solid-svg-icons';
 import { useUserProfile } from "../../../hooks/useUserProfile";
