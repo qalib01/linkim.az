@@ -6,6 +6,7 @@ import { useInput } from '../../hooks/useInput';
 import errorMessages from '../../statusMessages/error';
 import Select from './Select';
 import Textarea from './Textarea';
+import Button from '../Button/Button';
 
 
 const generateInputs = (fields, initialData) => {
@@ -37,9 +38,10 @@ const createFormData = (formData) => {
     return form;
 };
 
-function Form({ config, initialData, onClose }) {
+function Form({ config, initialData, onClose, attributes }) {
     const [submitStatus, setSubmitStatus] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    console.log(attributes)
 
     const inputHooks = config.fields && generateInputs(config.fields, initialData);
     const inputs = config.fields && config.fields.reduce((acc, field, index) => {
@@ -182,17 +184,18 @@ function Form({ config, initialData, onClose }) {
                 )
             })}
 
-            <div className="text-end mt-3">
+            <div className={`text-${ attributes?.buttonLoc || 'end' } mt-3`}>
                 {config.buttons.map((button, index) => {
-                    return (<button
+                    return (<Button
                         key={index}
                         type={button.type}
                         className={button.className}
+                        asButton={true || false}
                         disabled={typeof button.disabled === 'function' ? button.disabled(isLoading) : button.disabled}
-                        onClick={typeof button.onClick === 'function' ? button.onClick(onClose) : undefined}
+                        onClick={typeof button.onClick === 'function' ? button.onClick(onClose || '') : undefined}
                     >
                         {typeof button.children === 'function' ? button.children(isLoading) : button.children}
-                    </button>)
+                    </Button>)
                 })}
             </div>
             {submitStatus && (<Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus(null)} />)}

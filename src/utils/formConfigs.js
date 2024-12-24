@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { hasMaxTrimedLength, hasMinLength, isEqualsToOtherValue, isNotEmpty, isValidPassword, isValidURL, isValidUsername } from "./validation";
 const maxDataLength = 300;
 const maxRows = 3;
@@ -302,10 +303,10 @@ export class ConfigGenerator {
         }
     }
     
-    generateUsernameAvaliability(mode, linkId) {
+    generateUsernameAvaliability(mode) {
         const modes = {
             find: {
-                url: `${this.baseApiUrl}${process.env.REACT_APP_API_ENDPOINT}/check-userName/${linkId}`,
+                url: `${this.baseApiUrl}${process.env.REACT_APP_API_ENDPOINT}/check-userName`,
                 method: 'POST',
             },
         }
@@ -319,15 +320,58 @@ export class ConfigGenerator {
                     label: 'İstifadəçi adı',
                     placeholder: 'İstifadəçi adı',
                     value: (link) => link?.url || '',
-                    validation: (value) => isNotEmpty(value) && isValidUsername(value),
+                    validation: (value) => isNotEmpty(value) && isValidUsername(value) && hasMinLength(value, usernameMinLength) && hasMaxTrimedLength(value, usernameMaxLength),
                     info: 'İstifadəçi adı balaca hərflə, minimum 4, maksimum 12 xarakter olmalı və xüsusi işarələr istifadə olmamalıdır. Nümunə: link, link01, link_01, link.01',
                     required: true,
+                    grid: { col: 12 },
                 },
+            ],
+            contents: [
+                (data) => <p> Sil düyməsini təsdiqi etdiyin zaman <strong> {data.title} </strong> linkini bir dəfəlik silmiş olacaqsan və bunun geri qayıdışı olmayacaq, daha sonra yenisini yarada bilərsən! </p>
             ],
             buttons: [
                 {
                     type: 'submit',
-                    className: 'btn bg-gradient-primary mx-2',
+                    className: 'btn mx-2',
+                    disabled: (isLoading) => isLoading,
+                    children: (isLoading) => isLoading ? 'Göndərilir...' : 'Göndər',
+                }
+            ],
+            submitUrl: modes[mode]?.url || '',
+            submitMethod: modes[mode]?.method || '',
+            submitBody: modes[mode]?.body || null,
+        }
+    }
+
+    generateResetPasswordRequest(mode) {
+        const modes = {
+            add: {
+                url: `${this.baseApiUrl}${process.env.REACT_APP_API_ENDPOINT}/reset-password-request`,
+                method: 'POST',
+            },
+        }
+
+        return {
+            fields: [
+                {
+                    id: 'email',
+                    name: 'email',
+                    type: 'email',
+                    label: 'Email',
+                    placeholder: 'Email adresin',
+                    value: (user) => user?.email || '',
+                    validation: (value) => isNotEmpty(value),
+                    transform: (value) => value.toLowerCase(),
+                    required: true,
+                },
+            ],
+            contents: [
+                () => <p> Artıq hesabın varsa, hesabına <Link to='/p/login'>buradan</Link> giriş edə və ya yeni hesab yaratmaq istəyirsənsə, <Link to='/p/register'> buraya </Link> daxil ola bilərsən! </p>
+            ],
+            buttons: [
+                {
+                    type: 'submit',
+                    className: 'btn mx-2',
                     disabled: (isLoading) => isLoading,
                     children: (isLoading) => isLoading ? 'Göndərilir...' : 'Göndər',
                 }

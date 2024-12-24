@@ -9,6 +9,8 @@ import Alert from "../../../components/Alert/Alert";
 import { apiRequest } from "../../../utils/apiRequest";
 import Button from "../../../components/Button/Button";
 import errorMessages from "../../../statusMessages/error";
+import Form from "../../../components/Form/Form";
+import { ConfigGenerator } from "../../../utils/formConfigs";
 
 
 function ResetPasswordRequestPage() {
@@ -63,6 +65,7 @@ function ResetPasswordRequestPage() {
                             <h2 className={`title mt-3`}> Şifrəni yenilə </h2>
                         </div>
                     </div>
+                    {/* <Form config={new ConfigGenerator().generateResetPasswordRequest('add')} initialData='' attributes={{buttonLoc: 'center'}} /> */}
                     <form method="post" className={classes.form} onSubmit={handleSubmit}>
                         <div className="row gy-4">
                             <Input

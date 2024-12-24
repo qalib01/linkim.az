@@ -1,19 +1,13 @@
-import { useEffect, useState } from "react";
-// import Faqs from "../Faqs/Faqs";
+import { useEffect } from "react";
 import Section from "../../../components/Section/Section";
 import classes from './Home.module.scss'
 import Hero from "../../../components/Hero/Hero";
 import Button from "../../../components/Button/Button";
 import useAuth from "../../../hooks/useAuth";
-import Input from "../../../components/Form/Input";
-import { useInput } from "../../../hooks/useInput";
-import { isNotEmpty, isValidUsername } from "../../../utils/validation";
-import errorMessages from "../../../statusMessages/error";
-import { apiRequest } from "../../../utils/apiRequest";
-import Alert from "../../../components/Alert/Alert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLink, faShareFromSquare, faStopwatch, faUserPlus } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import Form from "../../../components/Form/Form";
+import { ConfigGenerator } from "../../../utils/formConfigs";
 
 
 function HomePage() {
@@ -101,70 +95,14 @@ function Instructions() {
 }
 
 function CheckAvaliableUserLink() {
-    const [loading, setLoading] = useState(false);
-    const [submitStatus, setSubmitStatus] = useState(null);
-
-    const {
-        value: username,
-        handleInputChange: handleUsernameChange,
-        handleInputBlur: handleUsernameBlur,
-        hasError: hasUsernameError,
-    } = useInput('', (value) => isNotEmpty(value) && isValidUsername(value), (value) => value.toLowerCase());
-
-    async function handleSubmit(event) {
-        event.preventDefault();
-        setLoading(true);
-
-        if (hasUsernameError) {
-            return setSubmitStatus(errorMessages.ALL_FIELDS_REQUIRED);
-        }
-
-        let response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/check-userName`,
-            method: 'POST',
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username })
-        });
-
-        setSubmitStatus(response.data)
-        setLoading(false);
-    }
-
     return (
         <Section sectionName='instructions' sectionBg='bgWhite'>
-            <div className="col-12 text-center">
+            <div className="text-center">
                 <h4 className={`title mt-3 mb-4`}>İstifadəçi adını axtar</h4>
-                <p>Aşağıdakı formdan istədiyin istifadəçi adını axtararaq sistemdə mövcud olub-olmamasını bilə bilərsən!</p>
-                <div className="col-6 m-auto mt-4">
-                    <form method="post" className={classes.form} onSubmit={handleSubmit}>
-                        <div className="row gy-4">
-                            <Input
-                                id='username'
-                                type='username'
-                                name='username'
-                                label='İstifadəçi adı'
-                                placeholder='İstifadəçi adı'
-                                required={true}
-                                value={username}
-                                onChange={handleUsernameChange}
-                                onBlur={handleUsernameBlur}
-                                error={hasUsernameError}
-                            />
-                            {
-                                submitStatus && submitStatus.type === 'success' && <div className={classes.hasAccount}>
-                                <p> Qeyd etdiyin istifadəçi adıyla davam etmək istəyirsənsə, <Link to={`/p/register?username=${username}`}>buradan</Link> qeydiyyat edə bilərsən. </p>
-                            </div>
-                            }
-                            
-                            <div className="text-center">
-                                <Button asButton={true} type="submit" disabled={loading && true}>{loading ? 'Göndərilir...' : 'Göndər'}</Button>
-                            </div>
-                        </div>
-                    </form>
+                <p>Aşağıdakı formdan istədiyin istifadəçi adını axtararaq sistemdə mövcud olub-olmamasını örgənə bilərsən!</p>
+                <div className="col-12 col-lg-6 m-auto mt-4">
+                    <Form config={new ConfigGenerator().generateUsernameAvaliability('find')} initialData='' attributes={{buttonLoc: 'center'}} />
                 </div>
-                {submitStatus && (
-                    <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus(null)} />
-                )}
             </div>
         </Section>
     )

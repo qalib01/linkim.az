@@ -5,11 +5,13 @@ import Button from "../../../components/Button/Button";
 import { apiRequest } from "../../../utils/apiRequest";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import useAuth from "../../../hooks/useAuth";
 
 
 function Users() {
     const [isFetching, setIsFetching] = useState(false);
     const [data, setData] = useState([]);
+    const { localUser } = useAuth();
     const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
 
     useEffect(() => {
@@ -20,7 +22,7 @@ function Users() {
             const response = await apiRequest({
                 url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_USER_API_ENDPOINT}/get-allUsers`,
                 method: 'GET',
-                headers: { 
+                headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     "Content-Type": "application/json"
                 },
@@ -76,7 +78,7 @@ function Users() {
                                     </div>
                                 </div>
                                 <div className="dataTable-container mb-4 w-100">
-                                    { isFetching && <tr className='text-center'> Məlumat yüklənir... </tr> }
+                                    {isFetching && <tr className='text-center'> Məlumat yüklənir... </tr>}
                                     <table className="table table-flush dataTable-table" id="datatable-basic">
                                         <thead className="thead-light">
                                             <tr>
@@ -105,29 +107,31 @@ function Users() {
                                         </thead>
                                         <tbody>
                                             {
-                                                sortedData ? sortedData.map((user) => (
-                                                    <tr key={user.id}>
-                                                        <td className="text-sm font-weight-normal text-center"> {user.name} </td>
-                                                        <td className="text-sm font-weight-normal text-center"> {user.email} </td>
-                                                        <td className="text-sm font-weight-normal text-center"> {user.username ? <Link to={`${process.env.REACT_APP_PROJECT_LINK}/${user.username}`}> {user.username} </Link> : 'Məlumat yoxdur'} </td>
-                                                        <td className="text-sm font-weight-normal text-center">
-                                                            <span title="Aktif"> {user.userLinks?.filter(link => link.active).length || 0} </span>
-                                                            <span> / </span>
-                                                            <span title="Ümumi"> {user.userLinks?.length || 0} </span>
-                                                        </td>
-                                                        <td className="text-sm font-weight-normal text-center"> {moment(user.createdAt).format('DD-MM-YYYY')} </td>
-                                                        <td className="text-sm font-weight-normal text-center">
-                                                            <span className={`badge badge-sm bg-gradient-${user.active ? 'success' : 'danger'}`}> {user.active ? 'Aktiv' : 'Passiv'} </span>
-                                                        </td>
-                                                        <td className="text-sm font-weight-normal d-flex align-items-center justify-content-evenly text-center">
-                                                            <Button to={`/u/users/profile/${user.id}`} style={{ fontSize: '16px' }}>
-                                                                <FontAwesomeIcon icon={faEdit} />
-                                                            </Button>
-                                                            <Button>
-                                                                <FontAwesomeIcon icon={faTrash} style={{ fontSize: '16px' }} />
-                                                            </Button>
-                                                        </td>
-                                                    </tr>
+                                                sortedData ? sortedData.map((data) => (
+                                                    localUser.id !== data.id && (
+                                                        <tr key={data.id}>
+                                                            <td className="text-sm font-weight-normal text-center"> {data.name} </td>
+                                                            <td className="text-sm font-weight-normal text-center"> {data.email} </td>
+                                                            <td className="text-sm font-weight-normal text-center"> {data.username ? <Link to={`${process.env.REACT_APP_PROJECT_LINK}/${data.username}`}> {data.username} </Link> : 'Məlumat yoxdur'} </td>
+                                                            <td className="text-sm font-weight-normal text-center">
+                                                                <span title="Aktif"> {data.userLinks?.filter(link => link.active).length || 0} </span>
+                                                                <span> / </span>
+                                                                <span title="Ümumi"> {data.userLinks?.length || 0} </span>
+                                                            </td>
+                                                            <td className="text-sm font-weight-normal text-center"> {moment(data.createdAt).format('DD-MM-YYYY')} </td>
+                                                            <td className="text-sm font-weight-normal text-center">
+                                                                <span className={`badge badge-sm bg-gradient-${data.active ? 'success' : 'danger'}`}> {data.active ? 'Aktiv' : 'Passiv'} </span>
+                                                            </td>
+                                                            <td className="text-sm font-weight-normal d-flex align-items-center justify-content-evenly text-center">
+                                                                <Button to={`/u/users/profile/${data.id}`} style={{ fontSize: '16px' }}>
+                                                                    <FontAwesomeIcon icon={faEdit} />
+                                                                </Button>
+                                                                <Button>
+                                                                    <FontAwesomeIcon icon={faTrash} style={{ fontSize: '16px' }} />
+                                                                </Button>
+                                                            </td>
+                                                        </tr>
+                                                    )
                                                 )) : 'Məlumat tapılmadı'
                                             }
                                         </tbody>
