@@ -41,7 +41,6 @@ const createFormData = (formData) => {
 function Form({ config, initialData, onClose, attributes }) {
     const [submitStatus, setSubmitStatus] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    console.log(attributes)
 
     const inputHooks = config.fields && generateInputs(config.fields, initialData);
     const inputs = config.fields && config.fields.reduce((acc, field, index) => {
@@ -57,7 +56,7 @@ function Form({ config, initialData, onClose, attributes }) {
         config.fields && config.fields.some((field) => {
             const { value } = inputs[field.id];
             if (value !== initialData[field.id]) formData[field.id] = value;
-        })
+        });
 
         if (formData.password === '') delete formData.password;
         if (formData.confirmPassword === '') delete formData.confirmPassword;
@@ -106,7 +105,7 @@ function Form({ config, initialData, onClose, attributes }) {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className={attributes.classList} onSubmit={handleSubmit}>
             <div className='row'>
                 {config.fields && config.fields.map((field) => {
                     const input = inputs[field.id];
@@ -189,7 +188,7 @@ function Form({ config, initialData, onClose, attributes }) {
                     return (<Button
                         key={index}
                         type={button.type}
-                        className={button.className}
+                        classList={button.className}
                         asButton={true || false}
                         disabled={typeof button.disabled === 'function' ? button.disabled(isLoading) : button.disabled}
                         onClick={typeof button.onClick === 'function' ? button.onClick(onClose || '') : undefined}

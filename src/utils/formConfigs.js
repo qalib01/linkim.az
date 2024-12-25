@@ -326,9 +326,6 @@ export class ConfigGenerator {
                     grid: { col: 12 },
                 },
             ],
-            contents: [
-                (data) => <p> Sil düyməsini təsdiqi etdiyin zaman <strong> {data.title} </strong> linkini bir dəfəlik silmiş olacaqsan və bunun geri qayıdışı olmayacaq, daha sonra yenisini yarada bilərsən! </p>
-            ],
             buttons: [
                 {
                     type: 'submit',
@@ -365,9 +362,6 @@ export class ConfigGenerator {
                     required: true,
                 },
             ],
-            contents: [
-                () => <p> Artıq hesabın varsa, hesabına <Link to='/p/login'>buradan</Link> giriş edə və ya yeni hesab yaratmaq istəyirsənsə, <Link to='/p/register'> buraya </Link> daxil ola bilərsən! </p>
-            ],
             buttons: [
                 {
                     type: 'submit',
@@ -375,6 +369,63 @@ export class ConfigGenerator {
                     disabled: (isLoading) => isLoading,
                     children: (isLoading) => isLoading ? 'Göndərilir...' : 'Göndər',
                 }
+            ],
+            submitUrl: modes[mode]?.url || '',
+            submitMethod: modes[mode]?.method || '',
+            submitBody: modes[mode]?.body || null,
+        }
+    }
+
+    generateResetPassword(mode) {
+        const modes = {
+            update: {
+                url: `${this.baseApiUrl}${process.env.REACT_APP_API_ENDPOINT}/reset-password`,
+                method: 'POST',
+            },
+        }
+
+        return {
+            fields: [
+                {
+                    id: 'email',
+                    name: 'email',
+                    type: 'email',
+                    label: 'Email',
+                    placeholder: 'Email adresin',
+                    value: (user) => user?.email || '',
+                    validation: (value) => isNotEmpty(value),
+                    transform: (value) => value.toLowerCase(),
+                    required: true,
+                    disabled: (user) => !!user.email,
+                    readOnly: (user) => !!user.email,
+                },
+                {
+                    id: 'password',
+                    name: 'password',
+                    type: 'password',
+                    label: 'Yeni şifrə',
+                    placeholder: 'Yeni şifrə',
+                    required: true,
+                    info: 'Şifrə təhlükəsizliklə bağlı böyük, kiçik hərflər, rəqəm və xüsusi işarələr, minimum 8 xarakter olmalıdır. Nümunə: Link01!!',
+                    validation: (value) => hasMinLength(value, 8) && isNotEmpty(value) && isValidPassword(value),
+                },
+                {
+                    id: 'confirmPassword',
+                    name: 'confirmPassword',
+                    type: 'password',
+                    label: 'Yeni şifrənin təkrarı',
+                    placeholder: 'Yeni şifrənin təkrarı',
+                    required: true,
+                    validation: (value, otherValue) => isEqualsToOtherValue(value, otherValue),
+                },
+            ],
+            buttons: [
+                {
+                    type: 'submit',
+                    className: 'btn mx-2',
+                    disabled: (isLoading) => isLoading,
+                    children: (isLoading) => isLoading ? 'Göndərilir...' : 'Göndər',
+                },
             ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',

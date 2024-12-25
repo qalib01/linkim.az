@@ -14,7 +14,7 @@ import errorMessages from "../../../statusMessages/error";
 function ResetPasswordRequestPage() {
     const { token } = useParams();
     const [loading, setLoading] = useState(false);
-    const [emailValue, setEmailValue] = useState('')
+    const [email, setEmail] = useState({})
     const [isTokenValid, setIsTokenValid] = useState(false)
     const [submitStatus, setSubmitStatus] = useState(null);
     const navigate = useNavigate();
@@ -35,7 +35,7 @@ function ResetPasswordRequestPage() {
 
         if (response.status === 200) {
             setIsTokenValid(true);
-            setEmailValue(data.email);
+            setEmail(data.email);
         } else {
             setSubmitStatus(data);
             setTimeout(() => {
@@ -45,7 +45,7 @@ function ResetPasswordRequestPage() {
     }
 
     const {
-        value: passwordValue,
+        value: password,
         handleInputChange: handlePasswordChange,
         handleInputBlur: handlePasswordBlur,
         hasError: hasPasswordError,
@@ -53,12 +53,12 @@ function ResetPasswordRequestPage() {
     } = useInput('', (value) => hasMinLength(value, 8) && isNotEmpty(value));
 
     const {
-        value: passwordConfirmValue,
+        value: confirmPassword,
         handleInputChange: handlePasswordConfirmChange,
         handleInputBlur: handlePasswordConfirmBlur,
         hasError: hasPasswordConfirmError,
         handleInputReset: handlePasswordConfirmReset,
-    } = useInput('', (value) => isEqualsToOtherValue(value, passwordValue) && isNotEmpty(value));
+    } = useInput('', (value) => isEqualsToOtherValue(value, password) && isNotEmpty(value));
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -73,7 +73,7 @@ function ResetPasswordRequestPage() {
             url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/reset-password`,
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ emailValue, passwordValue })
+            body: JSON.stringify({ email, password })
         });
 
         const data = response.data;
@@ -99,6 +99,7 @@ function ResetPasswordRequestPage() {
                         </div>
                     </div>
                     {isTokenValid ? (<>
+                        {/* <Form config={new ConfigGenerator().generateResetPassword('update')} initialData={data} attributes={{ buttonLoc: 'center', classList: classes.form }} /> */}
                         <form method="post" className={classes.form} onSubmit={handleSubmit}>
                             <div className="row gy-4">
                                 <Input
@@ -108,7 +109,7 @@ function ResetPasswordRequestPage() {
                                     label='Email'
                                     placeholder='Emailin'
                                     required={true}
-                                    value={emailValue}
+                                    value={email}
                                     disabled={true}
                                 />
                                 <Input
@@ -118,7 +119,7 @@ function ResetPasswordRequestPage() {
                                     label='Şifrə'
                                     placeholder='Şifrən'
                                     required={true}
-                                    value={passwordValue}
+                                    value={password}
                                     onChange={handlePasswordChange}
                                     onBlur={handlePasswordBlur}
                                     error={hasPasswordError}
@@ -130,7 +131,7 @@ function ResetPasswordRequestPage() {
                                     label='Şifrə təkrar'
                                     placeholder='Şifrənin təkrar'
                                     required={true}
-                                    value={passwordConfirmValue}
+                                    value={confirmPassword}
                                     onChange={handlePasswordConfirmChange}
                                     onBlur={handlePasswordConfirmBlur}
                                     error={hasPasswordConfirmError}
