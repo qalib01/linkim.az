@@ -105,7 +105,7 @@ function Form({ config, initialData, onClose, attributes }) {
     };
 
     return (
-        <form className={attributes.classList} onSubmit={handleSubmit}>
+        <form className={attributes?.classList} onSubmit={handleSubmit}>
             <div className='row'>
                 {config.fields && config.fields.map((field) => {
                     const input = inputs[field.id];

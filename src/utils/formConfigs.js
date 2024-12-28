@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { hasMaxTrimedLength, hasMinLength, isEqualsToOtherValue, isNotEmpty, isValidPassword, isValidURL, isValidUsername } from "./validation";
 const maxDataLength = 300;
 const maxRows = 3;
@@ -190,11 +189,11 @@ export class ConfigGenerator {
     generateUserLinks(mode, linkId) {
         const modes = {
             add: {
-                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/add-userLinks/${linkId}`,
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/add-userLink/${linkId}`,
                 method: 'POST',
             },
             update: {
-                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-userLinks/${linkId}`,
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-userLink/${linkId}`,
                 method: 'POST',
             },
         }
@@ -275,7 +274,7 @@ export class ConfigGenerator {
     deleteUserLinks(mode, linkId) {
         const modes = {
             delete: {
-                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-userLinks/${linkId}`,
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-userLink/${linkId}`,
                 method: 'DELETE',
             },
         }
