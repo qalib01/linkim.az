@@ -9,18 +9,18 @@ export class ConfigGenerator {
         this.baseApiUrl = baseApiUrl || `${process.env.REACT_APP_API_LINK}`
     }
 
-    generateUserData(mode, linkId) {
+    generateUserData(mode, id) {
         const modes = {
             add: {
                 url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/add-userData`,
                 method: 'POST',
             },
             update: {
-                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-userData/${linkId}`,
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-userData/${id}`,
                 method: 'POST',
             },
             delete: {
-                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-userData/${linkId}`,
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-userData/${id}`,
                 method: 'DELETE'
             },
         }
@@ -133,18 +133,18 @@ export class ConfigGenerator {
         }
     }
 
-    generateUserName(mode, linkId) {
+    generateUserName(mode, id) {
         const modes = {
             add: {
                 url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/add-userData`,
                 method: 'POST',
             },
             update: {
-                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-userData/${linkId}`,
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-userData/${id}`,
                 method: 'POST',
             },
             delete: {
-                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-userData/${linkId}`,
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-userData/${id}`,
                 method: 'DELETE'
             },
         }
@@ -186,14 +186,14 @@ export class ConfigGenerator {
         }
     }
 
-    generateUserLinks(mode, linkId) {
+    generateUserLinks(mode, id) {
         const modes = {
             add: {
-                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/add-userLink/${linkId}`,
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/add-userLink/${id}`,
                 method: 'POST',
             },
             update: {
-                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-userLink/${linkId}`,
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-userLink/${id}`,
                 method: 'POST',
             },
         }
@@ -271,10 +271,10 @@ export class ConfigGenerator {
         }
     }
 
-    deleteUserLinks(mode, linkId) {
+    deleteUserLinks(mode, id) {
         const modes = {
             delete: {
-                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-userLink/${linkId}`,
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-userLink/${id}`,
                 method: 'DELETE',
             },
         }
@@ -425,6 +425,176 @@ export class ConfigGenerator {
                     disabled: (isLoading) => isLoading,
                     children: (isLoading) => isLoading ? 'Göndərilir...' : 'Göndər',
                 },
+            ],
+            submitUrl: modes[mode]?.url || '',
+            submitMethod: modes[mode]?.method || '',
+            submitBody: modes[mode]?.body || null,
+        }
+    }
+
+    changeUserStatus(mode, id) {
+        const modes = {
+            update: {
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/activate-user/${id}`,
+                method: 'POST',
+            },
+        }
+
+        return {
+            contents: [
+                (data) => <p> Göndər düyməsini təsdiqi etdiyin zaman <strong> {data.name} {data.surname} </strong> adlı istifadəçini aktif etmiş olacaqsan və bunun qayıdışı yoxdur. Zəhmət olmasa, dəqiqləşdirib elə aktif edəsən! </p>
+            ],
+            buttons: [
+                {
+                    type: 'submit',
+                    className: 'btn bg-gradient-primary mx-2',
+                    disabled: (isLoading) => isLoading,
+                    children: (isLoading) => isLoading ? 'Göndərilir...' : 'Göndər',
+                },
+                {
+                    type: 'button',
+                    className: 'btn bg-dark text-white',
+                    onClick: (onClose) => onClose,
+                    children: 'Bağla',
+                }
+            ],
+            submitUrl: modes[mode]?.url || '',
+            submitMethod: modes[mode]?.method || '',
+            submitBody: modes[mode]?.body || null,
+        }
+    }
+
+    changeTvsData(mode, id) {
+        const modes = {
+            update: {
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-selectedFaq/${id}`,
+                method: 'POST',
+            },
+        }
+
+        return {
+            fields: [
+                {
+                    id: 'question',
+                    name: 'question',
+                    type: 'text',
+                    label: 'Sual',
+                    placeholder: 'Sual',
+                    value: (data) => data?.question || '',
+                    validation: (value) => isNotEmpty(value),
+                    required: true,
+                },
+                {
+                    id: 'answer',
+                    name: 'answer',
+                    type: 'textarea',
+                    label: 'Cavab',
+                    placeholder: 'Cavab',
+                    value: (data) => data?.answer || '',
+                    validation: (value) => isNotEmpty(value),
+                    required: true,
+                },
+                {
+                    id: 'active',
+                    name: 'active',
+                    type: 'select',
+                    label: 'Linkin statusu',
+                    value: (link) => link?.active.toString() || '',
+                    validation: (value) => isNotEmpty(value),
+                    required: true,
+                    options: [
+                        { key: '', value: '', label: 'Seçim edin' },
+                        { key: '1', value: 'true', label: 'Aktif' },
+                        { key: '0', value: 'false', label: 'Passif' },
+                    ],
+                },
+                {
+                    id: 'order',
+                    name: 'order',
+                    type: 'number',
+                    label: 'Sırası',
+                    value: (data) => data?.order || '',
+                    validation: (value) => isNotEmpty(value),
+                    required: true,
+                },
+            ],
+            buttons: [
+                {
+                    type: 'submit',
+                    className: 'btn bg-gradient-primary mx-2',
+                    disabled: (isLoading) => isLoading,
+                    children: (isLoading) => isLoading ? 'Göndərilir...' : 'Göndər',
+                },
+                {
+                    type: 'button',
+                    className: 'btn bg-dark text-white',
+                    onClick: (onClose) => onClose,
+                    children: 'Bağla',
+                }
+            ],
+            submitUrl: modes[mode]?.url || '',
+            submitMethod: modes[mode]?.method || '',
+            submitBody: modes[mode]?.body || null,
+        }
+    }
+
+    changeTvsGroupData(mode, id) {
+        const modes = {
+            update: {
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-selectedFaqGroup/${id}`,
+                method: 'POST',
+            },
+        }
+
+        return {
+            fields: [
+                {
+                    id: 'group',
+                    name: 'group',
+                    type: 'text',
+                    label: 'Qrup adı',
+                    placeholder: 'Qrup adı',
+                    value: (data) => data?.name || '',
+                    validation: (value) => isNotEmpty(value),
+                    required: true,
+                },
+                {
+                    id: 'active',
+                    name: 'active',
+                    type: 'select',
+                    label: 'Linkin statusu',
+                    value: (data) => data?.active.toString() || '',
+                    validation: (value) => isNotEmpty(value),
+                    required: true,
+                    options: [
+                        { key: '', value: '', label: 'Seçim edin' },
+                        { key: '1', value: 'true', label: 'Aktif' },
+                        { key: '0', value: 'false', label: 'Passif' },
+                    ],
+                },
+                {
+                    id: 'order',
+                    name: 'order',
+                    type: 'number',
+                    label: 'Sırası',
+                    value: (data) => data?.order || '',
+                    validation: (value) => isNotEmpty(value),
+                    required: true,
+                },
+            ],
+            buttons: [
+                {
+                    type: 'submit',
+                    className: 'btn bg-gradient-primary mx-2',
+                    disabled: (isLoading) => isLoading,
+                    children: (isLoading) => isLoading ? 'Göndərilir...' : 'Göndər',
+                },
+                {
+                    type: 'button',
+                    className: 'btn bg-dark text-white',
+                    onClick: (onClose) => onClose,
+                    children: 'Bağla',
+                }
             ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',

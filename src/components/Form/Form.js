@@ -178,7 +178,7 @@ function Form({ config, initialData, onClose, attributes }) {
             {config.contents && config.contents.map((content, index) => {
                 return (
                     <div key={index}>
-                        { typeof content === 'function' ? content({ title: initialData.title }) : content}
+                        { typeof content === 'function' ? content({ ...initialData }) : content}
                     </div>
                 )
             })}
