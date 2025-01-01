@@ -1,4 +1,4 @@
-import { hasMaxTrimedLength, hasMinLength, isEqualsToOtherValue, isNotEmpty, isValidPassword, isValidURL, isValidUsername } from "./validation";
+import { hasMaxTrimedLength, hasMinLength, isEqualsToOtherValue, isNotEmpty, isValidImage, isValidPassword, isValidURL, isValidUsername } from "./validation";
 const maxDataLength = 300;
 const maxRows = 3;
 const usernameMinLength = 3;
@@ -111,6 +111,45 @@ export class ConfigGenerator {
                     rows: maxRows,
                     value: (user) => user?.bio || '',
                     grid: { col: 12 },
+                }
+            ],
+            buttons: [
+                {
+                    type: 'submit',
+                    className: 'btn bg-gradient-primary mx-2',
+                    disabled: (isLoading) => isLoading,
+                    children: (isLoading) => isLoading ? 'Göndərilir...' : 'Göndər',
+                },
+                {
+                    type: 'button',
+                    className: 'btn bg-dark text-white',
+                    onClick: (onClose) => onClose,
+                    children: 'Bağla',
+                }
+            ],
+            submitUrl: modes[mode]?.url || '',
+            submitMethod: modes[mode]?.method || '',
+            submitBody: modes[mode]?.body || null,
+        }
+    }
+
+    generateUserPhoto(mode, id) {
+        const modes = {
+            update: {
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/upload-userPhoto/${id}`,
+                method: 'POST',
+            },
+        }
+
+        return {
+            fields: [
+                {
+                    id: 'profilePhoto',
+                    label: 'Profil şəkili',
+                    type: 'file',
+                    validation: (value) => value,
+                    accept: 'image/png, image/jpeg, image/jpg',
+                    required: true,
                 }
             ],
             buttons: [
@@ -301,7 +340,7 @@ export class ConfigGenerator {
             submitMethod: modes[mode]?.method || '',
         }
     }
-    
+
     generateUsernameAvaliability(mode) {
         const modes = {
             find: {
@@ -554,7 +593,7 @@ export class ConfigGenerator {
                     type: 'text',
                     label: 'Qrup adı',
                     placeholder: 'Qrup adı',
-                    value: (data) => data?.name || '',
+                    value: (data) => data?.group || '',
                     validation: (value) => isNotEmpty(value),
                     required: true,
                 },
@@ -581,6 +620,70 @@ export class ConfigGenerator {
                     validation: (value) => isNotEmpty(value),
                     required: true,
                 },
+            ],
+            buttons: [
+                {
+                    type: 'submit',
+                    className: 'btn bg-gradient-primary mx-2',
+                    disabled: (isLoading) => isLoading,
+                    children: (isLoading) => isLoading ? 'Göndərilir...' : 'Göndər',
+                },
+                {
+                    type: 'button',
+                    className: 'btn bg-dark text-white',
+                    onClick: (onClose) => onClose,
+                    children: 'Bağla',
+                }
+            ],
+            submitUrl: modes[mode]?.url || '',
+            submitMethod: modes[mode]?.method || '',
+            submitBody: modes[mode]?.body || null,
+        }
+    }
+
+    deleteTvsData(mode, id) {
+        const modes = {
+            delete: {
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-selectedFaq/${id}`,
+                method: 'DELETE',
+            },
+        }
+
+        return {
+            contents: [
+                (data) => <p> Sil düyməsini təsdiqi etdiyin zaman <strong> {data.question} </strong> məlumatını bir dəfəlik silmiş olacaqsan və bunun geri qayıdışı olmayacaq, daha sonra yenisini yarada bilərsən! </p>
+            ],
+            buttons: [
+                {
+                    type: 'submit',
+                    className: 'btn bg-gradient-primary mx-2',
+                    disabled: (isLoading) => isLoading,
+                    children: (isLoading) => isLoading ? 'Göndərilir...' : 'Göndər',
+                },
+                {
+                    type: 'button',
+                    className: 'btn bg-dark text-white',
+                    onClick: (onClose) => onClose,
+                    children: 'Bağla',
+                }
+            ],
+            submitUrl: modes[mode]?.url || '',
+            submitMethod: modes[mode]?.method || '',
+            submitBody: modes[mode]?.body || null,
+        }
+    }
+
+    deleteTvsGroupData(mode, id) {
+        const modes = {
+            delete: {
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-selectedFaqGroup/${id}`,
+                method: 'DELETE',
+            },
+        }
+
+        return {
+            contents: [
+                (data) => <p> Sil düyməsini təsdiqi etdiyin zaman <strong> {data.group} </strong> məlumatını bir dəfəlik silmiş olacaqsan və bunun geri qayıdışı olmayacaq, daha sonra yenisini yarada bilərsən! </p>
             ],
             buttons: [
                 {

@@ -169,6 +169,7 @@ function Form({ config, initialData, onClose, attributes }) {
                                     className={`form-control ${input.hasError ? 'is-invalid' : ''}`}
                                     info={!input.value ? field.info : ''}
                                     error={input.hasError}
+                                    accept={field.accept}
                                 />
                             )}
                         </div>

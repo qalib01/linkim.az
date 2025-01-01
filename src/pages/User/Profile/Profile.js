@@ -24,10 +24,6 @@ import Loader from "../../../components/Loader/Loader";
 
 
 function Profile() {
-    const [isOpen, setIsOpen] = useState(false);
-    const [modalTitle, setModalTitle] = useState('');
-    const [modalContent, setModalContent] = useState(null);
-    const [modalSize, setModalSize] = useState(null);
     const [submitStatus, setSubmitStatus] = useState([]);
     const { setProfileImgUrl } = useUserProfile();
     const [hasAlert, setHasAlert] = useState(false);
@@ -36,10 +32,11 @@ function Profile() {
     const [isFetching, setIsFetching] = useState(false);
     const [user, setUser] = useState({});
     const userImgUrl = `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_USER_PHOTO_SERVER_URL}/${user.photo}`;
+    const [modalConfig, setModalConfig] = useState(null);
 
     useEffect(() => {
         window.scrollTo(0, 0);
-        if(!id) return setUser(localUser);
+        if (!id) return setUser(localUser);
 
         async function getData() {
             setIsFetching(true);
@@ -64,19 +61,11 @@ function Profile() {
     }, [id, localUser]);
 
     function openModal(title, content, size) {
-        setIsOpen(true);
-        setModalTitle(title);
-        setModalContent(content);
-        setModalSize(size);
         setProfileImgUrl(userImgUrl);
         document.body.style.overflow = 'hidden';
     }
 
     function closeModal() {
-        setIsOpen(false);
-        setModalTitle('');
-        setModalContent(null);
-        setModalSize(null);
         setProfileImgUrl('');
         document.body.style.overflow = 'visible';
     }
@@ -91,9 +80,19 @@ function Profile() {
         setSubmitStatus(errorMessages.USER_UP_TO_LINK_LIMIT);
     }
 
+
+    function handleOpenModal(title, size, content) {
+        setModalConfig({ isOpen: true, title, size, content });
+    }
+
+    function handleCloseModal() {
+        setModalConfig({ ...modalConfig, isOpen: false });
+    }
+
+
     return (
         <>
-            { isFetching && <Loader /> }
+            {isFetching && <Loader />}
             <div className="container-fluid">
                 <div className="page-header min-height-300 border-radius-xl mt-4">
                     <span className="mask bg-gradient-primary opacity-6"></span>
@@ -102,7 +101,7 @@ function Profile() {
                     <CardBody>
                         <div className={`row gx-4 ${window.innerWidth <= 425 ? 'align-items-center flex-column' : ''}`}>
                             <div className="col-auto">
-                                <CardAction title='Profil şəkili' openModal={() => openModal('Profil şəkili', <ProfilePictureEditForm onClose={closeModal} />, 'md')}>
+                                {/* <CardAction title='Profil şəkili' openModal={() => openModal('Profil şəkili', <ProfilePictureEditForm onClose={closeModal} />, 'md')}>
                                     <div className="avatar-container">
                                         <div className={`avatar ${window.innerWidth > 425 ? 'avatar-xl' : 'avatar-xxl'} position-relative`}>
                                             <img src={userImgUrl} alt="Profil şəkili" className="border-radius-lg shadow-sm" />
@@ -111,7 +110,10 @@ function Profile() {
                                             <FontAwesomeIcon icon={faPencilAlt} />
                                         </div>
                                     </div>
-                                </CardAction>
+                                </CardAction> */}
+                                <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => handleOpenModal('İstifadəçi şəklini dəyiş', 'md', <Form config={new ConfigGenerator().generateUserPhoto('update', user.id)} initialData={user} onClose={handleCloseModal} />)} style={{ fontSize: '16px' }}>
+                                    <FontAwesomeIcon icon={faAdd} />
+                                </Button>
                             </div>
                             <div className="col-auto my-auto">
                                 <div className="h-100">
@@ -132,7 +134,9 @@ function Profile() {
                     <div className="col-12 col-xl-4">
                         <UserProfileCard classList='max-height-400 overflow-x-hidden'>
                             <CardHeader title='Profil məlumatları'>
-                                <CardAction icon={faUserEdit} title='Edit profile' classList='col-6 text-end' openModal={() => openModal('Profil məlumatları', <Form config={new ConfigGenerator().generateUserData('update', user.id)} initialData={user} onClose={closeModal} />, 'lg')} />
+                                <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => handleOpenModal('İstifadəçi məlumatları', 'lg', <Form config={new ConfigGenerator().generateUserData('update', user.id)} initialData={user} onClose={handleCloseModal} />)} style={{ fontSize: '16px' }}>
+                                    <FontAwesomeIcon icon={faUserEdit} />
+                                </Button>
                             </CardHeader>
                             <CardBody classList='p-3'>
                                 <p className="text-sm">
@@ -164,18 +168,20 @@ function Profile() {
                     <div className="col-12 col-xl-4">
                         <UserProfileCard classList='max-height-400 overflow-x-hidden'>
                             <CardHeader title='Linklər'>
-                                <CardAction icon={faAdd} title='Yarat' classList={`col-6 text-end`} openModal={user.userLinks?.length < 10 ? () => openModal('Link yarat', <ProfileLinkEditForm onClose={closeModal} data={user} type='add' />, 'md') : onUserUpToLimit} />
+                                <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={user.userLinks?.length < 10 ? () => handleOpenModal('İstifadəçi linki yarat', 'md', <Form config={new ConfigGenerator().generateUserLinks('add', user.id)} initialData={user} onClose={handleCloseModal} />) : onUserUpToLimit} style={{ fontSize: '16px' }}>
+                                    <FontAwesomeIcon icon={faAdd} />
+                                </Button>
                             </CardHeader>
                             <CardBody classList='p-3'>
                                 <ListGroupParent>
-                                    {user.userLinks?.length > 0 ? user.userLinks.map((link) => (
-                                        <ListGroupItem classList='list-group-item border-0 d-flex align-items-center justify-content-between px-0 mb-2' key={link.id} >
+                                    {user.userLinks?.length > 0 ? user.userLinks.map((data) => (
+                                        <ListGroupItem classList='list-group-item border-0 d-flex align-items-center justify-content-between px-0 mb-2' key={data.id} >
                                             <div className="col-8 col-lg-9 d-flex align-items-start flex-column justify-content-center">
-                                                <h6 className="mb-0 text-sm"> {link.title} </h6>
+                                                <h6 className="mb-0 text-sm"> {data.title} </h6>
                                                 <p className="mb-0 text-xs">
-                                                    <span> {link.type} </span>
+                                                    <span> {data.type} </span>
                                                     <span> - </span>
-                                                    <span> {link.active ?
+                                                    <span> {data.active ?
                                                         <span className='text-success'>Aktif</span>
                                                         :
                                                         <span className='text-danger'> Passiv </span>
@@ -183,11 +189,15 @@ function Profile() {
                                                 </p>
                                             </div>
                                             <div className="col-4 col-lg-3 d-flex align-items-center justify-content-between">
-                                                <Button classList='text-end' to={link.url} target="_blank">
+                                                <Button classList='text-end' to={data.url} target="_blank">
                                                     <FontAwesomeIcon icon={faLink} className="move-on-hover" />
                                                 </Button>
-                                                <CardAction icon={faEdit} title='Düzəlt' classList='text-end' openModal={() => openModal('Linki düzəlt', <ProfileLinkEditForm onClose={closeModal} data={link} type='update' />, 'md')} />
-                                                <CardAction icon={faTrash} title='Sil' classList='text-end' openModal={() => openModal('Linki sil', <ProfileLinkEditForm onClose={closeModal} data={link} type='delete' />, 'md')} />
+                                                <Button onClick={() => handleOpenModal('Link düzəliş et', 'md', <Form config={new ConfigGenerator().generateUserLinks('update', data.id)} initialData={data} onClose={handleCloseModal} />)} style={{ fontSize: '16px' }}>
+                                                    <FontAwesomeIcon icon={faEdit} />
+                                                </Button>
+                                                <Button onClick={() => handleOpenModal('Link sil', 'md', <Form config={new ConfigGenerator().deleteUserLinks('delete', data.id)} initialData={data} onClose={handleCloseModal} />)} style={{ fontSize: '16px' }}>
+                                                    <FontAwesomeIcon icon={faTrash} />
+                                                </Button>
                                             </div>
                                         </ListGroupItem>
                                     )) : <p> Məlumat yoxdur </p>}
@@ -198,7 +208,7 @@ function Profile() {
                 </div>
             </div>
             {hasAlert && <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setHasAlert(false)} />}
-            {isOpen && <Modal onClose={closeModal} title={modalTitle} size={modalSize}>{modalContent}</Modal>}
+            {modalConfig?.isOpen && (<Modal title={modalConfig.title} size={modalConfig.size} onClose={handleCloseModal}> {modalConfig.content} </Modal>)}
         </>
     )
 }
@@ -268,16 +278,5 @@ function ProfilePictureEditForm({ onClose }) {
     )
 }
 
-function ProfileLinkEditForm({ onClose, data, type }) {
-    return (
-        <div className="card-body px-0 pt-0">
-            <div className="container-fluid">
-                {(type === 'add') && <Form config={new ConfigGenerator().generateUserLinks('add', data.id)} initialData={data} onClose={onClose} />}
-                {(type === 'update') && <Form config={new ConfigGenerator().generateUserLinks('update', data.id)} initialData={data} onClose={onClose} />}
-                {(type === 'delete') && <Form config={new ConfigGenerator().deleteUserLinks('delete', data.id)} initialData={data} onClose={onClose} />}
-            </div>
-        </div>
-    )
-}
 
 export default Profile;

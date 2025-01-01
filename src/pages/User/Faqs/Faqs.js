@@ -44,7 +44,6 @@ function Faqs() {
             return 0;
         });
     }, [data, sortConfig]);
-    console.log(sortedData)
 
     function handleSort(key) {
         setSortConfig((prevConfig) => {
@@ -58,7 +57,7 @@ function Faqs() {
     }
 
     function handleCloseModal() {
-        setModalConfig({ isOpen: false, ...modalConfig });
+        setModalConfig({ ...modalConfig, isOpen: false });
     }
 
     return (
@@ -115,7 +114,7 @@ function Faqs() {
                                                     sortedData ? sortedData.map((data) => (
                                                         <>
                                                             <tr key={data.id}>
-                                                                <td className="text-sm font-weight-normal text-center"> {data.name} </td>
+                                                                <td className="text-sm font-weight-normal text-center"> {data.group} </td>
                                                                 <td className="text-sm font-weight-normal text-center"> - </td>
                                                                 <td className="text-sm font-weight-normal text-center"> - </td>
                                                                 <td className="text-sm font-weight-normal text-center">
@@ -125,35 +124,31 @@ function Faqs() {
                                                                     <span className={`badge badge-sm bg-gradient-info`}> {data.order} </span>
                                                                 </td>
                                                                 <td className="text-sm font-weight-normal d-flex align-items-center justify-content-evenly text-center">
-                                                                    {
-                                                                        <Button onClick={() => handleOpenModal('TVS qrup düzəliş et', 'md', <Form config={new ConfigGenerator().changeTvsGroupData('update', data.id)} initialData={data} onClose={handleCloseModal} />)} style={{ fontSize: '16px' }}>
-                                                                            <FontAwesomeIcon icon={faEdit} />
-                                                                        </Button>
-                                                                    }
-                                                                    <Button>
-                                                                        <FontAwesomeIcon icon={faTrash} style={{ fontSize: '16px' }} />
+                                                                    <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => handleOpenModal('TVS qrup düzəliş et', 'md', <Form config={new ConfigGenerator().changeTvsGroupData('update', data.id)} initialData={data} onClose={handleCloseModal} />)} style={{ fontSize: '16px' }}>
+                                                                        <FontAwesomeIcon icon={faEdit} />
+                                                                    </Button>
+                                                                    <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => handleOpenModal('TVS qrup sil', 'md', <Form config={new ConfigGenerator().deleteTvsGroupData('delete', data.id)} initialData={data} onClose={handleCloseModal} />)} style={{ fontSize: '16px' }}>
+                                                                        <FontAwesomeIcon icon={faTrash} />
                                                                     </Button>
                                                                 </td>
                                                             </tr>
-                                                            {data.faqs ? data.faqs.map((faq) => (
-                                                                <tr key={faq.id}>
+                                                            {data.faqs ? data.faqs.map((data2) => (
+                                                                <tr key={data2.id}>
                                                                     <td className="text-sm font-weight-normal text-center"> - </td>
-                                                                    <td className="text-sm font-weight-normal text-center"> {faq.question} </td>
-                                                                    <td className="text-sm font-weight-normal text-center" > {faq.answer} </td>
+                                                                    <td className="text-sm font-weight-normal text-center"> {data2.question} </td>
+                                                                    <td className="text-sm font-weight-normal text-center" > {data2.answer} </td>
                                                                     <td className="text-sm font-weight-normal text-center">
-                                                                        <span className={`badge badge-sm bg-gradient-${faq.active ? 'success' : 'danger'}`}> {faq.active ? 'Aktiv' : 'Passiv'} </span>
+                                                                        <span className={`badge badge-sm bg-gradient-${data2.active ? 'success' : 'danger'}`}> {data2.active ? 'Aktiv' : 'Passiv'} </span>
                                                                     </td>
                                                                     <td className="text-sm font-weight-normal text-center">
-                                                                        <span className={`badge badge-sm bg-gradient-info`}> {faq.order} </span>
+                                                                        <span className={`badge badge-sm bg-gradient-info`}> {data2.order} </span>
                                                                     </td>
                                                                     <td className="text-sm font-weight-normal d-flex align-items-center justify-content-evenly text-center">
-                                                                        {
-                                                                            <Button onClick={() => handleOpenModal('TVS düzəliş et', 'md', <Form config={new ConfigGenerator().changeTvsData('update', faq.id)} initialData={faq} onClose={handleCloseModal} />)} style={{ fontSize: '16px' }}>
-                                                                                <FontAwesomeIcon icon={faEdit} />
-                                                                            </Button>
-                                                                        }
-                                                                        <Button>
-                                                                            <FontAwesomeIcon icon={faTrash} style={{ fontSize: '16px' }} />
+                                                                        <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => handleOpenModal('TVS düzəliş et', 'md', <Form config={new ConfigGenerator().changeTvsData('update', data2.id)} initialData={data2} onClose={handleCloseModal} />)} style={{ fontSize: '16px' }}>
+                                                                            <FontAwesomeIcon icon={faEdit} />
+                                                                        </Button>
+                                                                        <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => handleOpenModal('TVS sil', 'md', <Form config={new ConfigGenerator().deleteTvsData('delete', data2.id)} initialData={data2} onClose={handleCloseModal} />)} style={{ fontSize: '16px' }}>
+                                                                            <FontAwesomeIcon icon={faTrash} />
                                                                         </Button>
                                                                     </td>
                                                                 </tr>
@@ -216,9 +211,7 @@ function Faqs() {
                     </div>
                 </div>
             </div>
-            {
-                modalConfig?.isOpen && (<Modal title={modalConfig.title} size={modalConfig.size} onClose={handleCloseModal}> {modalConfig.content} </Modal>)
-            }
+            { modalConfig?.isOpen && (<Modal title={modalConfig.title} size={modalConfig.size} onClose={handleCloseModal}> {modalConfig.content} </Modal>) }
         </>
     )
 }
