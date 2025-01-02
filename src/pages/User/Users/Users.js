@@ -39,7 +39,6 @@ function Users() {
         getData();
     }, []);
 
-
     const sortedData = useMemo(() => {
         if (!sortConfig.key) return data;
 

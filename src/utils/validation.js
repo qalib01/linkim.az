@@ -5,7 +5,7 @@ export function isEmail(value) {
 
 export function isNotEmpty(value) {
     if (typeof value !== 'string') { return !!value }
-    return value.trim() !== '';
+    return value?.trim() !== '';
 }
 
 export function isValidUsername(value) {
@@ -18,10 +18,6 @@ export function isValidURL(value) {
     return urlRegex.test(value);
 }
 
-export function isValidImage(value) {;
-    return value.type.startsWith('image/');
-}
-
 export function isValidPassword(value) {
     const urlRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
     return urlRegex.test(value);
@@ -32,15 +28,15 @@ export function isBoolean(value) {
 }
 
 export function hasMinLength(value, minLength) {
-    return value.length >= minLength;
+    return value?.length >= minLength;
 }
 
 export function hasMaxLength(value, maxLength) {
-    return value.length <= maxLength;
+    return value?.length <= maxLength;
 }
 
 export function hasMaxTrimedLength(value, maxLength) {
-    return value.trim().length <= maxLength;
+    return value?.trim().length <= maxLength;
 }
 
 export function isEqualsToOtherValue(value, otherValue) {
@@ -48,5 +44,5 @@ export function isEqualsToOtherValue(value, otherValue) {
 }
 
 export function isContentCatchMaxLimit(value, maxLength) {
-    return value.trim().length <= maxLength;
+    return value?.trim().length <= maxLength;
 }

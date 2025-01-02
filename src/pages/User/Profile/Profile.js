@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import UserProfileCard from "../../../components/Card/UserProfileCard";
 import ListGroupParent from "../../../components/ListGroup/ListGroupParent";
 import ListGroupItem from "../../../components/ListGroup/ListGroupItem";
 import CardHeader from "../../../components/Card/CardHeader";
-import CardAction from "../../../components/Card/CardAction";
 import CardBody from "../../../components/Card/CardBody";
 import Line from "../../../components/Line/Line";
 import Button from "../../../components/Button/Button";
@@ -11,7 +10,6 @@ import useAuth from "../../../hooks/useAuth";
 import { Link, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserEdit, faPencilAlt, faEdit, faTrash, faLink, faAdd, faCopy } from '@fortawesome/free-solid-svg-icons';
-import { useUserProfile } from "../../../hooks/useUserProfile";
 import { apiRequest } from "../../../utils/apiRequest";
 import Alert from "../../../components/Alert/Alert";
 import errorMessages from "../../../statusMessages/error";
@@ -25,7 +23,6 @@ import Loader from "../../../components/Loader/Loader";
 
 function Profile() {
     const [submitStatus, setSubmitStatus] = useState([]);
-    const { setProfileImgUrl } = useUserProfile();
     const [hasAlert, setHasAlert] = useState(false);
     const { localUser } = useAuth();
     const { id } = useParams();
@@ -60,16 +57,6 @@ function Profile() {
         getData();
     }, [id, localUser]);
 
-    function openModal(title, content, size) {
-        setProfileImgUrl(userImgUrl);
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal() {
-        setProfileImgUrl('');
-        document.body.style.overflow = 'visible';
-    }
-
     function onCopyText() {
         setHasAlert(true);
         setSubmitStatus(infoMessages.LINK_COPIED);
@@ -80,15 +67,15 @@ function Profile() {
         setSubmitStatus(errorMessages.USER_UP_TO_LINK_LIMIT);
     }
 
-
     function handleOpenModal(title, size, content) {
+        document.body.style.overflow = 'hidden';
         setModalConfig({ isOpen: true, title, size, content });
     }
 
     function handleCloseModal() {
+        document.body.style.overflow = 'visible';
         setModalConfig({ ...modalConfig, isOpen: false });
     }
-
 
     return (
         <>
@@ -101,7 +88,7 @@ function Profile() {
                     <CardBody>
                         <div className={`row gx-4 ${window.innerWidth <= 425 ? 'align-items-center flex-column' : ''}`}>
                             <div className="col-auto">
-                                {/* <CardAction title='Profil şəkili' openModal={() => openModal('Profil şəkili', <ProfilePictureEditForm onClose={closeModal} />, 'md')}>
+                                <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => handleOpenModal('İstifadəçi şəklini dəyiş', 'md', <Form config={new ConfigGenerator().generateUserPhoto('update', user.id)} initialData={user} onClose={handleCloseModal} />)} style={{ fontSize: '16px' }}>
                                     <div className="avatar-container">
                                         <div className={`avatar ${window.innerWidth > 425 ? 'avatar-xl' : 'avatar-xxl'} position-relative`}>
                                             <img src={userImgUrl} alt="Profil şəkili" className="border-radius-lg shadow-sm" />
@@ -110,9 +97,6 @@ function Profile() {
                                             <FontAwesomeIcon icon={faPencilAlt} />
                                         </div>
                                     </div>
-                                </CardAction> */}
-                                <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => handleOpenModal('İstifadəçi şəklini dəyiş', 'md', <Form config={new ConfigGenerator().generateUserPhoto('update', user.id)} initialData={user} onClose={handleCloseModal} />)} style={{ fontSize: '16px' }}>
-                                    <FontAwesomeIcon icon={faAdd} />
                                 </Button>
                             </div>
                             <div className="col-auto my-auto">
@@ -212,71 +196,5 @@ function Profile() {
         </>
     )
 }
-
-function ProfilePictureEditForm({ onClose }) {
-    const { profileImgUrl, setProfileImgUrl } = useUserProfile(undefined);
-    const fileInputRef = useRef(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [submitStatus, setSubmitStatus] = useState([]);
-
-    function handleImageChange(e) {
-        const file = e.target.files[0];
-        if (file) {
-            const imageUrl = URL.createObjectURL(file);
-            setProfileImgUrl(imageUrl);
-        }
-    }
-
-    function handleImageClick() {
-        fileInputRef.current.click();
-    }
-
-    async function handleSubmitUpdateUserPhoto(e) {
-        e.preventDefault();
-        let file = fileInputRef.current.files[0];
-        let accessToken = localStorage.getItem('accessToken');
-        if (!file) return setSubmitStatus({ type: 'error', message: 'Fayl seçilməlidir!' });
-        if (!accessToken) return setSubmitStatus({ type: 'error', message: 'Token yoxdur!' });
-        setIsLoading(true);
-        const formData = new FormData();
-        formData.append("photo", file);
-        formData.append("accessToken", accessToken);
-
-        const response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_USER_API_ENDPOINT}/upload-userPhoto`,
-            method: 'POST',
-            // headers: { 'Authorization': `Bearer ${accessToken}` },
-            body: formData,
-        });
-
-        let data = response.data;
-        setIsLoading(false);
-        if (response.status === 200) {
-            setTimeout(() => {
-                window.location.reload();
-            }, 2000);
-            return setSubmitStatus({ type: data.type, message: data.message });
-        } else return setSubmitStatus({ type: data.type, message: data.message });
-    }
-
-    return (
-        <div className="container-fluid">
-            <div className="avatar-container mx-auto">
-                <div className="picture-container position-relative" onClick={handleImageClick}>
-                    <img src={profileImgUrl} alt="Profil şəkili" title={isLoading ? 'Şəkil yüklənir...' : 'Yeni şəkil yükləmək üçün basın'} className="shadow-sm border" style={{ cursor: isLoading && 'progress' }} />
-                    <input type="file" onChange={handleImageChange} ref={fileInputRef} style={{ display: 'none', cursor: isLoading && 'progress' }} accept="image/png, image/jpeg, image/jpg" disabled={isLoading && true} />
-                </div>
-            </div>
-            <div className='text-end mt-3'>
-                <button type="submit" className='btn bg-gradient-primary mx-2' onClick={handleSubmitUpdateUserPhoto} disabled={isLoading && true}>{isLoading ? 'Göndərilir' : 'Göndər'}</button>
-                <button type="button" className='btn bg-dark text-white' onClick={onClose}>Bağla</button>
-            </div>
-            {submitStatus && (
-                <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus(null)} />
-            )}
-        </div>
-    )
-}
-
 
 export default Profile;

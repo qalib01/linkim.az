@@ -25,7 +25,7 @@ const generateInputs = (fields, initialData) => {
             field.transform || ((value) => value)
         );
 
-        formData[field.id] = inputHook.value;
+        formData[field.id] = field.type === 'file' ? inputHook.fileRef.current?.files[0] : inputHook.value;
         return inputHook;
     });
 };
@@ -55,7 +55,7 @@ function Form({ config, initialData, onClose, attributes }) {
 
         config.fields && config.fields.some((field) => {
             const { value } = inputs[field.id];
-            if (value !== initialData[field.id]) formData[field.id] = value;
+            if (value !== initialData[field.id]) formData[field.id] = field.type === 'file' ? inputs[field.id].fileRef.current?.files[0] : value;
         });
 
         if (formData.password === '') delete formData.password;
@@ -88,7 +88,6 @@ function Form({ config, initialData, onClose, attributes }) {
                 },
                 body,
             });
-            
 
             if (res.status === 200) {
                 setSubmitStatus(res.data);
@@ -159,7 +158,8 @@ function Form({ config, initialData, onClose, attributes }) {
                                     name={field.name}
                                     label={field.label}
                                     placeholder={field.placeholder}
-                                    value={input.value}
+                                    value={field.type === 'file' ? undefined : input.value}
+                                    ref={field.type === 'file' ? input.fileRef : undefined}
                                     maxLength={field.maxLength}
                                     required={field.required}
                                     onChange={input.handleInputChange}
