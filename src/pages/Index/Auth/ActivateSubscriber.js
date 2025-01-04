@@ -8,7 +8,7 @@ import Section from "../../../components/Section/Section";
 import Button from "../../../components/Button/Button";
 
 
-function ActivateUserPage() {
+function ActivateSubscriberPage() {
     const { token } = useParams();
     const [loading, setLoading] = useState(false);
     const [btnLoading, setBtnLoading] = useState(false);
@@ -24,7 +24,7 @@ function ActivateUserPage() {
         setLoading(true)
 
         let response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/${process.env.REACT_APP_USER_ACTIVATE_LINK_KEY}`,
+            url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/${process.env.REACT_APP_SUBSCRIBER_ACTIVATE_LINK_KEY}`,
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ token }),
@@ -44,10 +44,10 @@ function ActivateUserPage() {
         setBtnLoading(true);
 
         let response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_API_ENDPOINT}/${process.env.REACT_APP_RESEND_USER_ACTIVATE_LINK_KEY}`,
+            url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/${process.env.REACT_APP_RESEND_SUBSCRIBER_ACTIVATE_LINK_KEY}`,
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: { token },
+            body: JSON.stringify({ token }),
         });
 
         const data = response.data;
@@ -64,7 +64,7 @@ function ActivateUserPage() {
                     <div className="m-auto">
                         <div className="text-center">
                             <div className={`${classes.content} pe-md-0 mb-5`}>
-                                <h2 className={`title mt-3`}> Hesabın aktifləşdirilməsi </h2>
+                                <h2 className={`title mt-3`}> Abunəliyin aktifləşdirilməsi </h2>
                             </div>
                             {isTokenValid !== 200 && (
                                 <div className="row justify-content-center">
@@ -90,4 +90,4 @@ function ActivateUserPage() {
     )
 }
 
-export default ActivateUserPage;
+export default ActivateSubscriberPage;

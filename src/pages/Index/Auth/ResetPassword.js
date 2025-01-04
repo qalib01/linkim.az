@@ -95,7 +95,7 @@ function ResetPasswordRequestPage() {
                 <div className="col-lg-6 m-auto">
                     <div className="row text-center">
                         <div className={`${classes.content} pe-md-0 pe-lg-5  mb-5`}>
-                            <h2 className={`title mt-3`}> Şifrəni yenilə </h2>
+                            <h2 className={`title mt-3`}> Şifrənin yenilənməsi </h2>
                         </div>
                     </div>
                     {isTokenValid ? (<>

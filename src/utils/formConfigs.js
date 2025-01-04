@@ -1,4 +1,4 @@
-import { hasMaxTrimedLength, hasMinLength, isEqualsToOtherValue, isNotEmpty, isValidPassword, isValidURL, isValidUsername } from "./validation";
+import { hasMaxTrimedLength, hasMinLength, isEqualsToOtherValue, isNotEmpty, isValidEmail, isValidPassword, isValidURL, isValidUsername } from "./validation";
 const maxDataLength = 300;
 const maxRows = 3;
 const usernameMinLength = 3;
@@ -61,7 +61,6 @@ export class ConfigGenerator {
                     validation: (value) => isNotEmpty(value),
                     transform: (value) => value.toLowerCase(),
                     required: true,
-                    // disabled: (user) => !!user.email,
                     disabled: (user) => !!user?.email,
                     readOnly: (user) => !!user?.email,
                     grid: { col: 6 },
@@ -226,6 +225,44 @@ export class ConfigGenerator {
         }
     }
 
+    generateSubscribe(mode, id) {
+        const modes = {
+            add: {
+                url: `${this.baseApiUrl}${process.env.REACT_APP_API_ENDPOINT}/subscribe`,
+                method: 'POST',
+            },
+        }
+
+        return {
+            fields: [
+                {
+                    id: 'email',
+                    name: 'email',
+                    type: 'email',
+                    label: 'Email',
+                    placeholder: 'Email adresin',
+                    value: (user) => user?.email || '',
+                    validation: (value) => isNotEmpty(value) && isValidEmail(value),
+                    transform: (value) => value.toLowerCase(),
+                    required: true,
+                    disabled: (user) => !!user?.email,
+                    readOnly: (user) => !!user?.email,
+                },
+            ],
+            buttons: [
+                {
+                    type: 'submit',
+                    className: 'btn bg-gradient-primary mx-2',
+                    disabled: (isLoading) => isLoading,
+                    children: (isLoading) => isLoading ? 'Göndərilir...' : 'Göndər',
+                },
+            ],
+            submitUrl: modes[mode]?.url || '',
+            submitMethod: modes[mode]?.method || '',
+            submitBody: modes[mode]?.body || null,
+        }
+    }
+
     generateUserLinks(mode, id) {
         const modes = {
             add: {
@@ -358,7 +395,7 @@ export class ConfigGenerator {
                     type: 'text',
                     label: 'İstifadəçi adı',
                     placeholder: 'İstifadəçi adı',
-                    value: (link) => link?.url || '',
+                    value: (value) => value || '',
                     validation: (value) => isNotEmpty(value) && isValidUsername(value) && hasMinLength(value, usernameMinLength) && hasMaxTrimedLength(value, usernameMaxLength),
                     info: 'İstifadəçi adı balaca hərflə, minimum 4, maksimum 12 xarakter olmalı və xüsusi işarələr istifadə olmamalıdır. Nümunə: link, link01, link_01, link.01',
                     required: true,
@@ -418,7 +455,7 @@ export class ConfigGenerator {
     generateResetPassword(mode) {
         const modes = {
             update: {
-                url: `${this.baseApiUrl}${process.env.REACT_APP_API_ENDPOINT}/reset-password`,
+                url: `${this.baseApiUrl}${process.env.REACT_APP_API_ENDPOINT}/${process.env.REACT_APP_RESET_PASSWORD_LINK_KEY}`,
                 method: 'POST',
             },
         }
@@ -475,7 +512,7 @@ export class ConfigGenerator {
     changeUserStatus(mode, id) {
         const modes = {
             update: {
-                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/activate-user/${id}`,
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/${process.env.REACT_APP_USER_ACTIVATE_LINK_KEY}/${id}`,
                 method: 'POST',
             },
         }

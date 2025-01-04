@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Section from "../../../components/Section/Section";
-import { hasMinLength, isEmail, isNotEmpty } from "../../../utils/validation";
+import { hasMinLength, isValidEmail, isNotEmpty } from "../../../utils/validation";
 import { Link, useNavigate } from "react-router-dom";
 import Input from "../../../components/Form/Input";
 import classes from './Auth.module.scss';
@@ -25,7 +25,7 @@ function LoginPage() {
         handleInputChange: handleEmailChange,
         handleInputBlur: handleEmailBlur,
         hasError: hasEmailError,
-    } = useInput('', (value) => isEmail(value) && isNotEmpty(value), (value) => value.toLowerCase());
+    } = useInput('', (value) => isValidEmail(value) && isNotEmpty(value), (value) => value.toLowerCase());
 
     const {
         value: passwordValue,

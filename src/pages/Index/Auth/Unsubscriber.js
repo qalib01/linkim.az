@@ -8,10 +8,9 @@ import Section from "../../../components/Section/Section";
 import Button from "../../../components/Button/Button";
 
 
-function ActivateUserPage() {
+function UnsubscriberPage() {
     const { token } = useParams();
     const [loading, setLoading] = useState(false);
-    const [btnLoading, setBtnLoading] = useState(false);
     const [isTokenValid, setIsTokenValid] = useState(false)
     const [submitStatus, setSubmitStatus] = useState(null);
     const navigate = useNavigate();
@@ -24,7 +23,7 @@ function ActivateUserPage() {
         setLoading(true)
 
         let response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/${process.env.REACT_APP_USER_ACTIVATE_LINK_KEY}`,
+            url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/${process.env.REACT_APP_UNSUBSCRIBER_LINK_KEY}`,
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ token }),
@@ -40,22 +39,6 @@ function ActivateUserPage() {
         setLoading(false);
     }
 
-    async function createNewToken() {
-        setBtnLoading(true);
-
-        let response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_API_ENDPOINT}/${process.env.REACT_APP_RESEND_USER_ACTIVATE_LINK_KEY}`,
-            method: 'POST',
-            headers: { "Content-Type": "application/json" },
-            body: { token },
-        });
-
-        const data = response.data;
-        setSubmitStatus(data);
-        setBtnLoading(false);
-        setTimeout(() => { navigate('/p/') }, 4000);
-    }
-
     return (
         <>
             {loading && (<Loader />)}
@@ -64,16 +47,10 @@ function ActivateUserPage() {
                     <div className="m-auto">
                         <div className="text-center">
                             <div className={`${classes.content} pe-md-0 mb-5`}>
-                                <h2 className={`title mt-3`}> Hesabın aktifləşdirilməsi </h2>
+                                <h2 className={`title mt-3`}> Abunəliyin ləğv edilməsi </h2>
                             </div>
                             {isTokenValid !== 200 && (
                                 <div className="row justify-content-center">
-                                    {isTokenValid !== 403 && <div className="col-12 col-md-3">
-                                        <Button to='/p/login'> Giriş </Button>
-                                    </div>}
-                                    {isTokenValid === 403 && <div className="col-12 col-md-3">
-                                        <Button asButton={true} disabled={btnLoading} onClick={createNewToken}> {btnLoading ? 'Yaradılır...' : 'Yenisini yarat'} </Button>
-                                    </div>}
                                     <div className="col-12 col-md-3">
                                         <Button to='/'> Ana səhifə </Button>
                                     </div>
@@ -90,4 +67,4 @@ function ActivateUserPage() {
     )
 }
 
-export default ActivateUserPage;
+export default UnsubscriberPage;

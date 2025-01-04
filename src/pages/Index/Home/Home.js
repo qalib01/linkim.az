@@ -35,6 +35,7 @@ function HomePage() {
             </Hero>
             <Instructions />
             <CheckAvaliableUserLink />
+            <Subscribe />
         </>
 
     )
@@ -102,6 +103,20 @@ function CheckAvaliableUserLink() {
                 <p>Aşağıdakı formdan istədiyin istifadəçi adını axtararaq sistemdə mövcud olub-olmamasını örgənə bilərsən!</p>
                 <div className="col-12 col-lg-6 m-auto mt-4">
                     <Form config={new ConfigGenerator().generateUsernameAvaliability('find')} initialData='' attributes={{buttonLoc: 'center'}} />
+                </div>
+            </div>
+        </Section>
+    )
+}
+
+function Subscribe() {
+    return (
+        <Section sectionName='instructions' sectionBg='bgTransparent'>
+            <div className="text-center">
+                <h4 className={`title mt-3 mb-4`}>Abunə ol</h4>
+                <p>Aşağıdakı formdan abunələrimiz arasına daxil ola və yeniliklərdən, xəbərlərdən və daha çoxundan ən qısa zaman ərzində xəbərdar ola bilərsən!</p>
+                <div className="col-12 col-lg-6 m-auto mt-4">
+                    <Form config={new ConfigGenerator().generateSubscribe('add')} initialData='' attributes={{buttonLoc: 'center'}} />
                 </div>
             </div>
         </Section>

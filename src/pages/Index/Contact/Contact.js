@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Textarea from "../../../components/Form/Textarea";
 import Input from "../../../components/Form/Input";
 import classes from './Contact.module.scss'
-import { hasMaxTrimedLength, isEmail, isNotEmpty } from "../../../utils/validation";
+import { hasMaxTrimedLength, isValidEmail, isNotEmpty } from "../../../utils/validation";
 import Section from "../../../components/Section/Section";
 import { useInput } from "../../../hooks/useInput";
 import Alert from "../../../components/Alert/Alert";
@@ -37,7 +37,7 @@ function ContactPage() {
     handleInputBlur: handleEmailBlur,
     hasError: hasEmailError,
     handleInputReset: handleEmailReset,
-  } = useInput(localUser ? localUser.email : '', (value) => isEmail(value) && isNotEmpty(value), (value) => value.toLowerCase());
+  } = useInput(localUser ? localUser.email : '', (value) => isValidEmail(value) && isNotEmpty(value), (value) => value.toLowerCase());
 
   const {
     value: subjectValue,

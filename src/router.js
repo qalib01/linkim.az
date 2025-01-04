@@ -17,6 +17,8 @@ const LoginPage = lazy(() => import('./pages/Index/Auth/Login'));
 const FaqPage = lazy(() => import('./pages/Index/Faqs/Faqs'));
 const Logout = lazy(() => import('./pages/Index/Auth/Logout'));
 const ActivateUserPage = lazy(() => import('./pages/Index/Auth/ActivateUser'));
+const ActivateSubscriberPage = lazy(() => import('./pages/Index/Auth/ActivateSubscriber'));
+const UnsubscriberPage = lazy(() => import('./pages/Index/Auth/Unsubscriber'));
 const UserLinks = lazy(() => import('./pages/Index/UserLinks/UserLinks'));
 const IndexErrorPage = lazy(() => import('./error/IndexErrorPage'));
 
@@ -71,7 +73,9 @@ const router = createBrowserRouter([
                             { path: ':token', element: withSuspense(ResetPasswordPage) }
                         ],
                     },
-                    { path: `${process.env.REACT_APP_USER_ACTIVATE_LINK_KEY}/:token`, element: withSuspense(ActivateUserPage) }
+                    { path: `${process.env.REACT_APP_USER_ACTIVATE_LINK_KEY}/:token`, element: withSuspense(ActivateUserPage) },
+                    { path: `${process.env.REACT_APP_SUBSCRIBER_ACTIVATE_LINK_KEY}/:token`, element: withSuspense(ActivateSubscriberPage) },
+                    { path: `${process.env.REACT_APP_UNSUBSCRIBER_LINK_KEY}/:token`, element: withSuspense(UnsubscriberPage) }
                 ],
             },
             {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Section from "../../../components/Section/Section";
-import { hasMinLength, isEmail, isEqualsToOtherValue, isNotEmpty } from "../../../utils/validation";
+import { hasMinLength, isValidEmail, isEqualsToOtherValue, isNotEmpty } from "../../../utils/validation";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Input from "../../../components/Form/Input";
 import classes from './Auth.module.scss';
@@ -43,7 +43,7 @@ function RegisterPage() {
         handleInputBlur: handleEmailBlur,
         hasError: hasEmailError,
         handleInputReset: handleEmailReset,
-    } = useInput('', (value) => isEmail(value) && isNotEmpty(value), (value) => value.toLowerCase());
+    } = useInput('', (value) => isValidEmail(value) && isNotEmpty(value), (value) => value.toLowerCase());
 
     const {
         value: passwordValue,
