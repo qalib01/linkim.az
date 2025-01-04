@@ -1,14 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Section from "../../../components/Section/Section";
 import { Link } from "react-router-dom";
 import classes from './Auth.module.scss';
-import Alert from "../../../components/Alert/Alert";
 import Form from "../../../components/Form/Form";
 import { ConfigGenerator } from "../../../utils/formConfigs";
 
 
 function ResetPasswordRequestPage() {
-    const [submitStatus, setSubmitStatus] = useState(null);
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -26,9 +24,6 @@ function ResetPasswordRequestPage() {
                     <div className={classes.hasAccount}>
                         <p> Artıq hesabın varsa, hesabına <Link to='/p/login'>buradan</Link> giriş edə və ya yeni hesab yaratmaq istəyirsənsə, <Link to='/p/register'> buraya </Link> daxil ola bilərsən. </p>
                     </div>
-                    {submitStatus && (
-                        <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus(null)} />
-                    )}
                 </div>
             </div>
         </Section>

@@ -137,7 +137,7 @@ function ResetPasswordRequestPage() {
                                     error={hasPasswordConfirmError}
                                 />
                                 <div className="text-center">
-                                    <Button asButton={true} type="submit" disabled={loading && true}>{loading ? 'Göndərilir...' : 'Göndər'}</Button>
+                                    <Button asButton={true} type="submit" disabled={loading}>{loading ? 'Göndərilir...' : 'Göndər'}</Button>
                                 </div>
                             </div>
                         </form>

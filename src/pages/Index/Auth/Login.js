@@ -103,7 +103,7 @@ function LoginPage() {
                                 <p> Şifrəni unutmusansa, <Link to='/p/reset-password'>buradan</Link> yeniləyə bilərsən. </p>
                             </div>
                             <div className="text-center">
-                                <Button asButton={true} type="submit" disabled={loading && true}>{loading ? 'Göndərilir...' : 'Göndər'}</Button>
+                                <Button asButton={true} type="submit" disabled={loading}>{loading ? 'Göndərilir...' : 'Göndər'}</Button>
                             </div>
                         </div>
                     </form>

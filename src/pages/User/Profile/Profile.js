@@ -117,6 +117,35 @@ function Profile() {
                 <div className="row" style={{ rowGap: '1rem' }}>
                     <div className="col-12 col-xl-4">
                         <UserProfileCard classList='max-height-400 overflow-x-hidden'>
+                            <CardHeader title='Abunəlik məlumatları'></CardHeader>
+                            <CardBody classList='p-3'>
+                                <h6 className="text-uppercase text-body text-xs font-weight-bolder">Platforma</h6>
+                                <ul className="list-group">
+                                    <li className="list-group-item border-0 px-0">
+                                        <div className="form-check form-switch ps-0">
+                                            <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault3" />
+                                            <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault3">New launches and projects</label>
+                                        </div>
+                                    </li>
+                                    <li className="list-group-item border-0 px-0">
+                                        <div className="form-check form-switch ps-0">
+                                            <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault4" />
+                                            <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault4">Monthly product updates</label>
+                                        </div>
+                                    </li>
+                                    <li className="list-group-item border-0 px-0 pb-0">
+                                        <div className="form-check form-switch ps-0">
+                                            <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault5" />
+                                            <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault5">Subscribe to newsletter</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </CardBody>
+                        </UserProfileCard>
+                    </div>
+
+                    <div className="col-12 col-xl-4">
+                        <UserProfileCard classList='max-height-400 overflow-x-hidden'>
                             <CardHeader title='Profil məlumatları'>
                                 <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => handleOpenModal('İstifadəçi məlumatları', 'lg', <Form config={new ConfigGenerator().generateUserData('update', user.id)} initialData={user} onClose={handleCloseModal} />)} style={{ fontSize: '16px' }}>
                                     <FontAwesomeIcon icon={faUserEdit} />
