@@ -33,7 +33,7 @@ function UnsubscriberPage() {
         if (response.status === 403) setIsTokenValid(403);
 
         if (response.status !== 403) {
-            setTimeout(() => { navigate('/p/login') }, 4000);
+            setTimeout(() => { navigate('/') }, 4000);
             setIsTokenValid(response.status);
         }
         setLoading(false);

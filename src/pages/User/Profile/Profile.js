@@ -28,12 +28,34 @@ function Profile() {
     const { id } = useParams();
     const [isFetching, setIsFetching] = useState(false);
     const [user, setUser] = useState({});
+    const [subscribeOptions, setSubscribeOptions] = useState([]);
     const userImgUrl = `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_USER_PHOTO_SERVER_URL}/${user.photo}`;
     const [modalConfig, setModalConfig] = useState(null);
 
     useEffect(() => {
         window.scrollTo(0, 0);
         if (!id) return setUser(localUser);
+
+        async function getOptions() {
+            setIsFetching(true);
+            const response = await apiRequest({
+                url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_USER_API_ENDPOINT}/get-allSubscribeOptions`,
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    "Content-Type": "application/json"
+                }
+            });
+
+            let data = response.data;
+            if (response.status === 200 && data) {
+                setSubscribeOptions(data);
+                console.log(data)
+            } else {
+                setSubmitStatus(data);
+            }
+            setIsFetching(false);
+        }
 
         async function getData() {
             setIsFetching(true);
@@ -55,6 +77,7 @@ function Profile() {
             setIsFetching(false);
         }
         getData();
+        getOptions();
     }, [id, localUser]);
 
     function onCopyText() {
@@ -115,35 +138,6 @@ function Profile() {
             </div>
             <div className="container-fluid py-4">
                 <div className="row" style={{ rowGap: '1rem' }}>
-                    <div className="col-12 col-xl-4">
-                        <UserProfileCard classList='max-height-400 overflow-x-hidden'>
-                            <CardHeader title='Abunəlik məlumatları'></CardHeader>
-                            <CardBody classList='p-3'>
-                                <h6 className="text-uppercase text-body text-xs font-weight-bolder">Platforma</h6>
-                                <ul className="list-group">
-                                    <li className="list-group-item border-0 px-0">
-                                        <div className="form-check form-switch ps-0">
-                                            <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault3" />
-                                            <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault3">New launches and projects</label>
-                                        </div>
-                                    </li>
-                                    <li className="list-group-item border-0 px-0">
-                                        <div className="form-check form-switch ps-0">
-                                            <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault4" />
-                                            <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault4">Monthly product updates</label>
-                                        </div>
-                                    </li>
-                                    <li className="list-group-item border-0 px-0 pb-0">
-                                        <div className="form-check form-switch ps-0">
-                                            <input className="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault5" />
-                                            <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault5">Subscribe to newsletter</label>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </CardBody>
-                        </UserProfileCard>
-                    </div>
-
                     <div className="col-12 col-xl-4">
                         <UserProfileCard classList='max-height-400 overflow-x-hidden'>
                             <CardHeader title='Profil məlumatları'>
@@ -213,8 +207,34 @@ function Profile() {
                                                 </Button>
                                             </div>
                                         </ListGroupItem>
-                                    )) : <p> Məlumat yoxdur </p>}
+                                    )) : <p> Məlumat yoxdur! </p>}
                                 </ListGroupParent>
+                            </CardBody>
+                        </UserProfileCard>
+                    </div>
+
+                    <div className="col-12 col-xl-4">
+                        <UserProfileCard classList='max-height-400 overflow-x-hidden'>
+                            <CardHeader title='Abunəlik məlumatları'></CardHeader>
+                            <CardBody classList='p-3'>
+                                {isFetching && <p> Məlumatlar yüklənir! </p>}
+                                {
+                                    !isFetching && subscribeOptions.length > 0 ? subscribeOptions.map((subscribeOption) => (
+                                        <div key={subscribeOption.id}>
+                                            <h6 className="text-uppercase text-body text-xs font-weight-bolder">{subscribeOption.group}</h6>
+                                            <ul className="list-group">
+                                                {subscribeOption && subscribeOption.options.map((option) => (
+                                                    <li className="list-group-item border-0 px-0 pb-0" key={option.id}>
+                                                        <div className="form-check form-switch ps-0">
+                                                            <input className="form-check-input ms-auto" type="checkbox" id={option.label} />
+                                                            <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" htmlFor={option.label}>{option.description}</label>
+                                                        </div>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )) : <p> Məlumat yoxdur! </p>
+                                }
                             </CardBody>
                         </UserProfileCard>
                     </div>
