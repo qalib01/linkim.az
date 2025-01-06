@@ -24,6 +24,8 @@ const IndexErrorPage = lazy(() => import('./error/IndexErrorPage'));
 
 const Dashboard = lazy(() => import('./pages/User/Dashboard/Dashboard'));
 const Profile = lazy(() => import('./pages/User/Profile/Profile'));
+const EditableUser = lazy(() => import('./pages/User/Profile/EditableUser'));
+const LoggedInUser = lazy(() => import('./pages/User/Profile/LoggedInUser'));
 const Faqs = lazy(() => import('./pages/User/Faqs/Faqs'));
 const Users = lazy(() => import('./pages/User/Users/Users'));
 const UserErrorPage = lazy(() => import('./error/UserErrorPage'));
@@ -89,14 +91,14 @@ const router = createBrowserRouter([
                         children: [
                             { index: true, element: withSuspense(Dashboard) },
                             { path: 'dashboard', element: withSuspense(Dashboard) },
-                            { path: 'profile', element: withSuspense(Profile) },
+                            { path: 'profile', element: withSuspense(LoggedInUser) },
                             { path: 'faqs', element: withSuspense(Faqs) },
                             { 
                                 path: 'users', 
                                 element: <ProtectedRoute allowedRoles='Admin' />,
                                 children: [
                                     { path: '', element: withSuspense(Users) },
-                                    { path: 'profile/:id', element: withSuspense(Profile) },
+                                    { path: 'profile/:id', element: withSuspense(EditableUser) },
                                 ]
                             },
                         ],

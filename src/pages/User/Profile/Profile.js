@@ -21,20 +21,20 @@ import Modal from "../../../components/Modal/Modal";
 import Loader from "../../../components/Loader/Loader";
 
 
-function Profile() {
+function Profile({ user }) {
     const [submitStatus, setSubmitStatus] = useState([]);
     const [hasAlert, setHasAlert] = useState(false);
-    const { localUser } = useAuth();
-    const { id } = useParams();
+    // const { localUser } = useAuth();
+    // const { id } = useParams();
     const [isFetching, setIsFetching] = useState(false);
-    const [user, setUser] = useState({});
+    // const [user, setUser] = useState({});
     const [subscribeOptions, setSubscribeOptions] = useState([]);
+    console.log(user)
     const userImgUrl = `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_USER_PHOTO_SERVER_URL}/${user.photo}`;
     const [modalConfig, setModalConfig] = useState(null);
 
     useEffect(() => {
         window.scrollTo(0, 0);
-        if (!id) return setUser(localUser);
 
         async function getOptions() {
             setIsFetching(true);
@@ -50,35 +50,38 @@ function Profile() {
             let data = response.data;
             if (response.status === 200 && data) {
                 setSubscribeOptions(data);
-                console.log(data)
             } else {
                 setSubmitStatus(data);
             }
             setIsFetching(false);
         }
-
-        async function getData() {
-            setIsFetching(true);
-            const response = await apiRequest({
-                url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_USER_API_ENDPOINT}/get-selectedUser/${id}`,
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                    "Content-Type": "application/json"
-                },
-            });
-
-            let data = response.data;
-            if (response.status === 200 && data) {
-                setUser(data)
-            } else {
-                setSubmitStatus(data);
-            }
-            setIsFetching(false);
-        }
-        getData();
         getOptions();
-    }, [id, localUser]);
+    }, [])
+
+    // useEffect(() => {
+    //     if (!id) return setUser(localUser);
+
+    //     async function getData() {
+    //         setIsFetching(true);
+    //         const response = await apiRequest({
+    //             url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_USER_API_ENDPOINT}/get-selectedUser/${id}`,
+    //             method: 'GET',
+    //             headers: {
+    //                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+    //                 "Content-Type": "application/json"
+    //             },
+    //         });
+
+    //         let data = response.data;
+    //         if (response.status === 200 && data) {
+    //             setUser(data)
+    //         } else {
+    //             setSubmitStatus(data);
+    //         }
+    //         setIsFetching(false);
+    //     }
+    //     getData();
+    // }, [id, localUser]);
 
     function onCopyText() {
         setHasAlert(true);
@@ -146,9 +149,7 @@ function Profile() {
                                 </Button>
                             </CardHeader>
                             <CardBody classList='p-3'>
-                                <p className="text-sm">
-                                    {user.bio}
-                                </p>
+                                <p className="text-sm"> {user.bio} </p>
                                 <Line />
                                 <ListGroupParent>
                                     <ListGroupItem classList='border-0 ps-0 pt-0 text-sm' >
@@ -223,14 +224,53 @@ function Profile() {
                                         <div key={subscribeOption.id}>
                                             <h6 className="text-uppercase text-body text-xs font-weight-bolder">{subscribeOption.group}</h6>
                                             <ul className="list-group">
-                                                {subscribeOption && subscribeOption.options.map((option) => (
-                                                    <li className="list-group-item border-0 px-0 pb-0" key={option.id}>
-                                                        <div className="form-check form-switch ps-0">
-                                                            <input className="form-check-input ms-auto" type="checkbox" id={option.label} />
-                                                            <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" htmlFor={option.label}>{option.description}</label>
-                                                        </div>
-                                                    </li>
-                                                ))}
+                                                {
+                                                    subscribeOption?.options.map((option) => {
+                                                        const isChecked = user.subscription?.options?.some(
+                                                            (userOption) => userOption.id === option.id
+                                                        );
+
+                                                        function handleSubscriptionToggle(optionId, isChecked) {
+                                                            console.log(optionId, isChecked)
+                                                        }
+                                                    
+                                                        return (
+                                                            <li className="list-group-item border-0 px-0 pb-0" key={option.id}>
+                                                                <div className="form-check form-switch ps-0">
+                                                                    <input className="form-check-input ms-auto" value={option.id || ''} type="checkbox" id={option.label} checked={isChecked || false} onChange={(e) => handleSubscriptionToggle(option.id, e.target.checked)} />
+                                                                    <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" htmlFor={option.label}>{option.description}</label>
+                                                                </div>
+                                                            </li>
+                                                        )
+                                                    
+                                                    })
+                                                }
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                {/* {subscribeOption && subscribeOption.options.map((option) => {
+                                                    user.subscription?.options.map((userOption) => (
+                                                        <li className="list-group-item border-0 px-0 pb-0" key={option.id}>
+                                                            <div className="form-check form-switch ps-0">
+                                                                <input className="form-check-input ms-auto" type="checkbox" id={option.label} checked={option.id === userOption[option.id]} />
+                                                                <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" htmlFor={option.label}>{option.description}</label>
+                                                            </div>
+                                                        </li>
+                                                    ))
+                                                })} */}
                                             </ul>
                                         </div>
                                     )) : <p> Məlumat yoxdur! </p>
