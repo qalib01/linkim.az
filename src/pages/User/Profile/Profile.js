@@ -6,8 +6,7 @@ import CardHeader from "../../../components/Card/CardHeader";
 import CardBody from "../../../components/Card/CardBody";
 import Line from "../../../components/Line/Line";
 import Button from "../../../components/Button/Button";
-import useAuth from "../../../hooks/useAuth";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserEdit, faPencilAlt, faEdit, faTrash, faLink, faAdd, faCopy } from '@fortawesome/free-solid-svg-icons';
 import { apiRequest } from "../../../utils/apiRequest";
@@ -24,12 +23,8 @@ import Loader from "../../../components/Loader/Loader";
 function Profile({ user }) {
     const [submitStatus, setSubmitStatus] = useState([]);
     const [hasAlert, setHasAlert] = useState(false);
-    // const { localUser } = useAuth();
-    // const { id } = useParams();
     const [isFetching, setIsFetching] = useState(false);
-    // const [user, setUser] = useState({});
     const [subscribeOptions, setSubscribeOptions] = useState([]);
-    console.log(user)
     const userImgUrl = `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_USER_PHOTO_SERVER_URL}/${user.photo}`;
     const [modalConfig, setModalConfig] = useState(null);
 
@@ -57,31 +52,6 @@ function Profile({ user }) {
         }
         getOptions();
     }, [])
-
-    // useEffect(() => {
-    //     if (!id) return setUser(localUser);
-
-    //     async function getData() {
-    //         setIsFetching(true);
-    //         const response = await apiRequest({
-    //             url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_USER_API_ENDPOINT}/get-selectedUser/${id}`,
-    //             method: 'GET',
-    //             headers: {
-    //                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-    //                 "Content-Type": "application/json"
-    //             },
-    //         });
-
-    //         let data = response.data;
-    //         if (response.status === 200 && data) {
-    //             setUser(data)
-    //         } else {
-    //             setSubmitStatus(data);
-    //         }
-    //         setIsFetching(false);
-    //     }
-    //     getData();
-    // }, [id, localUser]);
 
     function onCopyText() {
         setHasAlert(true);
@@ -227,7 +197,7 @@ function Profile({ user }) {
                                                 {
                                                     subscribeOption?.options.map((option) => {
                                                         const isChecked = user.subscription?.options?.some(
-                                                            (userOption) => userOption.id === option.id
+                                                            (userOption) => userOption.id === option.id && userOption.active
                                                         );
 
                                                         function handleSubscriptionToggle(optionId, isChecked) {
@@ -245,32 +215,6 @@ function Profile({ user }) {
                                                     
                                                     })
                                                 }
-                                                
-                                                
-                                                
-                                                
-                                                
-                                                
-                                                
-                                                
-                                                
-                                                
-                                                
-                                                
-                                                
-                                                
-                                                
-                                                
-                                                {/* {subscribeOption && subscribeOption.options.map((option) => {
-                                                    user.subscription?.options.map((userOption) => (
-                                                        <li className="list-group-item border-0 px-0 pb-0" key={option.id}>
-                                                            <div className="form-check form-switch ps-0">
-                                                                <input className="form-check-input ms-auto" type="checkbox" id={option.label} checked={option.id === userOption[option.id]} />
-                                                                <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" htmlFor={option.label}>{option.description}</label>
-                                                            </div>
-                                                        </li>
-                                                    ))
-                                                })} */}
                                             </ul>
                                         </div>
                                     )) : <p> Məlumat yoxdur! </p>
