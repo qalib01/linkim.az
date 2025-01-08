@@ -4,7 +4,7 @@ import useAuth from "../../hooks/useAuth"
 const ProtectedNavLink = ({ to, allowedRoles, children, ...rest }) => {
     const { localUser } = useAuth();
 
-    if (!allowedRoles.includes(localUser?.role?.name)) return null;
+    if (!allowedRoles.includes(localUser?.role)) return null;
 
     return (
         <li className="nav-item">
