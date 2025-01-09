@@ -24,6 +24,7 @@ function Profile({ user }) {
     const [submitStatus, setSubmitStatus] = useState([]);
     const [hasAlert, setHasAlert] = useState(false);
     const [isFetching, setIsFetching] = useState(false);
+    const [selectedOptions, setSelectedOptions] = useState(user.subscribeOption?.options.map((opt) => opt.id) || []);
     const [subscribeOptions, setSubscribeOptions] = useState([]);
     const userImgUrl = `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_USER_PHOTO_SERVER_URL}/${user.photo}`;
     const [modalConfig, setModalConfig] = useState(null);
@@ -71,6 +72,22 @@ function Profile({ user }) {
     function handleCloseModal() {
         document.body.style.overflow = 'visible';
         setModalConfig({ ...modalConfig, isOpen: false });
+    }
+
+    const saveSubscriptionChanges = async () => {
+        try {
+            const response = await apiRequest({
+                url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_USER_API_ENDPOINT}/update-selectedSubscriber/${user.id}`,
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(selectedOptions),
+            });
+        } catch (error) {
+            
+        }
     }
 
     return (
@@ -186,7 +203,9 @@ function Profile({ user }) {
 
                     <div className="col-12 col-xl-4">
                         <UserProfileCard classList='max-height-400 overflow-x-hidden'>
-                            <CardHeader title='Abunəlik məlumatları'></CardHeader>
+                            <CardHeader title='Abunəlik məlumatları'>
+                                <Button asButton={true} classList='border-0 bg-transparent w-auto' onClick={saveSubscriptionChanges}>Yadda saxla</Button>
+                            </CardHeader>
                             <CardBody classList='p-3'>
                                 {isFetching && <p> Məlumatlar yüklənir! </p>}
                                 {
@@ -196,23 +215,25 @@ function Profile({ user }) {
                                             <ul className="list-group">
                                                 {
                                                     subscribeOption?.options.map((option) => {
-                                                        const isChecked = user.subscription?.options?.some(
-                                                            (userOption) => userOption.id === option.id && userOption.active
-                                                        );
-
-                                                        function handleSubscriptionToggle(optionId, isChecked) {
-                                                            console.log(optionId, isChecked)
+                                                        function handleToggle(optionId) {
+                                                            setSelectedOptions((prev) => {
+                                                                if(prev.includes(optionId)) {
+                                                                    return prev.filter((id) => id !== optionId);
+                                                                } else {
+                                                                    return [ ...prev, optionId ]
+                                                                }
+                                                            })
                                                         }
-                                                    
+
                                                         return (
                                                             <li className="list-group-item border-0 px-0 pb-0" key={option.id}>
                                                                 <div className="form-check form-switch ps-0">
-                                                                    <input className="form-check-input ms-auto" value={option.id || ''} type="checkbox" id={option.label} checked={isChecked || false} onChange={(e) => handleSubscriptionToggle(option.id, e.target.checked)} />
+                                                                <input className="form-check-input ms-auto" value={option.id || ''} type="checkbox" id={option.label} checked={selectedOptions.includes(option.id)} onChange={(e) => handleToggle(option.id)} />
                                                                     <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" htmlFor={option.label}>{option.description}</label>
                                                                 </div>
                                                             </li>
                                                         )
-                                                    
+
                                                     })
                                                 }
                                             </ul>

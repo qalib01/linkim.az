@@ -23,7 +23,6 @@ const UserLinks = lazy(() => import('./pages/Index/UserLinks/UserLinks'));
 const IndexErrorPage = lazy(() => import('./error/IndexErrorPage'));
 
 const Dashboard = lazy(() => import('./pages/User/Dashboard/Dashboard'));
-const Profile = lazy(() => import('./pages/User/Profile/Profile'));
 const EditableUser = lazy(() => import('./pages/User/Profile/EditableUser'));
 const LoggedInUser = lazy(() => import('./pages/User/Profile/LoggedInUser'));
 const Faqs = lazy(() => import('./pages/User/Faqs/Faqs'));
