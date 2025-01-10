@@ -4,7 +4,6 @@ export function useInput(initialData, validationFn, transformFn = (value) => val
     const [enteredValue, setEnteredValue] = useState(initialData || '');
     const fileRef = useRef(null);
     const [didEdit, setDidEdit] = useState(false);
-    console.log(validationFn)
 
     const valueIsValid = validationFn ? validationFn(enteredValue || fileRef.current?.files[0]) : true;
 
