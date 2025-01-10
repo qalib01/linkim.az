@@ -8,7 +8,7 @@ import Line from "../../../components/Line/Line";
 import Button from "../../../components/Button/Button";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserEdit, faPencilAlt, faEdit, faTrash, faLink, faAdd, faCopy } from '@fortawesome/free-solid-svg-icons';
+import { faUserEdit, faPencilAlt, faEdit, faTrash, faLink, faAdd, faCopy, faLock } from '@fortawesome/free-solid-svg-icons';
 import { apiRequest } from "../../../utils/apiRequest";
 import Alert from "../../../components/Alert/Alert";
 import errorMessages from "../../../statusMessages/error";
@@ -29,7 +29,6 @@ function Profile({ user }) {
     const userImgUrl = `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_USER_PHOTO_SERVER_URL}/${user.photo}`;
     const [modalConfig, setModalConfig] = useState(null);
     const [hasChanges, setHasChanges] = useState(false);
-    console.log(user)
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -99,12 +98,24 @@ function Profile({ user }) {
 
             setSubmitStatus(response.data);
             setHasAlert(true);
-            setTimeout(() => {
-                window.location.reload();
-            }, 2000);
+            if (response.status === 200) {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            }
         } catch (error) {
             setSubmitStatus(errorMessages.GENERAL_ERROR);
         }
+    }
+
+    function handleToggle(optionId) {
+        setSelectedOptions((prev) => {
+            if (prev.includes(optionId)) {
+                return prev.filter((id) => id !== optionId);
+            } else {
+                return [...prev, optionId]
+            }
+        })
     }
 
     return (
@@ -221,44 +232,57 @@ function Profile({ user }) {
                     <div className="col-12 col-xl-4">
                         <UserProfileCard classList='max-height-400 overflow-x-hidden'>
                             <CardHeader title='Abunəlik məlumatları'>
-                                <Button disabled={!hasChanges} asButton={true} classList='border-0 bg-transparent w-auto btn bg-gradient-primary p-2' onClick={saveSubscriptionChanges}>Yadda saxla</Button>
+                                {user.subscription && <Button disabled={!hasChanges} asButton={true} classList='border-0 bg-transparent w-auto btn bg-gradient-primary p-2' onClick={saveSubscriptionChanges}>Yadda saxla</Button>}
                             </CardHeader>
-                            <CardBody classList='p-3'>
-                                {isFetching && <p> Məlumatlar yüklənir! </p>}
-                                {
-                                    !isFetching && subscribeOptions.length > 0 ? subscribeOptions.map((subscribeOption) => (
-                                        <div key={subscribeOption.id}>
-                                            <h6 className="text-uppercase text-body text-xs font-weight-bolder">{subscribeOption.group}</h6>
-                                            <ul className="list-group">
-                                                {
-                                                    subscribeOption?.options.map((option) => {
-                                                        function handleToggle(optionId) {
-                                                            setSelectedOptions((prev) => {
-                                                                if (prev.includes(optionId)) {
-                                                                    return prev.filter((id) => id !== optionId);
-                                                                } else {
-                                                                    return [...prev, optionId]
-                                                                }
-                                                            })
-                                                        }
-                                                        console.log(selectedOptions.includes(option.id))
-                                                        console.log(option.id)
-                                                        console.log(selectedOptions)
-                                                        return (
+                            <CardBody classList="p-3">
+                                {!user.subscription ? (
+                                    <Button classList='border-0 bg-transparent w-100 h-100' asButton={true} onClick={user.userLinks?.length < 10 ? () => handleOpenModal('Abunəliyi aktif et', 'md', <Form config={new ConfigGenerator().generateUserSubscription('add', user.id)} initialData={user} onClose={handleCloseModal} />) : onUserUpToLimit} style={{ fontSize: '16px' }}>
+                                        <div className="">
+                                            <FontAwesomeIcon icon={faLock} fontSize='28px' />
+                                            <p> Abunəlik aktif deyil. Aktifləşdirmək üçün təsdiqləyin! </p>
+                                        </div>
+                                    </Button>
+                                ) : (
+                                    isFetching ? (
+                                        <p>Məlumatlar yüklənir!</p>
+                                    ) : (
+                                        subscribeOptions.length > 0 ? (
+                                            subscribeOptions.map((subscribeOption) => (
+                                                <div key={subscribeOption.id}>
+                                                    <h6 className="text-uppercase text-body text-xs font-weight-bolder">
+                                                        {subscribeOption.group}
+                                                    </h6>
+                                                    <ul className="list-group">
+                                                        {subscribeOption?.options.map((option) => (
                                                             <li className="list-group-item border-0 px-0 pb-0" key={option.id}>
                                                                 <div className="form-check form-switch ps-0">
-                                                                    <input className="form-check-input ms-auto" value={option.id || ''} type="checkbox" id={option.label} checked={selectedOptions.includes(option.id)} onChange={(e) => handleToggle(option.id)} />
-                                                                    <label className="form-check-label text-body ms-3 text-truncate w-80 mb-0" htmlFor={option.label}>{option.description}</label>
+                                                                    <input
+                                                                        className="form-check-input ms-auto"
+                                                                        value={option.id || ''}
+                                                                        type="checkbox"
+                                                                        id={option.label}
+                                                                        checked={selectedOptions.includes(option.id)}
+                                                                        onChange={() => handleToggle(option.id)}
+                                                                    />
+                                                                    <label
+                                                                        className="form-check-label text-body ms-3 text-truncate w-80 mb-0"
+                                                                        htmlFor={option.label}
+                                                                    >
+                                                                        {option.description}
+                                                                    </label>
                                                                 </div>
                                                             </li>
-                                                        )
-                                                    })
-                                                }
-                                            </ul>
-                                        </div>
-                                    )) : <p> Məlumat yoxdur! </p>
-                                }
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <p>Məlumat yoxdur!</p>
+                                        )
+                                    )
+                                )}
                             </CardBody>
+
                         </UserProfileCard>
                     </div>
                 </div>

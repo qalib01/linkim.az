@@ -128,7 +128,6 @@ export class ConfigGenerator {
             ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',
-            submitBody: modes[mode]?.body || null,
         }
     }
 
@@ -168,7 +167,6 @@ export class ConfigGenerator {
             ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',
-            submitBody: modes[mode]?.body || null,
         }
     }
 
@@ -221,7 +219,6 @@ export class ConfigGenerator {
             ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',
-            submitBody: modes[mode]?.body || null,
         }
     }
 
@@ -259,7 +256,37 @@ export class ConfigGenerator {
             ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',
-            submitBody: modes[mode]?.body || null,
+        }
+    }
+
+    generateUserSubscription(mode, id) {
+        const modes = {
+            add: {
+                url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/subscription-activate/${id}`,
+                method: 'post',
+            },
+        }
+
+        return {
+            contents: [
+                () => <p> Göndər düyməsini təsdiqi etdiyin zaman sistem abunəçiliyini qəbul etmiş olursan və növbəti mərhələdə seçdiyin abunəliklərə əsasən emaillər göndəriləcək! </p>
+            ],
+            buttons: [
+                {
+                    type: 'submit',
+                    className: 'btn bg-gradient-primary mx-2',
+                    disabled: (isLoading) => isLoading,
+                    children: (isLoading) => isLoading ? 'Göndərilir...' : 'Göndər',
+                },
+                {
+                    type: 'button',
+                    className: 'btn bg-dark text-white',
+                    onClick: (onClose) => onClose,
+                    children: 'Bağla',
+                }
+            ],
+            submitUrl: modes[mode]?.url || '',
+            submitMethod: modes[mode]?.method || '',
         }
     }
 
@@ -412,7 +439,6 @@ export class ConfigGenerator {
             ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',
-            submitBody: modes[mode]?.body || null,
         }
     }
 
@@ -448,7 +474,6 @@ export class ConfigGenerator {
             ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',
-            submitBody: modes[mode]?.body || null,
         }
     }
 
@@ -505,7 +530,6 @@ export class ConfigGenerator {
             ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',
-            submitBody: modes[mode]?.body || null,
         }
     }
 
@@ -537,7 +561,6 @@ export class ConfigGenerator {
             ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',
-            submitBody: modes[mode]?.body || null,
         }
     }
 
@@ -611,7 +634,6 @@ export class ConfigGenerator {
             ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',
-            submitBody: modes[mode]?.body || null,
         }
     }
 
@@ -675,7 +697,6 @@ export class ConfigGenerator {
             ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',
-            submitBody: modes[mode]?.body || null,
         }
     }
 
@@ -707,7 +728,6 @@ export class ConfigGenerator {
             ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',
-            submitBody: modes[mode]?.body || null,
         }
     }
 
@@ -739,7 +759,6 @@ export class ConfigGenerator {
             ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',
-            submitBody: modes[mode]?.body || null,
         }
     }
 }
