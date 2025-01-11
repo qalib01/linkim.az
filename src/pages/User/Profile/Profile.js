@@ -236,53 +236,68 @@ function Profile({ user }) {
                             </CardHeader>
                             <CardBody classList="p-3">
                                 {!user.subscription ? (
-                                    <Button classList='border-0 bg-transparent w-100 h-100' asButton={true} onClick={user.userLinks?.length < 10 ? () => handleOpenModal('Abunəliyi aktif et', 'md', <Form config={new ConfigGenerator().generateUserSubscription('add', user.id)} initialData={user} onClose={handleCloseModal} />) : onUserUpToLimit} style={{ fontSize: '16px' }}>
-                                        <div className="">
-                                            <FontAwesomeIcon icon={faLock} fontSize='28px' />
-                                            <p> Abunəlik aktif deyil. Aktifləşdirmək üçün təsdiqləyin! </p>
-                                        </div>
-                                    </Button>
-                                ) : (
-                                    isFetching ? (
-                                        <p>Məlumatlar yüklənir!</p>
+                                    user && user.id ? (
+                                        <Button
+                                            classList="border-0 bg-transparent w-100 h-100"
+                                            asButton={true}
+                                            onClick={
+                                                user.userLinks?.length < 10
+                                                    ? () =>
+                                                        handleOpenModal(
+                                                            'Abunəliyi aktiv et',
+                                                            'md',
+                                                            <Form
+                                                                config={new ConfigGenerator().generateUserSubscription('add', user.id)}
+                                                                initialData={user}
+                                                                onClose={handleCloseModal}
+                                                            />
+                                                        )
+                                                    : onUserUpToLimit
+                                            }
+                                            style={{ fontSize: '16px' }}
+                                        >
+                                            <FontAwesomeIcon icon={faLock} fontSize="28px" />
+                                            <p>Abunəlik aktiv deyil. Aktifləşdirmək üçün təsdiqləyin!</p>
+                                        </Button>
                                     ) : (
-                                        subscribeOptions.length > 0 ? (
-                                            subscribeOptions.map((subscribeOption) => (
-                                                <div key={subscribeOption.id}>
-                                                    <h6 className="text-uppercase text-body text-xs font-weight-bolder">
-                                                        {subscribeOption.group}
-                                                    </h6>
-                                                    <ul className="list-group">
-                                                        {subscribeOption?.options.map((option) => (
-                                                            <li className="list-group-item border-0 px-0 pb-0" key={option.id}>
-                                                                <div className="form-check form-switch ps-0">
-                                                                    <input
-                                                                        className="form-check-input ms-auto"
-                                                                        value={option.id || ''}
-                                                                        type="checkbox"
-                                                                        id={option.label}
-                                                                        checked={selectedOptions.includes(option.id)}
-                                                                        onChange={() => handleToggle(option.id)}
-                                                                    />
-                                                                    <label
-                                                                        className="form-check-label text-body ms-3 text-truncate w-80 mb-0"
-                                                                        htmlFor={option.label}
-                                                                    >
-                                                                        {option.description}
-                                                                    </label>
-                                                                </div>
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-                                                </div>
-                                            ))
-                                        ) : (
-                                            <p>Məlumat yoxdur!</p>
-                                        )
+                                        <p>Məlumat yüklənir...</p>
                                     )
+                                ) : isFetching ? (
+                                    <p>Məlumatlar yüklənir!</p>
+                                ) : subscribeOptions.length > 0 ? (
+                                    subscribeOptions.map((subscribeOption) => (
+                                        <div key={subscribeOption.id}>
+                                            <h6 className="text-uppercase text-body text-xs font-weight-bolder">
+                                                {subscribeOption.group}
+                                            </h6>
+                                            <ul className="list-group">
+                                                {subscribeOption?.options.map((option) => (
+                                                    <li className="list-group-item border-0 px-0 pb-0" key={option.id}>
+                                                        <div className="form-check form-switch ps-0">
+                                                            <input
+                                                                className="form-check-input ms-auto"
+                                                                value={option.id || ''}
+                                                                type="checkbox"
+                                                                id={option.label}
+                                                                checked={selectedOptions.includes(option.id)}
+                                                                onChange={() => handleToggle(option.id)}
+                                                            />
+                                                            <label
+                                                                className="form-check-label text-body ms-3 text-truncate w-80 mb-0"
+                                                                htmlFor={option.label}
+                                                            >
+                                                                {option.description}
+                                                            </label>
+                                                        </div>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p>Məlumat yoxdur!</p>
                                 )}
                             </CardBody>
-
                         </UserProfileCard>
                     </div>
                 </div>

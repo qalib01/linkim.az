@@ -53,10 +53,16 @@ function Form({ config, initialData, onClose, attributes }) {
         setIsLoading(true);
         let formData = {};
 
-        config.fields && config.fields.some((field) => {
-            const { value } = inputs[field.id];
-            if (value !== initialData[field.id]) formData[field.id] = field.type === 'file' ? inputs[field.id].fileRef.current?.files[0] : value;
-        });
+        if (config.submitUrl.includes('contact') || config.submitUrl.includes('reset-password')) {
+            config.fields && config.fields.forEach((field) => {
+                formData[field.id] = field.type === 'file' ? inputs[field.id].fileRef.current?.files[0] : inputs[field.id].value;
+            })
+        } else {
+            config.fields && config.fields.some((field) => {
+                const { value } = inputs[field.id];
+                if (value !== initialData[field.id]) formData[field.id] = field.type === 'file' ? inputs[field.id].fileRef.current?.files[0] : value;
+            });
+        }
 
         if (formData.password === '') delete formData.password;
         if (formData.confirmPassword === '') delete formData.confirmPassword;
@@ -77,7 +83,7 @@ function Form({ config, initialData, onClose, attributes }) {
         }
 
         const body = config.fields && config.fields.some((field) => field.type === 'file') ? createFormData(formData) : JSON.stringify(formData);
-
+        console.log(body)
         try {
             const res = await apiRequest({
                 url: config.submitUrl,
@@ -108,6 +114,7 @@ function Form({ config, initialData, onClose, attributes }) {
             <div className='row'>
                 {config.fields && config.fields.map((field) => {
                     const input = inputs[field.id];
+                    console.log(input)
                     return (
                         <div key={field.id} className={`mb-2 ${field.grid ? `col-${field.grid.col}` : 'col-12'}`}>
                             <label htmlFor={field.id}>{field.label}</label>

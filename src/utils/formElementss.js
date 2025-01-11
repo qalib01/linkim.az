@@ -6,7 +6,7 @@ const usernameMaxLength = 12;
 
 
 // Configuration for GlobalDataManagement
-const status = () => {
+const status = (props) => {
     return {
         id: 'active',
         name: 'active',
@@ -20,10 +20,11 @@ const status = () => {
             { key: '1', value: 'true', label: 'Aktif' },
             { key: '0', value: 'false', label: 'Passif' },
         ],
+        ...props,
     }
 }
 
-const order = () => {
+const order = (props) => {
     return {
         id: 'order',
         name: 'order',
@@ -32,6 +33,7 @@ const order = () => {
         value: (data) => data?.order || '',
         validation: (data) => isNotEmpty(data),
         required: true,
+        ...props,
     }
 }
 
@@ -39,7 +41,7 @@ const order = () => {
 
 
 // Configuration for UserDataManagement
-const userName = () => {
+const userName = (props) => {
     return {
         id: 'name',
         name: 'name',
@@ -47,14 +49,14 @@ const userName = () => {
         label: 'Ad',
         maxLength: 20,
         placeholder: 'Adın',
-        value: (user) => user?.name || '',
-        validation: (value) => isNotEmpty(value),
+        value: (data) => data?.name || '',
+        validation: (data) => isNotEmpty(data),
         required: true,
-        grid: { col: 6 },
+        ...props,
     };
 }
 
-const userSurname = () => {
+const userSurname = (props) => {
     return {
         id: 'surname',
         name: 'surname',
@@ -62,31 +64,31 @@ const userSurname = () => {
         label: 'Soyad',
         maxLength: 20,
         placeholder: 'Soyadın',
-        value: (user) => user?.surname || '',
-        validation: (value) => isNotEmpty(value),
+        value: (data) => data?.surname || '',
+        validation: (data) => isNotEmpty(data),
         required: true,
-        grid: { col: 6 },
+        ...props,
     };
 }
 
-const userEmail = () => {
+const userEmail = (props) => {
     return {
         id: 'email',
         name: 'email',
         type: 'email',
         label: 'Email',
         placeholder: 'Email adresin',
-        value: (user) => user?.email || '',
-        validation: (value) => isNotEmpty(value),
-        transform: (value) => value.toLowerCase(),
+        value: (data) => data?.email || '',
+        validation: (data) => isNotEmpty(data) && isValidEmail(data),
+        transform: (data) => data.toLowerCase(),
         required: true,
-        disabled: (user) => !!user?.email,
-        readOnly: (user) => !!user?.email,
-        grid: { col: 6 },
+        disabled: (data) => !!data?.email,
+        readOnly: (data) => !!data?.email,
+        ...props,
     };
 }
 
-const userUsername = () => {
+const userUsername = (props) => {
     return {
         id: 'username',
         name: 'username',
@@ -94,17 +96,17 @@ const userUsername = () => {
         label: 'İstifadəçi adı',
         placeholder: 'İstifadəçi adın',
         maxLength: usernameMaxLength,
-        value: (user) => user?.username || '',
-        validation: (value) => isNotEmpty(value) && isValidUsername(value) && hasMinLength(value, usernameMinLength) && hasMaxTrimedLength(value, usernameMaxLength),
+        value: (data) => data?.username || '',
+        validation: (data) => isNotEmpty(data) && isValidUsername(data) && hasMinLength(data, usernameMinLength) && hasMaxTrimedLength(data, usernameMaxLength),
         info: `İstifadəçi adı balaca hərflə, minimum ${usernameMinLength}, maksimum ${usernameMaxLength} xarakter olmalı və xüsusi işarələr istifadə olmamalıdır. Nümunə: link, link01, link_01, link.01`,
         required: true,
-        disabled: (user) => !!user?.username,
-        readOnly: (user) => !!user?.username,
-        grid: { col: 6 },
+        disabled: (data) => !!data?.username,
+        readOnly: (data) => !!data?.username,
+        ...props,
     };
 }
 
-const userPassword = () => {
+const userPassword = (props) => {
     return {
         id: 'password',
         name: 'password',
@@ -112,40 +114,40 @@ const userPassword = () => {
         label: 'Yeni şifrə',
         placeholder: 'Yeni şifrə',
         info: 'Şifrə təhlükəsizliklə bağlı böyük, kiçik hərflər, rəqəm və xüsusi işarələr, minimum 8 xarakter olmalıdır. Nümunə: Link01!!',
-        validation: (value) => hasMinLength(value, 8) && isNotEmpty(value) && isValidPassword(value),
-        grid: { col: 6 },
+        validation: (data) => hasMinLength(data, 8) && isNotEmpty(data) && isValidPassword(data),
+        ...props,
     };
 }
 
-const userConfirmPassword = () => {
+const userConfirmPassword = (props) => {
     return {
-        id: 'password',
-        name: 'password',
+        id: 'confirmPassword',
+        name: 'confirmPassword',
         type: 'password',
         label: 'Yeni şifrə',
         placeholder: 'Yeni şifrə',
         info: 'Şifrə təhlükəsizliklə bağlı böyük, kiçik hərflər, rəqəm və xüsusi işarələr, minimum 8 xarakter olmalıdır. Nümunə: Link01!!',
-        validation: (value) => hasMinLength(value, 8) && isNotEmpty(value) && isValidPassword(value),
-        grid: { col: 6 },
+        validation: (data, otherValue) => isEqualsToOtherValue(data, otherValue),
+        ...props,
     };
 }
 
-const userBio = () => {
+const userBio = (props) => {
     return {
         id: 'bio',
         name: 'bio',
         type: 'textarea',
         label: 'Şəxsi məlumat',
         placeholder: 'Özün haqqında məlumat',
-        validation: (value) => hasMaxTrimedLength(value, maxDataLength),
+        validation: (data) => hasMaxTrimedLength(data, maxDataLength),
         maxLength: maxDataLength,
         rows: maxRows,
-        value: (user) => user?.bio || '',
-        grid: { col: 12 },
+        value: (data) => data?.bio || '',
+        ...props,
     };
 }
 
-const userProfilePhoto = () => {
+const userProfilePhoto = (props) => {
     return {
         id: 'profilePhoto',
         name: 'profilePhoto',
@@ -154,6 +156,7 @@ const userProfilePhoto = () => {
         validation: (data) => data,
         accept: 'image/png, image/jpeg, image/jpg',
         required: true,
+        ...props,
     };
 }
 
@@ -161,7 +164,7 @@ const userProfilePhoto = () => {
 
 
 // Configuration for UserLinkManagement
-const userLinkUrl = () => {
+const userLinkUrl = (props) => {
     return {
         id: 'url',
         name: 'url',
@@ -172,10 +175,11 @@ const userLinkUrl = () => {
         validation: (data) => isNotEmpty(data) && isValidURL(data),
         info: 'Link urli mütləqdir ki, http və ya https ilə başlasın. Nümunə: https://linkim.az, http://numune.az',
         required: true,
+        ...props,
     };
 }
 
-const userLinkTitle = () => {
+const userLinkTitle = (props) => {
     return {
         id: 'title',
         name: 'title',
@@ -186,10 +190,11 @@ const userLinkTitle = () => {
         value: (data) => data?.url || '',
         validation: (data) => isNotEmpty(data),
         required: true,
+        ...props,
     };
 }
 
-const userLinkType = () => {
+const userLinkType = (props) => {
     return {
         id: 'type',
         name: 'type',
@@ -204,6 +209,7 @@ const userLinkType = () => {
             { key: 'sexsi', value: 'şəxsi', label: 'Şəxsi' },
             { key: 'diger', value: 'digər', label: 'Digər' },
         ],
+        ...props,
     };
 }
 
@@ -211,7 +217,7 @@ const userLinkType = () => {
 
 
 // Configuration for FaqManagement
-const faqQuestion = () => {
+const faqQuestion = (props) => {
     return {
         id: 'question',
         name: 'question',
@@ -221,10 +227,11 @@ const faqQuestion = () => {
         value: (data) => data?.question || '',
         validation: (data) => isNotEmpty(data),
         required: true,
+        ...props,
     };
 }
 
-const faqAnswer = () => {
+const faqAnswer = (props) => {
     return {
         id: 'answer',
         name: 'answer',
@@ -234,11 +241,12 @@ const faqAnswer = () => {
         value: (data) => data?.answer || '',
         validation: (data) => isNotEmpty(data),
         required: true,
+        ...props,
     };
 }
 
-const faqGroup = () => {
-    return                 {
+const faqGroup = (props) => {
+    return {
         id: 'group',
         name: 'group',
         type: 'text',
@@ -247,6 +255,87 @@ const faqGroup = () => {
         value: (data) => data?.group || '',
         validation: (data) => isNotEmpty(data),
         required: true,
+        ...props,
     };
 }
 
+
+
+
+// Configuration for ContactManagement
+const contactFullName = (props) => {
+    return {
+        id: 'fullName',
+        name: 'fullName',
+        type: 'text',
+        label: 'Tam ad',
+        placeholder: 'Tam ad',
+        value: (data) => data.fullName || '',
+        validation: (data) => isNotEmpty(data),
+        disabled: (data) => data && true,
+        required: true,
+        ...props,
+    };
+}
+
+const contactSubject = (props) => {
+    return {
+        id: 'subject',
+        name: 'subject',
+        type: 'text',
+        label: 'Mövzu',
+        placeholder: 'Mövzu',
+        value: (data) => data?.subject || '',
+        validation: (data) => isNotEmpty(data),
+        required: true,
+        ...props,
+    };
+}
+
+const contactMessage = (props) => {
+    return {
+        id: 'message',
+        name: 'message',
+        type: 'textarea',
+        label: 'Mesaj',
+        placeholder: 'Mesaj',
+        value: (data) => data?.message || '',
+        validation: (data) => isNotEmpty(data),
+        required: true,
+        rows: maxRows,
+        ...props,
+    };
+}
+
+
+
+
+// Configuration for ButtonManagement
+const submitButton = (props) => {
+    return {
+        type: 'submit',
+        className: 'btn bg-gradient-primary mx-2',
+        disabled: (isLoading) => isLoading,
+        children: (isLoading) => isLoading ? 'Göndərilir...' : 'Göndər',
+        ...props,
+    };
+}
+
+const closeButton = (props) => {
+    return {
+        type: 'button',
+        className: 'btn bg-dark text-white',
+        onClick: (onClose) => onClose,
+        children: 'Bağla',
+        ...props,
+    };
+}
+
+
+
+
+
+
+
+
+export { status, order, userName, userSurname, userEmail, userUsername, userPassword, userConfirmPassword, userBio, userProfilePhoto, userLinkUrl, userLinkTitle, userLinkType, faqQuestion, faqAnswer, faqGroup, contactFullName, contactSubject, contactMessage, submitButton, closeButton }

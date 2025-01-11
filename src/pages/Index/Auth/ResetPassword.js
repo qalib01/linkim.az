@@ -1,20 +1,15 @@
 import { useEffect, useState } from "react";
 import Section from "../../../components/Section/Section";
-import { hasMinLength, isEqualsToOtherValue, isNotEmpty } from "../../../utils/validation";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import Input from "../../../components/Form/Input";
 import classes from './Auth.module.scss';
-import { useInput } from "../../../hooks/useInput";
-import Alert from "../../../components/Alert/Alert";
 import { apiRequest } from "../../../utils/apiRequest";
-import Button from "../../../components/Button/Button";
-import errorMessages from "../../../statusMessages/error";
+import Form from "../../../components/Form/Form";
+import { ConfigGenerator } from "../../../utils/formConfigs";
 
 
 function ResetPasswordRequestPage() {
     const { token } = useParams();
-    const [loading, setLoading] = useState(false);
-    const [email, setEmail] = useState({})
+    const [data, setData] = useState({})
     const [isTokenValid, setIsTokenValid] = useState(false)
     const [submitStatus, setSubmitStatus] = useState(null);
     const navigate = useNavigate();
@@ -35,53 +30,8 @@ function ResetPasswordRequestPage() {
 
         if (response.status === 200) {
             setIsTokenValid(true);
-            setEmail(data.email);
+            setData(data);
         } else {
-            setSubmitStatus(data);
-            setTimeout(() => {
-                navigate('/p/login'); 
-            }, 2000);
-        }
-    }
-
-    const {
-        value: password,
-        handleInputChange: handlePasswordChange,
-        handleInputBlur: handlePasswordBlur,
-        hasError: hasPasswordError,
-        handleInputReset: handlePasswordReset,
-    } = useInput('', (value) => hasMinLength(value, 8) && isNotEmpty(value));
-
-    const {
-        value: confirmPassword,
-        handleInputChange: handlePasswordConfirmChange,
-        handleInputBlur: handlePasswordConfirmBlur,
-        hasError: hasPasswordConfirmError,
-        handleInputReset: handlePasswordConfirmReset,
-    } = useInput('', (value) => isEqualsToOtherValue(value, password) && isNotEmpty(value));
-
-    async function handleSubmit(event) {
-        event.preventDefault();
-        setLoading(true);
-
-        if (!token || hasPasswordError || hasPasswordConfirmError) {
-            setLoading(false);
-            return setSubmitStatus(errorMessages.ALL_FIELDS_REQUIRED);
-        }
-
-        let response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/reset-password`,
-            method: 'POST',
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password })
-        });
-
-        const data = response.data;
-        setSubmitStatus(data);
-        setLoading(false);
-        if (response.status === 200) {
-            handlePasswordReset();
-            handlePasswordConfirmReset();
             setSubmitStatus(data);
             setTimeout(() => {
                 navigate('/p/login'); 
@@ -99,56 +49,12 @@ function ResetPasswordRequestPage() {
                         </div>
                     </div>
                     {isTokenValid ? (<>
-                        {/* <Form config={new ConfigGenerator().generateResetPassword('update')} initialData={data} attributes={{ buttonLoc: 'center', classList: classes.form }} /> */}
-                        <form method="post" className={classes.form} onSubmit={handleSubmit}>
-                            <div className="row gy-4">
-                                <Input
-                                    id='email'
-                                    type='email'
-                                    name='email'
-                                    label='Email'
-                                    placeholder='Emailin'
-                                    required={true}
-                                    value={email}
-                                    disabled={true}
-                                />
-                                <Input
-                                    id='password'
-                                    type='password'
-                                    name='password'
-                                    label='Şifrə'
-                                    placeholder='Şifrən'
-                                    required={true}
-                                    value={password}
-                                    onChange={handlePasswordChange}
-                                    onBlur={handlePasswordBlur}
-                                    error={hasPasswordError}
-                                />
-                                <Input
-                                    id='confirmPassword'
-                                    type='password'
-                                    name='confirmPassword'
-                                    label='Şifrə təkrar'
-                                    placeholder='Şifrənin təkrar'
-                                    required={true}
-                                    value={confirmPassword}
-                                    onChange={handlePasswordConfirmChange}
-                                    onBlur={handlePasswordConfirmBlur}
-                                    error={hasPasswordConfirmError}
-                                />
-                                <div className="text-center">
-                                    <Button asButton={true} type="submit" disabled={loading}>{loading ? 'Göndərilir...' : 'Göndər'}</Button>
-                                </div>
-                            </div>
-                        </form>
+                        <Form config={new ConfigGenerator().generateResetPassword('update')} initialData={ data || '' } attributes={{ buttonLoc: 'center', classList: classes.form }} />
                         <div className={classes.hasAccount}>
                             <p> Artıq hesabın varsa, hesabına <Link to='/p/login'>buradan</Link> giriş edə və ya yeni hesab yaratmaq istəyirsənsə, <Link to='/p/register'> buraya </Link> daxil ola bilərsən. </p>
                         </div>
                     </>) : (
                         <p> { submitStatus && submitStatus.message } </p>
-                    )}
-                    {submitStatus && (
-                        <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus(null)} />
                     )}
                 </div>
             </div>
