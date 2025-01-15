@@ -1,12 +1,11 @@
-function ListGroupParent({ children, title }) {
+import React from "react";
+
+const ListGroupParent = React.forwardRef(({ children, classList, ...props }, ref) => {
     return (
-        <>
-            { title && <h6 className="text-uppercase text-body text-xs font-weight-bolder"> {title} </h6>}
-            <ul className="list-group">
-                { children }
-            </ul>
-        </>
+        <ul className={`list-group ${classList}`} ref={ref} {...props}>
+            {children}
+        </ul>
     )
-}
+});
 
 export default ListGroupParent;

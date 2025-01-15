@@ -114,7 +114,6 @@ function Form({ config, initialData, onClose, attributes }) {
             <div className='row'>
                 {config.fields && config.fields.map((field) => {
                     const input = inputs[field.id];
-                    console.log(input)
                     return (
                         <div key={field.id} className={`mb-2 ${field.grid ? `col-${field.grid.col}` : 'col-12'}`}>
                             <label htmlFor={field.id}>{field.label}</label>

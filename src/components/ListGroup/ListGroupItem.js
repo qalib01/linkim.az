@@ -1,9 +1,11 @@
-function ListGroupItem({children, classList}) {
+import React from "react";
+
+const ListGroupItem = React.forwardRef(({ children, classList, ...props }, ref) => {
     return (
-        <li className={`list-group-item ${classList}`}>
-            { children }
+        <li className={`list-group-item ${classList}`} ref={ref} {...props}>
+            {children}
         </li>
     )
-}
+});
 
 export default ListGroupItem;

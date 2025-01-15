@@ -9,7 +9,7 @@ import ListGroupParent from "../../../../components/ListGroup/ListGroupParent";
 import ListGroupItem from "../../../../components/ListGroup/ListGroupItem";
 import Form from "../../../../components/Form/Form";
 import errorMessages from "../../../../statusMessages/error";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+// import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 
 
@@ -18,17 +18,17 @@ function UserLinks({ user, onClose, openModal, setSubmitStatus }) {
         setSubmitStatus(errorMessages.USER_UP_TO_LINK_LIMIT);
     }
 
-    const onDragEnd = (result) => {
-        if (!result.destination) return; // Link başqa yerə köçürülməyibsə, çıxış et.
-    
-        const updatedLinks = Array.from(user.userLinks);
-        const [reorderedLink] = updatedLinks.splice(result.source.index, 1); // Linki köhnə yerdən sil.
-        updatedLinks.splice(result.destination.index, 0, reorderedLink); // Yeni yerə əlavə et.
-    
-        // Burada serverə yeni sıranı göndərə bilərsiniz.
-        console.log('Updated Links:', updatedLinks);
-        // setUserLinks(updatedLinks); // State yenilənməsi (əgər lazım olsa).
-    };
+    // const onDragEnd = (result) => {
+    //     if (!result.destination) return;
+
+    //     const updatedLinks = Array.from(user.userLinks);
+    //     const [reorderedLink] = updatedLinks.splice(result.source.index, 1);
+    //     updatedLinks.splice(result.destination.index, 0, reorderedLink);
+
+    //     // Burada serverə yeni sıranı göndərə bilərsiniz.
+    //     console.log('Updated Links:', updatedLinks);
+    //     // setUserLinks(updatedLinks);
+    // };
 
     return (
         <div className="col-12 col-xl-4">
@@ -38,7 +38,7 @@ function UserLinks({ user, onClose, openModal, setSubmitStatus }) {
                         <FontAwesomeIcon icon={faAdd} />
                     </Button>
                 </CardHeader>
-                {/* <CardBody classList='p-3'>
+                <CardBody classList='p-3'>
                     <ListGroupParent>
                         {user.userLinks?.length > 0 ? user.userLinks.map((data) => (
                             <ListGroupItem classList='list-group-item border-0 d-flex align-items-center justify-content-between px-0 mb-2' key={data.id} >
@@ -68,39 +68,37 @@ function UserLinks({ user, onClose, openModal, setSubmitStatus }) {
                             </ListGroupItem>
                         )) : <p> Məlumat yoxdur! </p>}
                     </ListGroupParent>
-                </CardBody> */}
-                <CardBody classList="p-3">
+                </CardBody>
+                {/* <CardBody classList="p-3">
                     <DragDropContext onDragEnd={onDragEnd}>
                         <Droppable droppableId="links">
-                            {(provided) => (
-                                <ListGroupParent {...provided.droppableProps} ref={provided.innerRef}>
+                            {(provided, snapshot) => (
+                                <ul
+                                    {...provided.droppableProps}
+                                    ref={provided.innerRef}
+                                    className={`list-group ${snapshot.isDraggingOver ? 'bg-warning bg-gradient' : ''}`}
+                                >
                                     {user.userLinks?.length > 0 ? (
                                         user.userLinks.map((data, index) => (
-                                            <Draggable key={data.id} draggableId={data.id.toString()} index={index}>
+                                            <Draggable key={data.id?.toString() || index.toString()} draggableId={data.id?.toString() || index.toString()} index={index}>
                                                 {(provided) => (
-                                                    <ListGroupItem
-                                                        classList="list-group-item border-0 d-flex align-items-center justify-content-between px-0 mb-2"
+                                                    <li
+                                                        className="list-group-item border-0 d-flex align-items-center justify-content-between px-0 mb-2"
                                                         ref={provided.innerRef}
                                                         {...provided.draggableProps}
                                                         {...provided.dragHandleProps}
                                                     >
                                                         <div className="col-8 col-lg-9 d-flex align-items-start flex-column justify-content-center">
-                                                            <h6 className="mb-0 text-sm"> {data.title} </h6>
+                                                            <h6 className="mb-0 text-sm">{data.title}</h6>
                                                             <p className="mb-0 text-xs">
-                                                                <span> {data.type} </span>
+                                                                <span>{data.type}</span>
                                                                 <span> - </span>
-                                                                <span>
-                                                                    {data.active ? (
-                                                                        <span className="text-success">Aktif</span>
-                                                                    ) : (
-                                                                        <span className="text-danger"> Passiv </span>
-                                                                    )}
-                                                                </span>
+                                                                <span>{data.active ? <span className="text-success">Aktif</span> : <span className="text-danger">Passiv</span>}</span>
                                                             </p>
                                                         </div>
                                                         <div className="col-4 col-lg-3 d-flex align-items-center justify-content-between">
                                                             <Button classList="text-end" to={data.url} target="_blank">
-                                                                <FontAwesomeIcon icon={faLink} className="move-on-hover" />
+                                                                <FontAwesomeIcon icon={faLink} />
                                                             </Button>
                                                             <Button
                                                                 onClick={() =>
@@ -135,7 +133,7 @@ function UserLinks({ user, onClose, openModal, setSubmitStatus }) {
                                                                 <FontAwesomeIcon icon={faTrash} />
                                                             </Button>
                                                         </div>
-                                                    </ListGroupItem>
+                                                    </li>
                                                 )}
                                             </Draggable>
                                         ))
@@ -143,11 +141,12 @@ function UserLinks({ user, onClose, openModal, setSubmitStatus }) {
                                         <p> Məlumat yoxdur! </p>
                                     )}
                                     {provided.placeholder}
-                                </ListGroupParent>
+                                </ul>
                             )}
                         </Droppable>
                     </DragDropContext>
-                </CardBody>
+                </CardBody> */}
+
             </UserProfileCard>
         </div>
     )

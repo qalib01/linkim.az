@@ -14,7 +14,6 @@ library.add(faLink)
 function Dashboard() {
     const [isOpen, setIsOpen] = useState(true);
     const { localUser } = useAuth();
-    console.log(localUser)
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
