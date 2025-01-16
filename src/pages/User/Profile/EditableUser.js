@@ -42,7 +42,7 @@ const EditableUser = () => {
 
     if (submitStatus.length > 0) return hasAlert && <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setHasAlert(false)} />;
     if (isFetching || !user) return <Loader />;
-    return <Profile user={user} />;
+    return <Profile user={user} setUser={setUser} />;
 }
 
 export default EditableUser;

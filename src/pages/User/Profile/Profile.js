@@ -7,7 +7,7 @@ import UserData from "./components/UserData";
 import UserPhoto from "./components/UserPhoto";
 
 
-function Profile({ user }) {
+function Profile({ user, setUser }) {
     const [submitStatus, setSubmitStatus] = useState([]);
     const [modalConfig, setModalConfig] = useState(null);
 
@@ -36,7 +36,7 @@ function Profile({ user }) {
             <div className="container-fluid py-4">
                 <div className="row" style={{ rowGap: '1rem' }}>
                     <UserData user={user} onClose={handleCloseModal} openModal={handleOpenModal} setSubmitStatus={setSubmitStatus} />
-                    <UserLinks user={user} onClose={handleCloseModal} openModal={handleOpenModal} setSubmitStatus={setSubmitStatus} />
+                    <UserLinks user={user} setUser={setUser} onClose={handleCloseModal} openModal={handleOpenModal} setSubmitStatus={setSubmitStatus} />
                     <UserSubscription user={user} onClose={handleCloseModal} openModal={handleOpenModal} submitStatus={submitStatus} setSubmitStatus={setSubmitStatus} />
                 </div>
             </div>

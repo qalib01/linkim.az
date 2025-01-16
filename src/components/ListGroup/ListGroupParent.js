@@ -1,11 +1,11 @@
 import React from "react";
 
-const ListGroupParent = React.forwardRef(({ children, classList, ...props }, ref) => {
+const ListGroupParent = ({ children, classList, ...props }) => {
     return (
-        <ul className={`list-group ${classList}`} ref={ref} {...props}>
+        <ul className={`list-group ${classList}`} {...props}>
             {children}
         </ul>
     )
-});
+}
 
 export default ListGroupParent;

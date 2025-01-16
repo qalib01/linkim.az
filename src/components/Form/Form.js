@@ -83,7 +83,7 @@ function Form({ config, initialData, onClose, attributes }) {
         }
 
         const body = config.fields && config.fields.some((field) => field.type === 'file') ? createFormData(formData) : JSON.stringify(formData);
-        console.log(body)
+
         try {
             const res = await apiRequest({
                 url: config.submitUrl,
@@ -192,6 +192,7 @@ function Form({ config, initialData, onClose, attributes }) {
 
             <div className={`text-${ attributes?.buttonLoc || 'end' } mt-3`}>
                 {config.buttons.map((button, index) => {
+                    console.log(button)
                     return (<Button
                         key={index}
                         type={button.type}
