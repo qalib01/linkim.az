@@ -192,7 +192,6 @@ function Form({ config, initialData, onClose, attributes }) {
 
             <div className={`text-${ attributes?.buttonLoc || 'end' } mt-3`}>
                 {config.buttons.map((button, index) => {
-                    console.log(button)
                     return (<Button
                         key={index}
                         type={button.type}

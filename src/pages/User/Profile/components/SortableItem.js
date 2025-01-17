@@ -7,6 +7,7 @@ import { faEdit, faLink, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Form from '../../../../components/Form/Form';
 import { ConfigGenerator } from '../../../../utils/formConfigs';
 import { CSS } from '@dnd-kit/utilities';
+import PropTypes from 'prop-types';
 
 const SortableItem = ({ data, openModal, onClose }) => {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: data.id });
@@ -43,6 +44,12 @@ const SortableItem = ({ data, openModal, onClose }) => {
             </div>
         </ListGroupItem>
     );
+}
+
+SortableItem.propTypes = {
+    data: PropTypes.object.isRequired,
+    openModal: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired,
 }
 
 export default SortableItem;

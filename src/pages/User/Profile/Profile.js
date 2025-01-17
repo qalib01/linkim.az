@@ -5,6 +5,7 @@ import UserLinks from "./components/UserLinks";
 import UserSubscription from "./components/UserSubscription";
 import UserData from "./components/UserData";
 import UserPhoto from "./components/UserPhoto";
+import PropTypes from "prop-types";
 
 
 function Profile({ user, setUser }) {
@@ -44,6 +45,11 @@ function Profile({ user, setUser }) {
             {modalConfig?.isOpen && (<Modal title={modalConfig.title} size={modalConfig.size} onClose={handleCloseModal}> {modalConfig.content} </Modal>)}
         </>
     )
+}
+
+Profile.propTypes = {
+    user: PropTypes.object.isRequired,
+    setUser: PropTypes.func.isRequired,
 }
 
 export default Profile;

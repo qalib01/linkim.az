@@ -12,6 +12,7 @@ import ListGroupItem from "../../../../components/ListGroup/ListGroupItem";
 import { Link } from "react-router-dom";
 import CopyToClipboard from "react-copy-to-clipboard";
 import infoMessages from "../../../../statusMessages/info";
+import PropTypes from "prop-types";
 
 
 function UserData({ user, onClose, openModal, setSubmitStatus }) {
@@ -52,6 +53,13 @@ function UserData({ user, onClose, openModal, setSubmitStatus }) {
             </UserProfileCard>
         </div>
     )
+}
+
+UserData.propTypes = {
+    user: PropTypes.object.isRequired,
+    onClose: PropTypes.func.isRequired,
+    openModal: PropTypes.func.isRequired,
+    setSubmitStatus: PropTypes.func.isRequired,
 }
 
 export default UserData;

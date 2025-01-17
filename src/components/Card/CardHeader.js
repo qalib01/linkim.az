@@ -5,7 +5,7 @@ function CardHeader({ title, children }) {
                 <div className="col-6 d-flex align-items-center">
                     <h6 className="mb-0"> {title} </h6>
                 </div>
-                <div className="col-6 d-flex justify-content-end">
+                <div className="col-6 d-flex justify-content-end gap-2">
                 { children }
                 </div>
             </div>

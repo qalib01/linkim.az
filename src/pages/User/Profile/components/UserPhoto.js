@@ -5,6 +5,7 @@ import UserProfileCard from "../../../../components/Card/UserProfileCard";
 import { ConfigGenerator } from "../../../../utils/formConfigs";
 import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import Form from "../../../../components/Form/Form";
+import PropTypes from "prop-types";
 
 
 function UserPhoto({ user, onClose, openModal }) {
@@ -40,6 +41,12 @@ function UserPhoto({ user, onClose, openModal }) {
             </CardBody>
         </UserProfileCard>
     )
+}
+
+UserPhoto.propTypes = {
+    user: PropTypes.object.isRequired,
+    onClose: PropTypes.func.isRequired,
+    openModal: PropTypes.func.isRequired,
 }
 
 export default UserPhoto;
