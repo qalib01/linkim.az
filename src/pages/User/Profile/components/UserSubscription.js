@@ -53,9 +53,7 @@ const UserSubscription = ({ user, onClose, openModal, setSubmitStatus }) => {
     }, []);
 
     useEffect(() => {
-        setHasChanges(
-            checkForChanges(selectedOptions, user.subscription?.options?.map((opt) => opt.id) || [])
-        );
+        setHasChanges(checkForChanges(selectedOptions, user.subscription?.options?.map((opt) => opt.id) || []));
     }, [selectedOptions, user.subscription?.options, checkForChanges]);
 
     const saveSubscriptionChanges = useCallback(async () => {

@@ -16,7 +16,6 @@ import { apiRequest } from "../../../../utils/apiRequest";
 import PropTypes from "prop-types";
 
 
-
 function UserLinks({ user, setUser, onClose, openModal, setSubmitStatus }) {
     const [newUpdatedLinks, setNewUpdatedLinks] = useState([]);
     const [initialLinks, setInitialLinks] = useState(user.userLinks || []);

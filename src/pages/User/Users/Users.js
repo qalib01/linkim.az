@@ -9,12 +9,14 @@ import useAuth from "../../../hooks/useAuth";
 import Modal from "../../../components/Modal/Modal";
 import Form from "../../../components/Form/Form";
 import { ConfigGenerator } from "../../../utils/formConfigs";
+import Alert from "../../../components/Alert/Alert";
 
 
 function Users() {
     const [isFetching, setIsFetching] = useState(false);
     const [data, setData] = useState([]);
     const { localUser } = useAuth();
+    const [submitStatus, setSubmitStatus] = useState([]);
     const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
     const [modalConfig, setModalConfig] = useState(null);
 
@@ -33,7 +35,11 @@ function Users() {
             });
 
             let data = response.data;
-            setData(response.status === 200 && data);
+            if (response.status === 200) {
+                setData(data);
+            } else {
+                setSubmitStatus(data);
+            }
             setIsFetching(false);
         }
         getData();
@@ -205,9 +211,8 @@ function Users() {
                     </div>
                 </div>
             </div>
-            {
-                modalConfig?.isOpen && (<Modal title={modalConfig.title} size={modalConfig.size} onClose={handleCloseModal}> {modalConfig.content} </Modal>)
-            }
+            {submitStatus.type && <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus([])} />}
+            {modalConfig?.isOpen && (<Modal title={modalConfig.title} size={modalConfig.size} onClose={handleCloseModal}> {modalConfig.content} </Modal>)}
         </>
     )
 }

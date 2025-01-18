@@ -6,11 +6,13 @@ import { apiRequest } from "../../../utils/apiRequest";
 import { ConfigGenerator } from "../../../utils/formConfigs";
 import Form from "../../../components/Form/Form";
 import Modal from "../../../components/Modal/Modal";
+import Alert from "../../../components/Alert/Alert";
 
 
 function Faqs() {
     const [isFetching, setIsFetching] = useState(false);
     const [data, setData] = useState([]);
+    const [submitStatus, setSubmitStatus] = useState([]);
     const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
     const [modalConfig, setModalConfig] = useState(null);
 
@@ -29,7 +31,11 @@ function Faqs() {
             });
 
             let data = response.data;
-            setData(response.status === 200 && data);
+            if (response.status === 200) {
+                setData(data);
+            } else {
+                setSubmitStatus(data);
+            }
             setIsFetching(false);
         }
         getData();
@@ -211,7 +217,8 @@ function Faqs() {
                     </div>
                 </div>
             </div>
-            { modalConfig?.isOpen && (<Modal title={modalConfig.title} size={modalConfig.size} onClose={handleCloseModal}> {modalConfig.content} </Modal>) }
+            {submitStatus.type && <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus([])} />}
+            {modalConfig?.isOpen && (<Modal title={modalConfig.title} size={modalConfig.size} onClose={handleCloseModal}> {modalConfig.content} </Modal>)}
         </>
     )
 }
