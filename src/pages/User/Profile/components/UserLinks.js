@@ -11,32 +11,22 @@ import errorMessages from "../../../../statusMessages/error";
 import { closestCorners, DndContext, KeyboardSensor, PointerSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import SortableItem from "./SortableItem";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { apiRequest } from "../../../../utils/apiRequest";
 import PropTypes from "prop-types";
 
 
 function UserLinks({ user, setUser, onClose, openModal, setSubmitStatus }) {
     const [newUpdatedLinks, setNewUpdatedLinks] = useState([]);
-    const [initialLinks, setInitialLinks] = useState(user.userLinks || []);
+    const initialLinks = useMemo(() => user.userLinks || [], [user.userLinks]);
 
-    function onUserUpToLimit() {
-        setSubmitStatus(errorMessages.USER_UP_TO_LINK_LIMIT);
-    }
-
-    let sensors = useSensors(
-        useSensor(PointerSensor, {
-            activationConstraint: {
-                distance: 5,
-            }
-        }),
+    const sensors = useSensors(
+        useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
         useSensor(TouchSensor),
-        useSensor(KeyboardSensor, {
-            coordinateGetter: sortableKeyboardCoordinates,
-        }),
+        useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
     )
 
-    const handleDragEnd = (event) => {
+    const handleDragEnd = useCallback((event) => {
         const { active, over } = event;
 
         if (event.id !== over.id) {
@@ -53,17 +43,17 @@ function UserLinks({ user, setUser, onClose, openModal, setSubmitStatus }) {
                 userLinks: updatedLinks,
             }));
         }
-    }
+    }, [user.userLinks, setUser]);
 
-    const handleReset = () => {
+    const handleReset = useCallback(() => {
         setNewUpdatedLinks([]);
         setUser((prevState) => ({
             ...prevState,
             userLinks: initialLinks,
         }));
-    }
+    }, [initialLinks, setUser]);
 
-    const handleSubmit = async () => {
+    const handleSubmit = useCallback(async () => {
         const updatedOrderLinks = newUpdatedLinks.map((link, index) => ({
             ...link,
             order: index + 1,
@@ -92,7 +82,7 @@ function UserLinks({ user, setUser, onClose, openModal, setSubmitStatus }) {
         } catch (error) {
             setSubmitStatus(errorMessages.GENERAL_ERROR);
         }
-    }
+    }, [newUpdatedLinks, setUser, setSubmitStatus]);
 
     return (
         <div className="col-12 col-xl-4">
@@ -105,7 +95,7 @@ function UserLinks({ user, setUser, onClose, openModal, setSubmitStatus }) {
                                 <Button asButton={true} onClick={handleSubmit} classList='border-0 bg-transparent w-auto btn bg-gradient-primary p-2 m-0'>Yadda saxla</Button>
                             </>
                         ) : (
-                            <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={user.userLinks?.length < 10 ? () => openModal('İstifadəçi linki yarat', 'md', <Form config={new ConfigGenerator().generateUserLinks('add', user.id)} initialData={user} onClose={onClose} />) : onUserUpToLimit} style={{ fontSize: '16px' }}>
+                            <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={user.userLinks?.length < 10 ? () => openModal('İstifadəçi linki yarat', 'md', <Form config={new ConfigGenerator().generateUserLinks('add', user.id)} initialData={user} onClose={onClose} />) : () => setSubmitStatus(errorMessages.USER_UP_TO_LINK_LIMIT)} style={{ fontSize: '16px' }}>
                                 <FontAwesomeIcon icon={faAdd} />
                             </Button>
                         )

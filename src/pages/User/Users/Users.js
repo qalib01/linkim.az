@@ -1,6 +1,6 @@
 import { faCheck, faChevronLeft, faChevronRight, faEdit, faEllipsis, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Button from "../../../components/Button/Button";
 import { apiRequest } from "../../../utils/apiRequest";
 import { Link } from "react-router-dom";
@@ -55,20 +55,20 @@ function Users() {
         });
     }, [data, sortConfig]);
 
-    function handleSort(key) {
+    const handleSort = useCallback((key) => {
         setSortConfig((prevConfig) => {
             const direction = prevConfig.key === key && prevConfig.direction === 'asceding' ? 'desceding' : 'asceding';
             return { key, direction };
         })
-    }
+    }, [setSortConfig]);
 
-    function handleOpenModal(title, size, content) {
-        setModalConfig({ isOpen: true, title, size, content });
-    }
+    const handleOpenModal = useCallback((title, size, content) => {
+        setModalConfig({ isOpen: true, title, size, content })
+    }, [setModalConfig]);
 
-    function handleCloseModal() {
+    const handleCloseModal = useCallback(() => {
         setModalConfig({ isOpen: false, ...modalConfig });
-    }
+    }, [setModalConfig, modalConfig]);
 
     return (
         <>

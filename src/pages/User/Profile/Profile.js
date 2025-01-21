@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Alert from "../../../components/Alert/Alert";
 import Modal from "../../../components/Modal/Modal";
 import UserLinks from "./components/UserLinks";
@@ -16,15 +16,15 @@ function Profile({ user, setUser }) {
         window.scrollTo(0, 0);
     }, []);
 
-    function handleOpenModal(title, size, content) {
+    const handleOpenModal = useCallback((title, size, content) => {
         document.body.style.overflow = 'hidden';
         setModalConfig({ isOpen: true, title, size, content });
-    }
+    }, [setModalConfig]);
 
-    function handleCloseModal() {
+    const handleCloseModal = useCallback(() => {
         document.body.style.overflow = 'visible';
         setModalConfig({ ...modalConfig, isOpen: false });
-    }
+    }, [setModalConfig, modalConfig]);
 
     return (
         <>
