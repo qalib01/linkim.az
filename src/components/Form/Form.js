@@ -7,6 +7,8 @@ import errorMessages from '../../statusMessages/error';
 import Select from './Select';
 import Textarea from './Textarea';
 import Button from '../Button/Button';
+import useAuth from '../../hooks/useAuth';
+import { useNavigate } from 'react-router';
 
 
 const generateInputs = (fields, initialData) => {
@@ -41,6 +43,8 @@ const createFormData = (formData) => {
 function Form({ config, initialData, onClose, attributes }) {
     const [submitStatus, setSubmitStatus] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const { setLocalUser, setIsAuthenticated } = useAuth();
+    const navigate = useNavigate();
 
     const inputHooks = config.fields && generateInputs(config.fields, initialData);
     const inputs = config.fields && config.fields.reduce((acc, field, index) => {
@@ -70,8 +74,8 @@ function Form({ config, initialData, onClose, attributes }) {
             setIsLoading(false);
             return setSubmitStatus(errorMessages.CHANGES_NOT_FOUND)
         }
-
-        if (formData.password !== formData.confirmPassword) {
+        console.log(config.submitUrl.includes('login'))
+        if (!config.submitUrl.includes('login') && (formData.password !== formData.confirmPassword)) {
             setIsLoading(false);
             return setSubmitStatus(errorMessages.PASSWORDS_MUST_BE_SAME);
         }
@@ -95,13 +99,26 @@ function Form({ config, initialData, onClose, attributes }) {
                 body,
             });
 
-            if (res.status === 200) {
-                setSubmitStatus(res.data);
-                setTimeout(() => {
-                    window.location.reload();
-                }, 2000);
+            if (config.submitUrl.includes('login') && res.data?.tokens) {
+                const { accessToken } = res.data.tokens;
+
+                if (accessToken) {
+                    setLocalUser(res.data.user);
+                    setIsAuthenticated(true);
+                    localStorage.setItem('accessToken', accessToken);
+                    navigate('/u/');
+                } else {
+                    setSubmitStatus(errorMessages.TOKEN_CANNOT_GET)
+                }
             } else {
-                setSubmitStatus(res.data);
+                if (res.status === 200) {
+                    setSubmitStatus(res.data);
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                } else {
+                    setSubmitStatus(res.data);
+                }
             }
         } catch (err) {
             setSubmitStatus(errorMessages.GENERAL_ERROR);
@@ -185,12 +202,12 @@ function Form({ config, initialData, onClose, attributes }) {
             {config.contents && config.contents.map((content, index) => {
                 return (
                     <div key={index}>
-                        { typeof content === 'function' ? content({ ...initialData }) : content}
+                        {typeof content === 'function' ? content({ ...initialData }) : content}
                     </div>
                 )
             })}
 
-            <div className={`text-${ attributes?.buttonLoc || 'end' } mt-3`}>
+            <div className={`text-${attributes?.buttonLoc || 'end'} mt-3`}>
                 {config.buttons.map((button, index) => {
                     return (<Button
                         key={index}

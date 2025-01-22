@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Alert from "../../../components/Alert/Alert";
 import classes from './Auth.module.scss';
@@ -6,6 +6,7 @@ import { apiRequest } from "../../../utils/apiRequest";
 import Loader from "../../../components/Loader/Loader";
 import Section from "../../../components/Section/Section";
 import Button from "../../../components/Button/Button";
+import errorMessages from "../../../statusMessages/error";
 
 
 function ActivateUserPage() {
@@ -15,46 +16,55 @@ function ActivateUserPage() {
     const [isTokenValid, setIsTokenValid] = useState(false)
     const [submitStatus, setSubmitStatus] = useState(null);
     const navigate = useNavigate();
+
     useEffect(() => {
         window.scrollTo(0, 0);
-        activateUser(token);
-    }, [token]);
 
-    async function activateUser(token) {
-        setLoading(true)
-
-        let response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/${process.env.REACT_APP_USER_ACTIVATE_LINK_KEY}`,
-            method: 'POST',
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ token }),
-        });
-
-        setSubmitStatus(response.data, response.status);
-        if (response.status === 403) setIsTokenValid(403);
-
-        if (response.status !== 403) {
-            setTimeout(() => { navigate('/p/login') }, 4000);
-            setIsTokenValid(response.status);
+        const handleActivateUser = async () => {
+            setLoading(true);
+    
+            try {
+                let response = await apiRequest({
+                    url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/${process.env.REACT_APP_USER_ACTIVATE_LINK_KEY}`,
+                    method: 'POST',
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ token }),
+                });
+    
+                setSubmitStatus(response.data);
+                setIsTokenValid(response.status);
+    
+                if (response.status === 403) return;
+                setTimeout(() => { navigate('/p/login') }, 4000);
+            } catch (error) {
+                setSubmitStatus(errorMessages.GENERAL_ERROR);
+            } finally {
+                setLoading(false);
+            }
         }
-        setLoading(false);
-    }
 
-    async function createNewToken() {
+        handleActivateUser();
+    }, [token, navigate]);
+
+    const handleCreateNewToken = useCallback(async () => {
         setBtnLoading(true);
 
-        let response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_API_ENDPOINT}/${process.env.REACT_APP_RESEND_USER_ACTIVATE_LINK_KEY}`,
-            method: 'POST',
-            headers: { "Content-Type": "application/json" },
-            body: { token },
-        });
+        try {
+            let response = await apiRequest({
+                url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_API_ENDPOINT}/${process.env.REACT_APP_RESEND_USER_ACTIVATE_LINK_KEY}`,
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: { token },
+            });
 
-        const data = response.data;
-        setSubmitStatus(data);
-        setBtnLoading(false);
-        setTimeout(() => { navigate('/p/') }, 4000);
-    }
+            setSubmitStatus(response.data);
+            setTimeout(() => { navigate('/p/') }, 4000);
+        } catch (error) {
+            setSubmitStatus(errorMessages.GENERAL_ERROR);
+        } finally {
+            setBtnLoading(false);
+        }
+    }, [navigate, token]);
 
     return (
         <>
@@ -72,7 +82,7 @@ function ActivateUserPage() {
                                         <Button to='/p/login'> Giriş </Button>
                                     </div>}
                                     {isTokenValid === 403 && <div className="col-12 col-md-3">
-                                        <Button asButton={true} disabled={btnLoading} onClick={createNewToken}> {btnLoading ? 'Yaradılır...' : 'Yenisini yarat'} </Button>
+                                        <Button asButton={true} disabled={btnLoading} onClick={handleCreateNewToken}> {btnLoading ? 'Yaradılır...' : 'Yenisini yarat'} </Button>
                                     </div>}
                                     <div className="col-12 col-md-3">
                                         <Button to='/'> Ana səhifə </Button>
@@ -80,9 +90,7 @@ function ActivateUserPage() {
                                 </div>
                             )}
                         </div>
-                        {submitStatus && (
-                            <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus(null)} />
-                        )}
+                        {submitStatus && <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus(null)} />}
                     </div>
                 </div>
             </Section>}

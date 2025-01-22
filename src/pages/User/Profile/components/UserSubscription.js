@@ -93,7 +93,7 @@ const UserSubscription = ({ user, onClose, openModal, setSubmitStatus }) => {
         if (!subscribeOptions.length) return <p>Məlumat yoxdur!</p>;
 
         return subscribeOptions.map((subscribeOption) => (
-            <div key={subscribeOption.id}>
+            <div key={subscribeOption.id} className="mt-2">
                 <h6 className="text-uppercase text-body text-xs font-weight-bolder">
                     {subscribeOption.group}
                 </h6>

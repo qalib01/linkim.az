@@ -1,32 +1,32 @@
 import { useNavigate } from "react-router";
 import useAuth from "../../../hooks/useAuth";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { apiRequest } from "../../../utils/apiRequest";
 
 
 function Logout() {
-    const { localUser, setLocalUser } = useAuth();
-    const { isAuthenticated, setIsAuthenticated } = useAuth();
+    const { setLocalUser } = useAuth();
+    const { setIsAuthenticated } = useAuth();
     const navigate = useNavigate();
 
-    async function logoutUser(refreshToken) {
-        const response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/logout`,
-            headers: {
-                Authorization: `Bearer ${refreshToken}`
-            }
-        });
-
-        return response.data;
-    }
+    const handleLogoutUser = useCallback(async (refreshToken) => {
+        try {
+            await apiRequest({
+                url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/logout`,
+                headers: { Authorization: `Bearer ${refreshToken}` }
+            });
+        } catch (error) {
+            console.error("Çıxış zamanı xəta baş verdi:", error);
+        }
+    }, [])
 
     useEffect(() => {
         setLocalUser(null);
         setIsAuthenticated(false);
-        logoutUser(localStorage.getItem('refreshToken'));
+        handleLogoutUser();
         localStorage.removeItem('accessToken');
         navigate('/');
-    }, [localUser, setLocalUser, isAuthenticated, setIsAuthenticated, navigate]);
+    }, [setLocalUser, setIsAuthenticated, navigate, handleLogoutUser]);
 
     return null;
 }

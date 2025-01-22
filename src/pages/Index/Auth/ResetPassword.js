@@ -34,7 +34,7 @@ function ResetPasswordRequestPage() {
         } else {
             setSubmitStatus(data);
             setTimeout(() => {
-                navigate('/p/login'); 
+                navigate('/p/login');
             }, 2000);
         }
     }
@@ -48,13 +48,15 @@ function ResetPasswordRequestPage() {
                             <h2 className={`title mt-3`}> Şifrənin yenilənməsi </h2>
                         </div>
                     </div>
-                    {isTokenValid ? (<>
-                        <Form config={new ConfigGenerator().generateResetPassword('update')} initialData={ data || '' } attributes={{ buttonLoc: 'center', classList: classes.form }} />
-                        <div className={classes.hasAccount}>
-                            <p> Artıq hesabın varsa, hesabına <Link to='/p/login'>buradan</Link> giriş edə və ya yeni hesab yaratmaq istəyirsənsə, <Link to='/p/register'> buraya </Link> daxil ola bilərsən. </p>
-                        </div>
-                    </>) : (
-                        <p> { submitStatus && submitStatus.message } </p>
+                    {isTokenValid ? (
+                        <>
+                            <Form config={new ConfigGenerator().generateResetPassword('update')} initialData={data || ''} attributes={{ buttonLoc: 'center', classList: classes.form }} />
+                            <div className={classes.hasAccount}>
+                                <p> Artıq hesabın varsa, hesabına <Link to='/p/login'>buradan</Link> giriş edə və ya yeni hesab yaratmaq istəyirsənsə, <Link to='/p/register'> buraya </Link> daxil ola bilərsən. </p>
+                            </div>
+                        </>
+                    ) : (
+                        <p> {submitStatus && submitStatus.message} </p>
                     )}
                 </div>
             </div>

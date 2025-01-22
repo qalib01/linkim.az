@@ -160,6 +160,18 @@ const userProfilePhoto = (props) => {
     };
 }
 
+const userLoginPassword = (props) => {
+    return {
+        id: 'password',
+        name: 'password',
+        type: 'password',
+        label: 'Şifrə',
+        placeholder: 'Şifrə',
+        validation: (data) => hasMinLength(data, 8) && isNotEmpty(data) && isValidPassword(data),
+        ...props,
+    };
+}
+
 
 
 
@@ -338,4 +350,4 @@ const closeButton = (props) => {
 
 
 
-export { status, order, userName, userSurname, userEmail, userUsername, userPassword, userConfirmPassword, userBio, userProfilePhoto, userLinkUrl, userLinkTitle, userLinkType, faqQuestion, faqAnswer, faqGroup, contactFullName, contactSubject, contactMessage, submitButton, closeButton }
+export { status, order, userName, userSurname, userEmail, userUsername, userPassword, userConfirmPassword, userBio, userProfilePhoto, userLoginPassword, userLinkUrl, userLinkTitle, userLinkType, faqQuestion, faqAnswer, faqGroup, contactFullName, contactSubject, contactMessage, submitButton, closeButton }

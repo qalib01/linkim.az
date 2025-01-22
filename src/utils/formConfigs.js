@@ -1,4 +1,4 @@
-import { closeButton, contactFullName, contactMessage, contactSubject, faqAnswer, faqGroup, faqQuestion, order, status, submitButton, userBio, userConfirmPassword, userEmail, userLinkTitle, userLinkType, userLinkUrl, userName, userPassword, userProfilePhoto, userSurname, userUsername } from "./formElementss";
+import { closeButton, contactFullName, contactMessage, contactSubject, faqAnswer, faqGroup, faqQuestion, order, status, submitButton, userBio, userConfirmPassword, userEmail, userLinkTitle, userLinkType, userLinkUrl, userLoginPassword, userName, userPassword, userProfilePhoto, userSurname, userUsername } from "./formElements";
 
 export class ConfigGenerator {
     constructor(baseApiUrl) {
@@ -15,6 +15,19 @@ export class ConfigGenerator {
         return {
             fields: [ userName({grid: { col: 6 }}), userSurname({grid: { col: 6 }}), userEmail({grid: { col: 6 }}), userUsername({grid: { col: 6 }}), userPassword({grid: { col: 6 }}), userConfirmPassword({grid: { col: 6 }}), userBio() ],
             buttons: [ submitButton(), closeButton() ],
+            submitUrl: modes[mode]?.url || '',
+            submitMethod: modes[mode]?.method || '',
+        }
+    }
+
+    userLogin(mode) {
+        const modes = {
+            add: { url: `${this.baseApiUrl}${process.env.REACT_APP_API_ENDPOINT}/login`, method: 'POST' },
+        }
+
+        return {
+            fields: [ userEmail(), userLoginPassword() ],
+            buttons: [ submitButton() ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',
         }
