@@ -13,31 +13,33 @@ function ResetPasswordRequestPage() {
     const [isTokenValid, setIsTokenValid] = useState(false)
     const [submitStatus, setSubmitStatus] = useState(null);
     const navigate = useNavigate();
+    
     useEffect(() => {
         window.scrollTo(0, 0);
-        validateToken(token);
-    }, [token]);
 
-    async function validateToken(token) {
-        let response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/validate-token`,
-            method: 'POST',
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ token })
-        });
-
-        const data = response.data;
-
-        if (response.status === 200) {
-            setIsTokenValid(true);
-            setData(data);
-        } else {
-            setSubmitStatus(data);
-            setTimeout(() => {
-                navigate('/p/login');
-            }, 2000);
+        async function validateToken(token) {
+            let response = await apiRequest({
+                url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/validate-token`,
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token })
+            });
+    
+            const data = response.data;
+    
+            if (response.status === 200) {
+                setIsTokenValid(true);
+                setData(data);
+            } else {
+                setSubmitStatus(data);
+                setTimeout(() => {
+                    navigate('/p/login');
+                }, 2000);
+            }
         }
-    }
+
+        if(token) validateToken(token);
+    }, [token, navigate]);
 
     return (
         <Section sectionName='reset-password' sectionBg='bgTransparent'>
