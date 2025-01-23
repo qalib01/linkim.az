@@ -13,7 +13,7 @@ function ActivateUserPage() {
     const { token } = useParams();
     const [loading, setLoading] = useState(false);
     const [btnLoading, setBtnLoading] = useState(false);
-    const [isTokenValid, setIsTokenValid] = useState(false)
+    const [isTokenValid, setIsTokenValid] = useState(false);
     const [submitStatus, setSubmitStatus] = useState(null);
     const navigate = useNavigate();
 

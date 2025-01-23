@@ -1,5 +1,5 @@
 import classes from './Faqs.module.scss';
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Section from "../../../components/Section/Section";
 import { apiRequest } from '../../../utils/apiRequest';
 import Accordion from '../../../components/Accordion/Accordion';
@@ -17,19 +17,27 @@ function FaqPage() {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-        async function allFaqs() {
+
+        const getAllFaqs = async () => {
             setIsFetching(true);
-            const response = await apiRequest({ url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/faqs` });
-            setGroups(response.status === 200 && response.data);
-            setIsFetching(false);
+
+            try {
+                const response = await apiRequest({ url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/faqs` });
+                setGroups(response.status === 200 && response.data);
+            } catch (error) {
+                console.error(error)
+            } finally {
+                setIsFetching(false);
+            }
         }
-        allFaqs();
+
+        getAllFaqs();
     }, []);
 
-    function handleSelect(id) {
+    const handleSelect = useCallback((id) => {
         const group = groups.find((group) => group.id === id);
-        setFaqs(group.faqs);
-    }
+        setFaqs(group.faqs)
+    }, [setFaqs, groups])
 
     return (
         <Section sectionName='faq' sectionBg='bgCoralOrange'>

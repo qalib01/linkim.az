@@ -36,7 +36,7 @@ const router = createBrowserRouter([
         id: 'pageRoot',
         children: [
             {
-                path: '/', element: withSuspense(IndexPageLayout),
+                element: withSuspense(IndexPageLayout),
                 children: [
                     { index: true, element: withSuspense(HomePage) },
                 ]
@@ -84,21 +84,24 @@ const router = createBrowserRouter([
                 element: <ProtectedRoute />,
                 children: [
                     {
-                        path: '',
                         element: withSuspense(UserPageLayout),
                         errorElement: withSuspense(UserErrorPage),
                         children: [
                             { index: true, element: withSuspense(Dashboard) },
                             { path: 'dashboard', element: withSuspense(Dashboard) },
                             { path: 'profile', element: withSuspense(LoggedInUser) },
-                            { path: 'faqs', element: withSuspense(Faqs) },
-                            { 
-                                path: 'users', 
-                                element: <ProtectedRoute allowedRoles='Admin' />,
-                                children: [
-                                    { path: '', element: withSuspense(Users) },
-                                    { path: 'profile/:id', element: withSuspense(EditableUser) },
-                                ]
+                            {
+                              element: <ProtectedRoute allowedRoles='Admin' />,
+                              children: [
+                                {
+                                    path: 'users',
+                                    children: [
+                                        { index: true, element: withSuspense(Users) },
+                                        { path: 'profile/:id', element: withSuspense(EditableUser) },
+                                    ]
+                                },
+                                { path: 'faqs', element: withSuspense(Faqs) },
+                              ] 
                             },
                         ],
                     }

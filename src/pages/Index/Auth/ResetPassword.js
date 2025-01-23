@@ -5,6 +5,7 @@ import classes from './Auth.module.scss';
 import { apiRequest } from "../../../utils/apiRequest";
 import Form from "../../../components/Form/Form";
 import { ConfigGenerator } from "../../../utils/formConfigs";
+import errorMessages from "../../../statusMessages/error";
 
 
 function ResetPasswordRequestPage() {
@@ -17,28 +18,28 @@ function ResetPasswordRequestPage() {
     useEffect(() => {
         window.scrollTo(0, 0);
 
-        async function validateToken(token) {
-            let response = await apiRequest({
-                url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/validate-token`,
-                method: 'POST',
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ token })
-            });
-    
-            const data = response.data;
-    
-            if (response.status === 200) {
-                setIsTokenValid(true);
-                setData(data);
-            } else {
-                setSubmitStatus(data);
-                setTimeout(() => {
-                    navigate('/p/login');
-                }, 2000);
+        const handleValidateToken = async () => {
+            try {
+                let res = await apiRequest({
+                    url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/validate-token`,
+                    method: 'POST',
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ token })
+                });
+
+                if (res.status === 200) {
+                    setIsTokenValid(true);
+                    setData(res.data);
+                } else {
+                    setSubmitStatus(res.data);
+                    setTimeout(() => { navigate('/p/login') }, 2000);
+                }
+            } catch (error) {
+                setSubmitStatus(errorMessages.GENERAL_ERROR)
             }
         }
 
-        if(token) validateToken(token);
+        if(token) handleValidateToken();
     }, [token, navigate]);
 
     return (

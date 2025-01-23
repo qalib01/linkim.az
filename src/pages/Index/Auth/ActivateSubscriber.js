@@ -20,7 +20,7 @@ function ActivateSubscriberPage() {
     useEffect(() => {
         window.scrollTo(0, 0);
 
-        async function activateUser() {
+        const handleActivateSubscriber = async () => {
             setLoading(true)
 
             try {
@@ -45,7 +45,7 @@ function ActivateSubscriberPage() {
             }
         }
 
-        if (token) activateUser();
+        if (token) handleActivateSubscriber();
     }, [token, navigate]);
 
     const handleCreateNewToken = useCallback(async () => {
