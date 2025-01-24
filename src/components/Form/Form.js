@@ -78,7 +78,7 @@ function Form({ config, initialData, onClose, attributes }) {
             setIsLoading(false);
             return setSubmitStatus(errorMessages.CHANGES_NOT_FOUND)
         }
-        console.log(config.submitUrl.includes('login'))
+
         if (!config.submitUrl.includes('login') && (formData.password !== formData.confirmPassword)) {
             setIsLoading(false);
             return setSubmitStatus(errorMessages.PASSWORDS_MUST_BE_SAME);
@@ -132,14 +132,24 @@ function Form({ config, initialData, onClose, attributes }) {
 
     return (
         <form className={attributes?.classList} onSubmit={handleSubmit}>
+
+            {config.contents && config.contents.map((content, index) => {
+                return (
+                    <div key={index}>
+                        {typeof content === 'function' ? content({ ...initialData }) : content}
+                    </div>
+                )
+            })}
+
             <div className='row'>
                 {config.fields && config.fields.map((field) => {
                     const input = inputs[field.id];
 
                     return (
                         <div key={field.id} className={`mb-2 ${field.grid ? `col-${field.grid.col}` : 'col-12'}`}>
-                            <label htmlFor={field.id}>{field.label}</label>
-                            {field.type === 'select' ? (
+                            {field.type !== 'button' && <label htmlFor={field.id}>{field.label}</label>}
+
+                            {field.type === 'select' && (
                                 <Select
                                     id={field.id}
                                     type={field.type || 'text'}
@@ -160,7 +170,9 @@ function Form({ config, initialData, onClose, attributes }) {
                                         </option>
                                     ))}
                                 </Select>
-                            ) : field.type === 'textarea' ? (
+                            )}
+
+                            {field.type === 'textarea' && (
                                 <Textarea
                                     id={field.id}
                                     type={field.type || 'text'}
@@ -179,7 +191,9 @@ function Form({ config, initialData, onClose, attributes }) {
                                     info={field.info}
                                     error={input.hasError}
                                 />
-                            ) : (
+                            )}
+
+                            {field.type !== 'select' && field.type !== 'textarea' && field.type !== 'button' && (
                                 <Input
                                     id={field.id}
                                     type={field.type || 'text'}
@@ -200,6 +214,19 @@ function Form({ config, initialData, onClose, attributes }) {
                                     accept={field.accept}
                                 />
                             )}
+
+                            {field.type === 'button' && (
+                                <Button
+                                    id={field.id}
+                                    type={field.type}
+                                    name={field.name}
+                                    asButton={field.asButton}
+                                    onClick={() => field.onClick}
+                                    className={`border-0 bg-transparent w-auto btn bg-gradient-primary p-2 m-0 h6`}
+                                > {field.label} </Button>
+                            )}
+
+
                             {
                                 config.submitUrl.includes('login') && field.type === 'password' && (
                                     <div className={classes.hasAccount}>
@@ -211,14 +238,6 @@ function Form({ config, initialData, onClose, attributes }) {
                     );
                 })}
             </div>
-
-            {config.contents && config.contents.map((content, index) => {
-                return (
-                    <div key={index}>
-                        {typeof content === 'function' ? content({ ...initialData }) : content}
-                    </div>
-                )
-            })}
 
             <div className={`text-${attributes?.buttonLoc || 'end'} mt-3`}>
                 {config.buttons.map((button, index) => {

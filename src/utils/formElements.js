@@ -271,6 +271,34 @@ const faqGroup = (props) => {
     };
 }
 
+const faqButton = (props) => {
+    return {
+        id: 'faq',
+        name: 'faq',
+        type: 'button',
+        label: 'TVS yarat',
+        asButton: true,
+        value: () => '',
+        validation: (data) => data,
+        required: true,
+        ...props,
+    };
+}
+
+const faqGroupButton = (props) => {
+    return {
+        id: 'group',
+        name: 'group',
+        type: 'button',
+        label: 'TVS Qrupu yarat',
+        asButton: true,
+        value: () => '',
+        validation: (data) => data,
+        required: true,
+        ...props,
+    };
+}
+
 
 
 
@@ -350,4 +378,4 @@ const closeButton = (props) => {
 
 
 
-export { status, order, userName, userSurname, userEmail, userUsername, userPassword, userConfirmPassword, userBio, userProfilePhoto, userLoginPassword, userLinkUrl, userLinkTitle, userLinkType, faqQuestion, faqAnswer, faqGroup, contactFullName, contactSubject, contactMessage, submitButton, closeButton }
+export { status, order, userName, userSurname, userEmail, userUsername, userPassword, userConfirmPassword, userBio, userProfilePhoto, userLoginPassword, userLinkUrl, userLinkTitle, userLinkType, faqQuestion, faqAnswer, faqGroup, faqButton, faqGroupButton, contactFullName, contactSubject, contactMessage, submitButton, closeButton }

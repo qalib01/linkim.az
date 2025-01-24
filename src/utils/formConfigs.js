@@ -1,4 +1,4 @@
-import { closeButton, contactFullName, contactMessage, contactSubject, faqAnswer, faqGroup, faqQuestion, order, status, submitButton, userBio, userConfirmPassword, userEmail, userLinkTitle, userLinkType, userLinkUrl, userLoginPassword, userName, userPassword, userProfilePhoto, userSurname, userUsername } from "./formElements";
+import { closeButton, contactFullName, contactMessage, contactSubject, faqAnswer, faqButton, faqGroup, faqGroupButton, faqQuestion, order, status, submitButton, userBio, userConfirmPassword, userEmail, userLinkTitle, userLinkType, userLinkUrl, userLoginPassword, userName, userPassword, userProfilePhoto, userSurname, userUsername } from "./formElements";
 
 export class ConfigGenerator {
     constructor(baseApiUrl) {
@@ -157,7 +157,7 @@ export class ConfigGenerator {
         }
     }
 
-    changeUserStatus(mode, id) {
+    editUserStatus(mode, id) {
         const modes = {
             update: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/${process.env.REACT_APP_USER_ACTIVATE_LINK_KEY}/${id}`, method: 'POST' },
         }
@@ -172,26 +172,50 @@ export class ConfigGenerator {
         }
     }
 
-    changeTvsData(mode, id) {
-        const modes = {
-            update: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-selectedFaq/${id}`, method: 'POST' },
+    chooseTvsOption(mode) {
+        const modes = {}
+
+        return {
+            contents: [ () => <p> Zəhmət olmasa, yaratmaq istədiyin formu aşağıdan seçim edərək davam edəsən! </p> ],
+            fields: [ faqButton({grid: { col: 6 }}), faqGroupButton({grid: { col: 6 }}) ],
+            buttons: [ closeButton() ],
+            submitUrl: modes[mode]?.url || '',
+            submitMethod: modes[mode]?.method || '',
+        }
+    }
+
+    generateTvsData(mode) {
+        const modes = { 
+            faq: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/add-newFaq`, method: 'POST' },
+            group: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/add-newFaqGroup`, method: 'POST' },
+        }
+
+        const fields = {
+            faq: [ faqQuestion(), faqAnswer(), faqGroup(), status(), order() ],
+            group: [ faqGroup(), status(), order() ],
         }
 
         return {
-            fields: [ faqQuestion(), faqAnswer(), status(), order() ],
+            fields: fields[mode],
             buttons: [ submitButton(), closeButton() ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',
         }
     }
 
-    changeTvsGroupData(mode, id) {
-        const modes = {
-            update: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-selectedFaqGroup/${id}`, method: 'POST' },
+    editTvsData(mode, id) {
+        const modes = { 
+            faq: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-selectedFaq/${id}`, method: 'POST' },
+            group: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-selectedFaqGroup/${id}`, method: 'POST' },
+        }
+
+        const fields = {
+            faq: [ faqQuestion(), faqAnswer(), faqGroup(), status(), order() ],
+            group: [ faqGroup(), status(), order() ],
         }
 
         return {
-            fields: [ faqGroup(), status(), order() ],
+            fields: fields[mode],
             buttons: [ submitButton(), closeButton() ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',
@@ -200,27 +224,13 @@ export class ConfigGenerator {
 
     deleteTvsData(mode, id) {
         const modes = {
-            delete: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-selectedFaq/${id}`, method: 'DELETE' },
+            group: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-selectedFaq/${id}`, method: 'DELETE' },
+            faq: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-selectedFaqGroup/${id}`, method: 'DELETE' },
         }
 
         return {
             contents: [
-                (data) => <p> Sil düyməsini təsdiqi etdiyin zaman <strong> {data.question} </strong> məlumatını bir dəfəlik silmiş olacaqsan və bunun geri qayıdışı olmayacaq, daha sonra yenisini yarada bilərsən! </p>
-            ],
-            buttons: [ submitButton(), closeButton() ],
-            submitUrl: modes[mode]?.url || '',
-            submitMethod: modes[mode]?.method || '',
-        }
-    }
-
-    deleteTvsGroupData(mode, id) {
-        const modes = {
-            delete: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-selectedFaqGroup/${id}`, method: 'DELETE' },
-        }
-
-        return {
-            contents: [
-                (data) => <p> Sil düyməsini təsdiqi etdiyin zaman <strong> {data.group} </strong> məlumatını bir dəfəlik silmiş olacaqsan və bunun geri qayıdışı olmayacaq, daha sonra yenisini yarada bilərsən! </p>
+                (data) => <p> Sil düyməsini təsdiqi etdiyin zaman <strong> {mode === 'faq' ? data.question : data.group} </strong> məlumatını bir dəfəlik silmiş olacaqsan və bunun geri qayıdışı olmayacaq, daha sonra yenisini yarada bilərsən! </p>
             ],
             buttons: [ submitButton(), closeButton() ],
             submitUrl: modes[mode]?.url || '',

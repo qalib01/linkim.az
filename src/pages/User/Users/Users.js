@@ -10,6 +10,7 @@ import Modal from "../../../components/Modal/Modal";
 import Form from "../../../components/Form/Form";
 import { ConfigGenerator } from "../../../utils/formConfigs";
 import Alert from "../../../components/Alert/Alert";
+import errorMessages from "../../../statusMessages/error";
 
 
 function Users() {
@@ -23,25 +24,31 @@ function Users() {
     useEffect(() => {
         window.scrollTo(0, 0);
 
-        async function getData() {
+        const getData = async () => {
             setIsFetching(true);
-            const response = await apiRequest({
-                url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_USER_API_ENDPOINT}/get-allUsers`,
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                    "Content-Type": "application/json"
-                },
-            });
 
-            let data = response.data;
-            if (response.status === 200) {
-                setData(data);
-            } else {
-                setSubmitStatus(data);
+            try {
+                const res = await apiRequest({
+                    url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_USER_API_ENDPOINT}/get-allUsers`,
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        "Content-Type": "application/json"
+                    },
+                });
+
+                if (res.status === 200) {
+                    setData(res.data);
+                } else {
+                    setSubmitStatus(res.data);
+                }
+            } catch (error) {
+                setSubmitStatus(errorMessages.GENERAL_ERROR)
+            } finally {
+                setIsFetching(false);
             }
-            setIsFetching(false);
         }
+
         getData();
     }, []);
 
@@ -76,8 +83,9 @@ function Users() {
                 <div className="row mt-4">
                     <div className="col-12">
                         <div className="card">
-                            <div className="card-header">
+                            <div className="card-header d-flex align-items-center justify-content-between">
                                 <h5 className="mb-0">İstifadəçilər</h5>
+                                <Button asButton={true} classList='border-0 bg-transparent w-auto btn bg-gradient-primary p-2 m-0 h6'> Yenisini yarat </Button>
                             </div>
                             <div className="table-responsive">
                                 <div className="dataTable-wrapper dataTable-loading no-footer sortable fixed-height fixed-columns">
@@ -141,7 +149,7 @@ function Users() {
                                                                 </td>
                                                                 <td className="text-sm font-weight-normal d-flex align-items-center justify-content-evenly text-center">
                                                                     {
-                                                                        !data.active && <Button onClick={() => handleOpenModal('İstifadəçini aktifləşdir', 'md', <Form config={new ConfigGenerator().changeUserStatus('update', data.id)} initialData={data} onClose={handleCloseModal} />)} style={{ fontSize: '16px' }}>
+                                                                        !data.active && <Button onClick={() => handleOpenModal('İstifadəçini aktifləşdir', 'md', <Form config={new ConfigGenerator().editUserStatus('update', data.id)} initialData={data} onClose={handleCloseModal} />)} style={{ fontSize: '16px' }}>
                                                                             <FontAwesomeIcon icon={faCheck} />
                                                                         </Button>
                                                                     }
