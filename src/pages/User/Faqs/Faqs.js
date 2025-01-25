@@ -81,7 +81,7 @@ function Faqs() {
                         <div className="card">
                             <div className="card-header d-flex align-items-center justify-content-between">
                                 <h5 className="mb-0">Tez-tez verilən suallar</h5>
-                                <Button asButton={true} classList='border-0 bg-transparent w-auto btn bg-gradient-primary p-2 m-0 h6' onClick={() => handleOpenModal('Yeni TVS yarat', 'md', <Form config={new ConfigGenerator().chooseTvsOption('choose')} initialData='' onClose={handleCloseModal} />)}> Yenisini yarat </Button>
+                                <Button asButton={true} classList='border-0 bg-transparent w-auto btn bg-gradient-primary p-2 m-0 h6' onClick={() => handleOpenModal('Yeni TVS yarat', 'md', <Form config={new ConfigGenerator().chooseTvsOption('choose')} initialData='' onClose={handleCloseModal} onClick={handleOpenModal} />)}> Yenisini yarat </Button>
                             </div>
                             <div className="table-responsive">
                                 <div className="dataTable-wrapper dataTable-loading no-footer sortable fixed-height fixed-columns">

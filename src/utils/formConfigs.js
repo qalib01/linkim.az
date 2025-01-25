@@ -177,7 +177,7 @@ export class ConfigGenerator {
 
         return {
             contents: [ () => <p> Zəhmət olmasa, yaratmaq istədiyin formu aşağıdan seçim edərək davam edəsən! </p> ],
-            fields: [ faqButton({grid: { col: 6 }}), faqGroupButton({grid: { col: 6 }}) ],
+            fields: [ faqButton({grid: { col: 6 }, config: this.generateTvsData('faq')}), faqGroupButton({grid: { col: 6 }, config: this.generateTvsData('group')}) ],
             buttons: [ closeButton() ],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',

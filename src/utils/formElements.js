@@ -281,6 +281,7 @@ const faqButton = (props) => {
         value: () => '',
         validation: (data) => data,
         required: true,
+        classList: 'w-100',
         ...props,
     };
 }
@@ -295,6 +296,7 @@ const faqGroupButton = (props) => {
         value: () => '',
         validation: (data) => data,
         required: true,
+        classList: 'w-100',
         ...props,
     };
 }
