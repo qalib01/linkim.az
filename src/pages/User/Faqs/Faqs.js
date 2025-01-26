@@ -1,6 +1,6 @@
 import { faChevronLeft, faChevronRight, faEdit, faEllipsis, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Button from "../../../components/Button/Button";
 import { apiRequest } from "../../../utils/apiRequest";
 import { ConfigGenerator } from "../../../utils/formConfigs";
@@ -99,8 +99,16 @@ function Faqs() {
                                         </div>
                                     </div>
                                     <div className="dataTable-container mb-4 w-100">
-                                        {isFetching && <tr className='text-center'> Məlumat yüklənir... </tr>}
-                                        <table className="table table-flush dataTable-table" id="datatable-basic">
+                                        {isFetching && (
+                                            <table className="table table-flush dataTable-table">
+                                                <tbody>
+                                                    <tr className="text-center">
+                                                        <td colSpan="6">Məlumat yüklənir...</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        )}
+                                        <table className="table table-flush dataTable-table">
                                             <thead className="thead-light">
                                                 <tr>
                                                     <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 col-2 text-center">
@@ -125,8 +133,8 @@ function Faqs() {
                                             </thead>
                                             <tbody>
                                                 {sortedData ? sortedData.map((data) => (
-                                                    <>
-                                                        <tr key={data.id}>
+                                                    <React.Fragment key={data.id}>
+                                                        <tr>
                                                             <td className="text-sm font-weight-normal text-center"> {data.group} </td>
                                                             <td className="text-sm font-weight-normal text-center"> - </td>
                                                             <td className="text-sm font-weight-normal text-center"> - </td>
@@ -166,7 +174,7 @@ function Faqs() {
                                                                 </td>
                                                             </tr>
                                                         )) : 'Məlumat yoxdur'}
-                                                    </>
+                                                    </React.Fragment>
                                                 )) : 'Məlumat tapılmadı'}
                                             </tbody>
                                         </table>

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { apiRequest } from '../../utils/apiRequest';
 import Alert from '../Alert/Alert';
 import Input from './Input';
@@ -11,7 +11,6 @@ import useAuth from '../../hooks/useAuth';
 import { useNavigate } from 'react-router';
 import classes from './Form.module.scss';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
 
 const generateInputs = (fields, initialData) => {
@@ -41,30 +40,25 @@ const createFormData = (formData) => {
     return form;
 };
 
-function Form({ config, initialData, onClose, attributes }) {
-    const [formConfig, setFormConfig] = useState(config || {});
+function Form({ config, initialData, onClose, onClick, attributes }) {
     const [submitStatus, setSubmitStatus] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const { setLocalUser, setIsAuthenticated } = useAuth();
+    const [formConfig, setFormConfig] = useState(config || '');
     const navigate = useNavigate();
 
-    const inputHooks = formConfig?.fields ? generateInputs(formConfig.fields, initialData) : [];
-    // const inputHooks = useMemo(() => {
-    //     return formConfig.fields ? generateInputs(formConfig.fields, initialData) : [];
-    // }, [formConfig.fields, initialData]);
-    // const inputHooks = useMemo(() => {
-    //     generateInputs(formConfig.fields, initialData);
-    // }, [formConfig.fields, initialData]);
-    
-    const inputs = formConfig?.fields?.reduce((acc, field, index) => {
-        acc[field.id] = inputHooks && inputHooks[index];
-        return acc;
-    }, {});
+    const inputs = useMemo(() => {
+        if (!formConfig.fields) return {};
 
-    console.log(formConfig)
-    const handleSubmit = useCallback(async (e) => {
+        const inputHooks = generateInputs(formConfig.fields, initialData);
+        return formConfig.fields.reduce((acc, field, index) => {
+            acc[field.id] = inputHooks[index];
+            return acc;
+        }, {});
+    }, [formConfig.fields, initialData]);
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(e)
         setIsLoading(true);
 
         let formData = {};
@@ -127,7 +121,7 @@ function Form({ config, initialData, onClose, attributes }) {
         } finally {
             setIsLoading(false);
         }
-    }, [formConfig, inputs, initialData, navigate, setLocalUser, setIsAuthenticated]);
+    };
 
     return (
         <form className={attributes?.classList} onSubmit={handleSubmit}>
@@ -248,10 +242,5 @@ function Form({ config, initialData, onClose, attributes }) {
         </form>
     );
 };
-
-Form.propTypes = {
-    config: PropTypes.object.isRequired,
-    onClose: PropTypes.func.isRequired,
-}
 
 export default Form;

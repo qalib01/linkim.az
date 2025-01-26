@@ -103,7 +103,15 @@ function Users() {
                                         </div>
                                     </div>
                                     <div className="dataTable-container mb-4 w-100">
-                                        {isFetching && <tr className='text-center'> Məlumat yüklənir... </tr>}
+                                        {isFetching && (
+                                            <table className="table table-flush dataTable-table">
+                                                <tbody>
+                                                    <tr className="text-center">
+                                                        <td colSpan="6">Məlumat yüklənir...</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        )}
                                         <table className="table table-flush dataTable-table" id="datatable-basic">
                                             <thead className="thead-light">
                                                 <tr>
