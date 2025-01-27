@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { apiRequest } from '../../utils/apiRequest';
 import Alert from '../Alert/Alert';
 import Input from './Input';
@@ -42,27 +42,35 @@ const createFormData = (formData) => {
 };
 
 function Form({ config, initialData, onClose, attributes }) {
-    const [formConfig, setFormConfig] = useState(config || {});
+    const [formConfig, setFormConfig] = useState({});
     const [submitStatus, setSubmitStatus] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    // const [inputs, setInputs] = useState({});
     const { setLocalUser, setIsAuthenticated } = useAuth();
     const navigate = useNavigate();
 
-    const inputHooks = formConfig?.fields ? generateInputs(formConfig.fields, initialData) : [];
-    // const inputHooks = useMemo(() => {
-    //     return formConfig.fields ? generateInputs(formConfig.fields, initialData) : [];
-    // }, [formConfig.fields, initialData]);
-    // const inputHooks = useMemo(() => {
-    //     generateInputs(formConfig.fields, initialData);
-    // }, [formConfig.fields, initialData]);
-    
-    const inputs = formConfig?.fields?.reduce((acc, field, index) => {
-        acc[field.id] = inputHooks && inputHooks[index];
-        return acc;
-    }, {});
+    useEffect(() => { setFormConfig(config) }, [config])
 
-    console.log(formConfig)
+    // const inputHooks = formConfig?.fields ? generateInputs(formConfig.fields, initialData) : [];
+    const inputHooks = useMemo(
+        () => formConfig?.fields ? generateInputs(formConfig.fields, initialData) : [],
+        [formConfig?.fields, initialData]
+    );
+    // const inputs = formConfig?.fields?.reduce((acc, field, index) => {
+    //     acc[field.id] = inputHooks && inputHooks[index];
+    //     return acc;
+    // }, {});
+
+    const inputs = useMemo(() => {
+        return formConfig?.fields?.reduce((acc, field, index) => {
+            acc[field.id] = inputHooks && inputHooks[index];
+            return acc;
+        }, {});
+    }, [formConfig?.fields, inputHooks]);
+
+    console.log('Before handleSubmit useCallBack')
     const handleSubmit = useCallback(async (e) => {
+        console.log('After handleSubmit useCallBack')
         e.preventDefault();
         console.log(e)
         setIsLoading(true);
@@ -231,7 +239,7 @@ function Form({ config, initialData, onClose, attributes }) {
             </div>
 
             <div className={`text-${attributes?.buttonLoc || 'end'} mt-3`}>
-                {formConfig.buttons.map((button, index) => {
+                {formConfig?.buttons?.map((button, index) => {
                     return (<Button
                         key={index}
                         type={button.type}
