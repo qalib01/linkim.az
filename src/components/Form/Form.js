@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { apiRequest } from '../../utils/apiRequest';
 import Alert from '../Alert/Alert';
 import Input from './Input';
@@ -41,71 +41,53 @@ const createFormData = (formData) => {
     return form;
 };
 
-function Form({ config, initialData, onClose, attributes }) {
-    const [formConfig, setFormConfig] = useState({});
+function Form({ config, initialData, onClose, attributes, onConfigChange }) {
     const [submitStatus, setSubmitStatus] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    // const [inputs, setInputs] = useState({});
     const { setLocalUser, setIsAuthenticated } = useAuth();
     const navigate = useNavigate();
+    const inputHooks = config?.fields ? generateInputs(config.fields, initialData) : [];
 
-    useEffect(() => { setFormConfig(config) }, [config])
+    const inputs = config?.fields?.reduce((acc, field, index) => {
+        acc[field.id] = inputHooks && inputHooks[index];
+        return acc;
+    }, {});
 
-    // const inputHooks = formConfig?.fields ? generateInputs(formConfig.fields, initialData) : [];
-    const inputHooks = useMemo(
-        () => formConfig?.fields ? generateInputs(formConfig.fields, initialData) : [],
-        [formConfig?.fields, initialData]
-    );
-    // const inputs = formConfig?.fields?.reduce((acc, field, index) => {
-    //     acc[field.id] = inputHooks && inputHooks[index];
-    //     return acc;
-    // }, {});
-
-    const inputs = useMemo(() => {
-        return formConfig?.fields?.reduce((acc, field, index) => {
-            acc[field.id] = inputHooks && inputHooks[index];
-            return acc;
-        }, {});
-    }, [formConfig?.fields, inputHooks]);
-
-    console.log('Before handleSubmit useCallBack')
     const handleSubmit = useCallback(async (e) => {
-        console.log('After handleSubmit useCallBack')
         e.preventDefault();
-        console.log(e)
         setIsLoading(true);
 
         let formData = {};
 
-        formConfig.fields?.forEach((field) => {
+        config?.fields?.forEach((field) => {
             const input = inputs[field.id];
             const value = field.type === 'file' ? input.fileRef.current?.files[0] : input.value;
 
-            if (formConfig.submitUrl.includes('contact') || formConfig.submitUrl.includes('reset-password')) {
+            if (config?.submitUrl?.includes('contact') || config?.submitUrl?.includes('reset-password')) {
                 formData[field.id] = value;
             } else if (value !== initialData[field.id]) {
                 formData[field.id] = value;
             }
         });
 
-        if (!formConfig.submitUrl.includes('login') && formData.password !== formData.confirmPassword) {
+        if (!config?.submitUrl?.includes('login') && formData.password !== formData.confirmPassword) {
             setIsLoading(false);
             return setSubmitStatus(errorMessages.PASSWORDS_MUST_BE_SAME);
         }
 
-        if (formConfig.fields?.some((field) => inputs[field.id].hasError)) {
+        if (config?.fields?.some((field) => inputs[field.id].hasError)) {
             setIsLoading(false);
             return setSubmitStatus(errorMessages.ALL_FIELDS_REQUIRED);
         }
 
-        const body = formConfig.fields?.some((field) => field.type === 'file')
+        const body = config?.fields?.some((field) => field.type === 'file')
             ? createFormData(formData)
             : JSON.stringify(formData);
 
         try {
             const res = await apiRequest({
-                url: formConfig.submitUrl,
-                method: formConfig.submitMethod,
+                url: config?.submitUrl,
+                method: config?.submitMethod,
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     ...(body instanceof FormData ? {} : { 'Content-Type': 'application/json' }),
@@ -113,7 +95,7 @@ function Form({ config, initialData, onClose, attributes }) {
                 body,
             });
 
-            if (formConfig.submitUrl.includes('login') && res.data?.tokens) {
+            if (config?.submitUrl?.includes('login') && res.data?.tokens) {
                 const { accessToken } = res.data.tokens;
 
                 if (accessToken) {
@@ -135,18 +117,18 @@ function Form({ config, initialData, onClose, attributes }) {
         } finally {
             setIsLoading(false);
         }
-    }, [formConfig, inputs, initialData, navigate, setLocalUser, setIsAuthenticated]);
+    }, [config, inputs, initialData, navigate, setLocalUser, setIsAuthenticated]);
 
     return (
         <form className={attributes?.classList} onSubmit={handleSubmit}>
-            {formConfig.contents?.map((content, index) => (
+            {config?.contents?.map((content, index) => (
                 <div key={index}>
                     {typeof content === 'function' ? content({ ...initialData }) : content}
                 </div>
             ))}
 
             <div className='row'>
-                {formConfig.fields && formConfig.fields.map((field) => {
+                {config?.fields && config?.fields.map((field) => {
                     const input = inputs[field.id];
 
                     return (
@@ -199,7 +181,7 @@ function Form({ config, initialData, onClose, attributes }) {
                                     type={field.type}
                                     name={field.name}
                                     asButton={field.asButton}
-                                    onClick={() => setFormConfig(field.config)}
+                                    onClick={() => onConfigChange(field.config)}
                                     className={`border-0 bg-transparent btn bg-gradient-primary p-2 m-0 h6 ${field.classList}`}
                                 >
                                     {field.label}
@@ -227,7 +209,7 @@ function Form({ config, initialData, onClose, attributes }) {
                             )}
 
                             {
-                                formConfig.submitUrl.includes('login') && field.type === 'password' && (
+                                config?.submitUrl?.includes('login') && field.type === 'password' && (
                                     <div className={classes.hasAccount}>
                                         <p> Şifrəni unutmusansa, <Link to='/p/reset-password'>buradan</Link> yeniləyə bilərsən. </p>
                                     </div>
@@ -239,7 +221,7 @@ function Form({ config, initialData, onClose, attributes }) {
             </div>
 
             <div className={`text-${attributes?.buttonLoc || 'end'} mt-3`}>
-                {formConfig?.buttons?.map((button, index) => {
+                {config?.buttons?.map((button, index) => {
                     return (<Button
                         key={index}
                         type={button.type}
