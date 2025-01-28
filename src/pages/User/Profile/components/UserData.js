@@ -2,7 +2,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../../../../components/Button/Button";
 import CardHeader from "../../../../components/Card/CardHeader";
 import UserProfileCard from "../../../../components/Card/UserProfileCard";
-import Form from "../../../../components/Form/Form";
 import { ConfigGenerator } from "../../../../utils/formConfigs";
 import { faCopy, faUserEdit } from "@fortawesome/free-solid-svg-icons";
 import CardBody from "../../../../components/Card/CardBody";
@@ -15,16 +14,15 @@ import infoMessages from "../../../../statusMessages/info";
 import PropTypes from "prop-types";
 
 
-function UserData({ user, onClose, openModal, setSubmitStatus }) {
-    function onCopyText() {
-        setSubmitStatus(infoMessages.LINK_COPIED);
-    }
+function UserData({ user, openModal, setSubmitStatus }) {
+    const configGenerator = new ConfigGenerator();
+    const onCopyText = () => setSubmitStatus(infoMessages.LINK_COPIED);
 
     return (
         <div className="col-12 col-xl-4">
             <UserProfileCard classList='max-height-400 overflow-x-hidden'>
                 <CardHeader title='Profil məlumatları'>
-                    <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => openModal('İstifadəçi məlumatları', 'lg', <Form config={new ConfigGenerator().generateUserData('update', user.id)} initialData={user} onClose={onClose} />)} style={{ fontSize: '16px' }}>
+                    <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => openModal('İstifadəçi məlumatları', 'lg', { config: configGenerator.generateUserData('update', user.id), initialData: user })} style={{ fontSize: '16px' }}>
                         <FontAwesomeIcon icon={faUserEdit} />
                     </Button>
                 </CardHeader>

@@ -4,13 +4,14 @@ import ListGroupItem from '../../../../components/ListGroup/ListGroupItem';
 import Button from '../../../../components/Button/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faLink, faTrash } from '@fortawesome/free-solid-svg-icons';
-import Form from '../../../../components/Form/Form';
 import { ConfigGenerator } from '../../../../utils/formConfigs';
 import { CSS } from '@dnd-kit/utilities';
 import PropTypes from 'prop-types';
 
-const SortableItem = ({ data, openModal, onClose }) => {
+const SortableItem = ({ data, openModal }) => {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: data.id });
+    const configGenerator = new ConfigGenerator();
+
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
@@ -35,10 +36,10 @@ const SortableItem = ({ data, openModal, onClose }) => {
                 <Button classList='text-end' to={data.url} target="_blank">
                     <FontAwesomeIcon icon={faLink} />
                 </Button>
-                <Button asButton={true} onClick={() => openModal('Link düzəliş et', 'md', <Form config={new ConfigGenerator().generateUserLinks('update', data?.id)} initialData={data} onClose={onClose} />)} style={{ fontSize: '16px', backgroundColor: 'transparent', border: 'none' }}>
+                <Button asButton={true} onClick={() => openModal('Link düzəliş et', 'md', { config: configGenerator.generateUserLinks('update', data?.id), initialData: data })} style={{ fontSize: '16px', backgroundColor: 'transparent', border: 'none' }}>
                     <FontAwesomeIcon icon={faEdit} />
                 </Button>
-                <Button asButton={true} onClick={() => openModal('Link sil', 'md', <Form config={new ConfigGenerator().deleteUserLinks('delete', data?.id)} initialData={data} onClose={onClose} />)} style={{ fontSize: '16px', backgroundColor: 'transparent', border: 'none' }}>
+                <Button asButton={true} onClick={() => openModal('Link sil', 'md', { config: configGenerator.deleteUserLinks('delete', data?.id), initialData: data })} style={{ fontSize: '16px', backgroundColor: 'transparent', border: 'none' }}>
                     <FontAwesomeIcon icon={faTrash} />
                 </Button>
             </div>

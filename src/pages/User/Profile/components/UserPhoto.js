@@ -4,11 +4,11 @@ import CardBody from "../../../../components/Card/CardBody";
 import UserProfileCard from "../../../../components/Card/UserProfileCard";
 import { ConfigGenerator } from "../../../../utils/formConfigs";
 import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
-import Form from "../../../../components/Form/Form";
 import PropTypes from "prop-types";
 
 
-function UserPhoto({ user, onClose, openModal }) {
+function UserPhoto({ user, openModal }) {
+    const configGenerator = new ConfigGenerator();
     const userImgUrl = `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_USER_PHOTO_SERVER_URL}/${user.photo}`;
 
     return (
@@ -16,7 +16,7 @@ function UserPhoto({ user, onClose, openModal }) {
             <CardBody>
                 <div className={`row gx-4 ${window.innerWidth <= 425 ? 'align-items-center flex-column' : ''}`}>
                     <div className="col-auto">
-                        <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => openModal('İstifadəçi şəklini dəyiş', 'md', <Form config={new ConfigGenerator().generateUserPhoto('update', user.id)} initialData={user} onClose={onClose} />)} style={{ fontSize: '16px' }}>
+                        <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => openModal('İstifadəçi şəklini dəyiş', 'md', { config: configGenerator.generateUserPhoto('update', user.id), initialData: user })} style={{ fontSize: '16px' }}>
                             <div className="avatar-container">
                                 <div className={`avatar ${window.innerWidth > 425 ? 'avatar-xl' : 'avatar-xxl'} position-relative`}>
                                     <img src={userImgUrl} alt="Profil şəkili" className="border-radius-lg shadow-sm" />

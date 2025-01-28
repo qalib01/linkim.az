@@ -3,7 +3,6 @@ import Button from "../../../../components/Button/Button";
 import CardBody from "../../../../components/Card/CardBody";
 import CardHeader from "../../../../components/Card/CardHeader";
 import UserProfileCard from "../../../../components/Card/UserProfileCard";
-import Form from "../../../../components/Form/Form";
 import { ConfigGenerator } from "../../../../utils/formConfigs";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { useCallback, useMemo, useState } from "react";
@@ -13,11 +12,12 @@ import errorMessages from "../../../../statusMessages/error";
 import PropTypes from "prop-types";
 
 
-const UserSubscription = ({ user, onClose, openModal, setSubmitStatus }) => {
+const UserSubscription = ({ user, openModal, setSubmitStatus }) => {
     const [subscribeOptions, setSubscribeOptions] = useState([]);
     const [isFetching, setIsFetching] = useState(false);
     const [hasChanges, setHasChanges] = useState(false);
     const [selectedOptions, setSelectedOptions] = useState(user.subscription?.options?.map((opt) => opt.id) || []);
+    const configGenerator = new ConfigGenerator();
 
     const fetchSubscribeOptions = useCallback(async () => {
         setIsFetching(true);
@@ -147,11 +147,7 @@ const UserSubscription = ({ user, onClose, openModal, setSubmitStatus }) => {
                                 openModal(
                                     "Abunəliyi aktiv et",
                                     "md",
-                                    <Form
-                                        config={new ConfigGenerator().generateUserSubscription("add", user.id)}
-                                        initialData={user}
-                                        onClose={onClose}
-                                    />
+                                    { config: configGenerator.generateUserSubscription('add', user.id), initialData: user }
                                 )
                             }
                             style={{ fontSize: "16px" }}

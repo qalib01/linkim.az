@@ -6,7 +6,6 @@ import { ConfigGenerator } from "../../../../utils/formConfigs";
 import { faAdd } from "@fortawesome/free-solid-svg-icons";
 import CardBody from "../../../../components/Card/CardBody";
 import ListGroupParent from "../../../../components/ListGroup/ListGroupParent";
-import Form from "../../../../components/Form/Form";
 import errorMessages from "../../../../statusMessages/error";
 import { closestCorners, DndContext, KeyboardSensor, PointerSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
@@ -19,6 +18,7 @@ import PropTypes from "prop-types";
 function UserLinks({ user, setUser, onClose, openModal, setSubmitStatus }) {
     const [newUpdatedLinks, setNewUpdatedLinks] = useState([]);
     const initialLinks = useMemo(() => user.userLinks || [], [user.userLinks]);
+    const configGenerator = new ConfigGenerator();
 
     const sensors = useSensors(
         useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -95,7 +95,7 @@ function UserLinks({ user, setUser, onClose, openModal, setSubmitStatus }) {
                                 <Button asButton={true} onClick={handleSubmit} classList='border-0 bg-transparent w-auto btn bg-gradient-primary p-2 m-0'>Yadda saxla</Button>
                             </>
                         ) : (
-                            <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={user.userLinks?.length < 10 ? () => openModal('İstifadəçi linki yarat', 'md', <Form config={new ConfigGenerator().generateUserLinks('add', user.id)} initialData={user} onClose={onClose} />) : () => setSubmitStatus(errorMessages.USER_UP_TO_LINK_LIMIT)} style={{ fontSize: '16px' }}>
+                            <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={user.userLinks?.length < 10 ? () => openModal('İstifadəçi linki yarat', 'md', { config: configGenerator.generateUserLinks('add', user.id), initialData: user }) : () => setSubmitStatus(errorMessages.USER_UP_TO_LINK_LIMIT)} style={{ fontSize: '16px' }}>
                                 <FontAwesomeIcon icon={faAdd} />
                             </Button>
                         )
@@ -106,7 +106,7 @@ function UserLinks({ user, setUser, onClose, openModal, setSubmitStatus }) {
                         <SortableContext items={user.userLinks || []} strategy={verticalListSortingStrategy}>
                             <ListGroupParent>
                                 {user.userLinks?.length > 0 ? user.userLinks?.map((data) => (
-                                    <SortableItem data={data} openModal={openModal} onClose={onClose} key={data.id} />
+                                    <SortableItem key={data.id} data={data} openModal={openModal} onClose={onClose} />
                                 )) : <p> Məlumat yoxdur! </p>}
                             </ListGroupParent>
                         </SortableContext>

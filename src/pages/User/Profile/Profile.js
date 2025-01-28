@@ -6,11 +6,13 @@ import UserSubscription from "./components/UserSubscription";
 import UserData from "./components/UserData";
 import UserPhoto from "./components/UserPhoto";
 import PropTypes from "prop-types";
+import Form from "../../../components/Form/Form";
 
 
 function Profile({ user, setUser }) {
     const [submitStatus, setSubmitStatus] = useState([]);
     const [modalConfig, setModalConfig] = useState(null);
+    const [currentConfig, setCurrentConfig] = useState({});
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -18,8 +20,9 @@ function Profile({ user, setUser }) {
 
     const handleOpenModal = useCallback((title, size, content) => {
         document.body.style.overflow = 'hidden';
-        setModalConfig({ isOpen: true, title, size, content });
-    }, [setModalConfig]);
+        setCurrentConfig({ config: content.config, initialData: content.initialData });
+        setModalConfig({ isOpen: true, title, size, currentConfig });
+    }, [setModalConfig, currentConfig]);
 
     const handleCloseModal = useCallback(() => {
         document.body.style.overflow = 'visible';
@@ -42,7 +45,9 @@ function Profile({ user, setUser }) {
                 </div>
             </div>
             {submitStatus.type && <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus([])} />}
-            {modalConfig?.isOpen && (<Modal title={modalConfig.title} size={modalConfig.size} onClose={handleCloseModal}> {modalConfig.content} </Modal>)}
+            {modalConfig?.isOpen && (<Modal title={modalConfig.title} size={modalConfig.size} onClose={handleCloseModal}>
+                <Form config={currentConfig.config} initialData={currentConfig.initialData || ''} onClose={handleCloseModal} />
+            </Modal>)}
         </>
     )
 }

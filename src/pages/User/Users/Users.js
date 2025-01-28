@@ -20,6 +20,8 @@ function Users() {
     const [submitStatus, setSubmitStatus] = useState([]);
     const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
     const [modalConfig, setModalConfig] = useState(null);
+    const configGenerator = new ConfigGenerator();
+    const [currentConfig, setCurrentConfig] = useState({});
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -70,8 +72,9 @@ function Users() {
     }, [setSortConfig]);
 
     const handleOpenModal = useCallback((title, size, content) => {
-        setModalConfig({ isOpen: true, title, size, content })
-    }, [setModalConfig]);
+        setCurrentConfig({ config: content.config, initialData: content.initialData });
+        setModalConfig({ isOpen: true, title, size, currentConfig })
+    }, [setModalConfig, currentConfig]);
 
     const handleCloseModal = useCallback(() => {
         setModalConfig({ isOpen: false, ...modalConfig });
@@ -157,7 +160,7 @@ function Users() {
                                                                 </td>
                                                                 <td className="text-sm font-weight-normal d-flex align-items-center justify-content-evenly text-center">
                                                                     {
-                                                                        !data.active && <Button onClick={() => handleOpenModal('İstifadəçini aktifləşdir', 'md', <Form config={new ConfigGenerator().editUserStatus('update', data.id)} initialData={data} onClose={handleCloseModal} />)} style={{ fontSize: '16px' }}>
+                                                                        !data.active && <Button onClick={() => handleOpenModal('İstifadəçini aktifləşdir', 'md', { config: configGenerator.editUserStatus('update', data.id), initialData: data })} style={{ fontSize: '16px' }}>
                                                                             <FontAwesomeIcon icon={faCheck} />
                                                                         </Button>
                                                                     }
@@ -228,7 +231,9 @@ function Users() {
                 </div>
             </div>
             {submitStatus.type && <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus([])} />}
-            {modalConfig?.isOpen && (<Modal title={modalConfig.title} size={modalConfig.size} onClose={handleCloseModal}> {modalConfig.content} </Modal>)}
+            {modalConfig?.isOpen && (<Modal title={modalConfig.title} size={modalConfig.size} onClose={handleCloseModal}>
+                <Form config={currentConfig.config} initialData={currentConfig.initialData || ''} onClose={handleCloseModal} />
+            </Modal>)}
         </>
     )
 }

@@ -17,7 +17,8 @@ function Faqs() {
     const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
     const [modalConfig, setModalConfig] = useState(null);
     const configGenerator = new ConfigGenerator();
-    const [currentConfig, setCurrentConfig] = useState(configGenerator.chooseTvsOption('choose'));
+    const defaultTvsConfig = configGenerator.chooseTvsOption('choose');
+    const [currentConfig, setCurrentConfig] = useState({ config: defaultTvsConfig });
     const [formKey, setFormKey] = useState(0);
 
     useEffect(() => {
@@ -69,16 +70,17 @@ function Faqs() {
     }
 
     const handleConfigChange = (newConfig) => {
-        setCurrentConfig(configGenerator.generateTvsData(newConfig));
+        setCurrentConfig({ config: configGenerator.generateTvsData(newConfig) });
         setFormKey(prevSate => prevSate + 1);
     }
 
     function handleOpenModal(title, size, content) {
-        setModalConfig({ isOpen: true, title, size, content });
+        setCurrentConfig({ config: content.config, initialData: content.initialData });
+        setModalConfig({ isOpen: true, title, size, currentConfig });
     }
 
     function handleCloseModal() {
-        setCurrentConfig(configGenerator.chooseTvsOption('choose'));
+        setCurrentConfig({ config: defaultTvsConfig });
         setModalConfig({ ...modalConfig, isOpen: false });
     }
 
@@ -90,7 +92,7 @@ function Faqs() {
                         <div className="card">
                             <div className="card-header d-flex align-items-center justify-content-between">
                                 <h5 className="mb-0">Tez-tez verilən suallar</h5>
-                                <Button asButton={true} classList='border-0 bg-transparent w-auto btn bg-gradient-primary p-2 m-0 h6' onClick={() => handleOpenModal('Yeni TVS yarat', 'md', <Form key={formKey} config={currentConfig} initialData='' onClose={handleCloseModal} onConfigChange={handleConfigChange} />)}> Yenisini yarat </Button>
+                                <Button asButton={true} classList='border-0 bg-transparent w-auto btn bg-gradient-primary p-2 m-0 h6' onClick={() => handleOpenModal('Yeni TVS yarat', 'md', { config: currentConfig.config, initialData: currentConfig.initialData || '' })}> Yenisini yarat </Button>
                             </div>
                             <div className="table-responsive">
                                 <div className="dataTable-wrapper dataTable-loading no-footer sortable fixed-height fixed-columns">
@@ -154,10 +156,10 @@ function Faqs() {
                                                                 <span className={`badge badge-sm bg-gradient-info`}> {data.order} </span>
                                                             </td>
                                                             <td className="text-sm font-weight-normal d-flex align-items-center justify-content-evenly text-center">
-                                                                <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => handleOpenModal('TVS qrup düzəliş et', 'md', <Form config={new ConfigGenerator().editTvsData('group', data.id)} initialData={data} onClose={handleCloseModal} />)} style={{ fontSize: '16px' }}>
+                                                                <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => handleOpenModal('TVS qrup düzəliş et', 'md', { config: configGenerator.editTvsData('group', data.id), initialData: data })} style={{ fontSize: '16px' }}>
                                                                     <FontAwesomeIcon icon={faEdit} />
                                                                 </Button>
-                                                                <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => handleOpenModal('TVS qrup sil', 'md', <Form config={new ConfigGenerator().deleteTvsData('group', data.id)} initialData={data} onClose={handleCloseModal} />)} style={{ fontSize: '16px' }}>
+                                                                <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => handleOpenModal('TVS qrup sil', 'md', { config: configGenerator.deleteTvsData('group', data.id), initialData: data })} style={{ fontSize: '16px' }}>
                                                                     <FontAwesomeIcon icon={faTrash} />
                                                                 </Button>
                                                             </td>
@@ -174,10 +176,10 @@ function Faqs() {
                                                                     <span className={`badge badge-sm bg-gradient-info`}> {data2.order} </span>
                                                                 </td>
                                                                 <td className="text-sm font-weight-normal d-flex align-items-center justify-content-evenly text-center">
-                                                                    <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => handleOpenModal('TVS düzəliş et', 'md', <Form config={new ConfigGenerator().editTvsData('faq', data2.id)} initialData={data2} onClose={handleCloseModal} />)} style={{ fontSize: '16px' }}>
+                                                                    <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => handleOpenModal('TVS düzəliş et', 'md', { config: configGenerator.editTvsData('faq', data2.id), initialData: data2 })} style={{ fontSize: '16px' }}>
                                                                         <FontAwesomeIcon icon={faEdit} />
                                                                     </Button>
-                                                                    <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => handleOpenModal('TVS sil', 'md', <Form config={new ConfigGenerator().deleteTvsData('faq', data2.id)} initialData={data2} onClose={handleCloseModal} />)} style={{ fontSize: '16px' }}>
+                                                                    <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => handleOpenModal('TVS sil', 'md', { config: configGenerator.deleteTvsData('faq', data.id), initialData: data2 })} style={{ fontSize: '16px' }}>
                                                                         <FontAwesomeIcon icon={faTrash} />
                                                                     </Button>
                                                                 </td>
@@ -241,7 +243,9 @@ function Faqs() {
                 </div>
             </div>
             {submitStatus.type && <Alert type={submitStatus.type} message={submitStatus.message} handleCloseAlertBox={() => setSubmitStatus([])} />}
-            {modalConfig?.isOpen && (<Modal title={modalConfig.title} size={modalConfig.size} onClose={handleCloseModal}> {modalConfig.content} </Modal>)}
+            {modalConfig?.isOpen && (<Modal title={modalConfig.title} size={modalConfig.size} onClose={handleCloseModal}>
+                <Form key={formKey} config={currentConfig.config} initialData={currentConfig.initialData || ''} onClose={handleCloseModal} onConfigChange={handleConfigChange} />
+            </Modal>)}
         </>
     )
 }
