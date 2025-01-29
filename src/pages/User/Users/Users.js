@@ -77,7 +77,7 @@ function Users() {
     }, [setModalConfig, currentConfig]);
 
     const handleCloseModal = useCallback(() => {
-        setModalConfig({ isOpen: false, ...modalConfig });
+        setModalConfig({ ...modalConfig, isOpen: false });
     }, [setModalConfig, modalConfig]);
 
     return (
@@ -88,7 +88,7 @@ function Users() {
                         <div className="card">
                             <div className="card-header d-flex align-items-center justify-content-between">
                                 <h5 className="mb-0">İstifadəçilər</h5>
-                                <Button asButton={true} classList='border-0 bg-transparent w-auto btn bg-gradient-primary p-2 m-0 h6'> Yenisini yarat </Button>
+                                <Button asButton={true} classList='border-0 bg-transparent w-auto btn bg-gradient-primary p-2 m-0 h6'onClick={() => handleOpenModal('Yeni istifadəçi yarat', 'lg', { config: configGenerator.generateUserData('add'), initialData: '' })}> Yenisini yarat </Button>
                             </div>
                             <div className="table-responsive">
                                 <div className="dataTable-wrapper dataTable-loading no-footer sortable fixed-height fixed-columns">
@@ -167,7 +167,7 @@ function Users() {
                                                                     <Button to={`/u/users/profile/${data.id}`} style={{ fontSize: '16px' }}>
                                                                         <FontAwesomeIcon icon={faEdit} />
                                                                     </Button>
-                                                                    <Button>
+                                                                    <Button onClick={() => handleOpenModal('İstifadəçini sil', 'md', { config: configGenerator.deleteUserData('delete', data.id), initialData: data })}>
                                                                         <FontAwesomeIcon icon={faTrash} style={{ fontSize: '16px' }} />
                                                                     </Button>
                                                                 </td>
@@ -179,7 +179,7 @@ function Users() {
                                         </table>
                                     </div>
                                     <div className="dataTable-bottom">
-                                        <div className="dataTable-info">Ümumi: {sortedData.length || 0}</div>
+                                        <div className="dataTable-info">Ümumi: {sortedData.length - 1 || 0}</div>
                                         <nav className="dataTable-pagination">
                                             <ul className="dataTable-pagination-list">
                                                 <li className="pager">

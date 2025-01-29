@@ -179,7 +179,7 @@ function Faqs() {
                                                                     <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => handleOpenModal('TVS düzəliş et', 'md', { config: configGenerator.editTvsData('faq', data2.id), initialData: data2 })} style={{ fontSize: '16px' }}>
                                                                         <FontAwesomeIcon icon={faEdit} />
                                                                     </Button>
-                                                                    <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => handleOpenModal('TVS sil', 'md', { config: configGenerator.deleteTvsData('faq', data.id), initialData: data2 })} style={{ fontSize: '16px' }}>
+                                                                    <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => handleOpenModal('TVS sil', 'md', { config: configGenerator.deleteTvsData('faq', data2.id), initialData: data2 })} style={{ fontSize: '16px' }}>
                                                                         <FontAwesomeIcon icon={faTrash} />
                                                                     </Button>
                                                                 </td>

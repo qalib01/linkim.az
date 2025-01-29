@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faCalendar, faCheck, faLink, faUserCheck, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faCalendar, faCheck, faLink, faUserCheck, faUserSecret, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from "react";
 import UserProfileCard from "../../../components/Card/UserProfileCard";
 import CardBody from "../../../components/Card/CardBody";
@@ -27,7 +27,7 @@ function Dashboard() {
         <>
             <div className="container-fluid py-4">
                 <div className="row">
-                    <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                    <div className="col-xl-3 col-sm-6 mb-4">
                         <UserProfileCard>
                             <CardBody classList='p-3'>
                                 <div className="row">
@@ -48,7 +48,7 @@ function Dashboard() {
                             </CardBody>
                         </UserProfileCard>
                     </div>
-                    <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                    <div className="col-xl-3 col-sm-6 mb-4">
                         <UserProfileCard>
                             <CardBody classList='p-3'>
                                 <div className="row">
@@ -69,7 +69,7 @@ function Dashboard() {
                             </CardBody>
                         </UserProfileCard>
                     </div>
-                    <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                    <div className="col-xl-3 col-sm-6 mb-4">
                         <UserProfileCard>
                             <CardBody classList='p-3'>
                                 <div className="row">
@@ -90,7 +90,7 @@ function Dashboard() {
                             </CardBody>
                         </UserProfileCard>
                     </div>
-                    <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                    <div className="col-xl-3 col-sm-6 mb-4">
                         <UserProfileCard>
                             <CardBody classList='p-3'>
                                 <div className="row">
@@ -105,6 +105,27 @@ function Dashboard() {
                                     <div className="col-3 text-end">
                                         <div className="icon icon-shape bg-gradient-primary shadow text-center border-radius-md d-flex align-items-center justify-content-center">
                                             <FontAwesomeIcon icon={faUserCheck} size="lg" style={{ color: '#fff' }} />
+                                        </div>
+                                    </div>
+                                </div>
+                            </CardBody>
+                        </UserProfileCard>
+                    </div>
+                    <div className="col-xl-3 col-sm-6 mb-4">
+                        <UserProfileCard>
+                            <CardBody classList='p-3'>
+                                <div className="row">
+                                    <div className="col-9">
+                                        <div className="numbers">
+                                            <p className="text-sm mb-0 text-capitalize font-weight-bold">Rol</p>
+                                            <h5 className="font-weight-bolder mb-0">
+                                                { localUser.role }
+                                            </h5>
+                                        </div>
+                                    </div>
+                                    <div className="col-3 text-end">
+                                        <div className="icon icon-shape bg-gradient-primary shadow text-center border-radius-md d-flex align-items-center justify-content-center">
+                                            <FontAwesomeIcon icon={faUserSecret} size="lg" style={{ color: '#fff' }} />
                                         </div>
                                     </div>
                                 </div>
