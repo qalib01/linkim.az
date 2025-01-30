@@ -1,6 +1,6 @@
-import { faChevronLeft, faChevronRight, faEdit, faEllipsis, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Button from "../../../components/Button/Button";
 import { apiRequest } from "../../../utils/apiRequest";
 import { ConfigGenerator } from "../../../utils/formConfigs";
@@ -8,12 +8,15 @@ import Form from "../../../components/Form/Form";
 import Modal from "../../../components/Modal/Modal";
 import Alert from "../../../components/Alert/Alert";
 import errorMessages from "../../../statusMessages/error";
+import Pagination from "../../../components/Pagination/Pagination";
 
 
 function Faqs() {
     const [isFetching, setIsFetching] = useState(false);
     const [data, setData] = useState([]);
     const [submitStatus, setSubmitStatus] = useState([]);
+    const [dataSelectOption, setDataSelectOption] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
     const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
     const [modalConfig, setModalConfig] = useState(null);
     const configGenerator = new ConfigGenerator();
@@ -21,46 +24,53 @@ function Faqs() {
     const [currentConfig, setCurrentConfig] = useState({ config: defaultTvsConfig });
     const [formKey, setFormKey] = useState(0);
 
+
+    const getData = useCallback(async () => {
+        setIsFetching(true);
+
+        try {
+            const res = await apiRequest({
+                url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_USER_API_ENDPOINT}/get-allFaqs`,
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    "Content-Type": "application/json"
+                },
+            });
+
+            if (res.status === 200) {
+                setData(res.data);
+            } else {
+                setSubmitStatus(res.data);
+            }
+        } catch (error) {
+            setSubmitStatus(errorMessages.GENERAL_ERROR);
+        } finally {
+            setIsFetching(false);
+        }
+    }, [])
+
     useEffect(() => {
         window.scrollTo(0, 0);
 
-        const getData = async () => {
-            setIsFetching(true);
-
-            try {
-                const res = await apiRequest({
-                    url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_USER_API_ENDPOINT}/get-allFaqs`,
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                        "Content-Type": "application/json"
-                    },
-                });
-
-                if (res.status === 200) {
-                    setData(res.data);
-                } else {
-                    setSubmitStatus(res.data);
-                }
-            } catch (error) {
-                setSubmitStatus(errorMessages.GENERAL_ERROR);
-            } finally {
-                setIsFetching(false);
-            }
-        }
-
         getData();
-    }, []);
+    }, [getData]);
+
+    const currentDataTable = useMemo(() => {
+        const firstPageIndex = (currentPage - 1) * dataSelectOption;
+        const lastPageIndex = firstPageIndex + dataSelectOption;
+        return data.slice(firstPageIndex, lastPageIndex);
+    }, [currentPage, data, dataSelectOption]);
 
     const sortedData = useMemo(() => {
-        if (!sortConfig.key) return data;
+        if (!sortConfig.key) return currentDataTable;
 
-        return data && [...data].sort((a, b) => {
+        return currentDataTable && [...currentDataTable].sort((a, b) => {
             if (a[sortConfig.key] < b[sortConfig.key]) return sortConfig.direction === 'asceding' ? -1 : 1;
             if (a[sortConfig.key] > b[sortConfig.key]) return sortConfig.direction === 'asceding' ? -1 : 1;
             return 0;
         });
-    }, [data, sortConfig]);
+    }, [currentDataTable, sortConfig]);
 
     function handleSort(key) {
         setSortConfig((prevConfig) => {
@@ -84,6 +94,11 @@ function Faqs() {
         setModalConfig({ ...modalConfig, isOpen: false });
     }
 
+    const handleChangeTableSelector = (e) => {
+        setCurrentPage(1);
+        setDataSelectOption(Number(e.target.value));
+    }
+
     return (
         <>
             <div className="container-fluid py-4">
@@ -99,12 +114,11 @@ function Faqs() {
                                     <div className="dataTable-top">
                                         <div className="dataTable-dropdown">
                                             <label>
-                                                <select defaultValue='5' className="dataTable-selector">
+                                                <select defaultValue={dataSelectOption} className="dataTable-selector" onChange={handleChangeTableSelector}>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
                                                     <option value="5">5</option>
                                                     <option value="10">10</option>
-                                                    <option value="15">15</option>
-                                                    <option value="20">20</option>
-                                                    <option value="25">25</option>
                                                 </select> məlumat hər səhifədə
                                             </label>
                                         </div>
@@ -193,7 +207,7 @@ function Faqs() {
                                     <div className="dataTable-bottom">
                                         <div className="dataTable-info">Ümumi: {sortedData.length || 0}</div>
                                         <nav className="dataTable-pagination">
-                                            <ul className="dataTable-pagination-list">
+                                            {/* <ul className="dataTable-pagination-list">
                                                 <li className="pager">
                                                     <Button data-page="1">
                                                         <FontAwesomeIcon icon={faChevronLeft} />
@@ -233,7 +247,13 @@ function Faqs() {
                                                         <FontAwesomeIcon icon={faChevronRight} />
                                                     </Button>
                                                 </li>
-                                            </ul>
+                                            </ul> */}
+                                            <Pagination
+                                                currentPage={currentPage}
+                                                totalCount={data.length}
+                                                pageSize={dataSelectOption}
+                                                onPageChange={(page) => setCurrentPage(page)}
+                                            />
                                         </nav>
                                     </div>
                                 </div>

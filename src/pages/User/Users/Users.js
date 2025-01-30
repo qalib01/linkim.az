@@ -1,4 +1,4 @@
-import { faCheck, faChevronLeft, faChevronRight, faEdit, faEllipsis, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Button from "../../../components/Button/Button";
@@ -11,58 +11,67 @@ import Form from "../../../components/Form/Form";
 import { ConfigGenerator } from "../../../utils/formConfigs";
 import Alert from "../../../components/Alert/Alert";
 import errorMessages from "../../../statusMessages/error";
+import Pagination from "../../../components/Pagination/Pagination";
 
 
 function Users() {
     const [isFetching, setIsFetching] = useState(false);
     const [data, setData] = useState([]);
     const { localUser } = useAuth();
+    const [dataSelectOption, setDataSelectOption] = useState(5);
+    const [currentPage, setCurrentPage] = useState(1);
     const [submitStatus, setSubmitStatus] = useState([]);
     const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
     const [modalConfig, setModalConfig] = useState(null);
     const configGenerator = new ConfigGenerator();
     const [currentConfig, setCurrentConfig] = useState({});
 
+    const getData = useCallback(async () => {
+        setIsFetching(true);
+
+        try {
+            const res = await apiRequest({
+                url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_USER_API_ENDPOINT}/get-allUsers`,
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    "Content-Type": "application/json"
+                },
+            });
+
+            if (res.status === 200) {
+                setData(res.data);
+            } else {
+                setSubmitStatus(res.data);
+            }
+        } catch (error) {
+            setSubmitStatus(errorMessages.GENERAL_ERROR)
+        } finally {
+            setIsFetching(false);
+        }
+    }, []);
+
+    const currentDataTable = useMemo(() => {
+        const firstPageIndex = (currentPage - 1) * dataSelectOption;
+        const lastPageIndex = firstPageIndex + dataSelectOption;
+        return data.slice(firstPageIndex, lastPageIndex);
+    }, [currentPage, data, dataSelectOption]);
+
     useEffect(() => {
         window.scrollTo(0, 0);
 
-        const getData = async () => {
-            setIsFetching(true);
-
-            try {
-                const res = await apiRequest({
-                    url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_USER_API_ENDPOINT}/get-allUsers`,
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                        "Content-Type": "application/json"
-                    },
-                });
-
-                if (res.status === 200) {
-                    setData(res.data);
-                } else {
-                    setSubmitStatus(res.data);
-                }
-            } catch (error) {
-                setSubmitStatus(errorMessages.GENERAL_ERROR)
-            } finally {
-                setIsFetching(false);
-            }
-        }
-
         getData();
-    }, []);
+    }, [getData]);
 
     const sortedData = useMemo(() => {
-        if (!sortConfig.key) return data;
+        if (!sortConfig.key) return currentDataTable;
 
-        return data && [...data].sort((a, b) => {
+        return currentDataTable && [...currentDataTable].sort((a, b) => {
             if (a[sortConfig.key] < b[sortConfig.key]) return sortConfig.direction === 'asceding' ? -1 : 1;
             if (a[sortConfig.key] > b[sortConfig.key]) return sortConfig.direction === 'asceding' ? -1 : 1;
             return 0;
         });
-    }, [data, sortConfig]);
+    }, [currentDataTable, sortConfig]);
 
     const handleSort = useCallback((key) => {
         setSortConfig((prevConfig) => {
@@ -80,6 +89,11 @@ function Users() {
         setModalConfig({ ...modalConfig, isOpen: false });
     }, [setModalConfig, modalConfig]);
 
+    const handleChangeTableSelector = (e) => {
+        setCurrentPage(1);
+        setDataSelectOption(Number(e.target.value));
+    }
+
     return (
         <>
             <div className="container-fluid py-4">
@@ -88,19 +102,19 @@ function Users() {
                         <div className="card">
                             <div className="card-header d-flex align-items-center justify-content-between">
                                 <h5 className="mb-0">İstifadəçilər</h5>
-                                <Button asButton={true} classList='border-0 bg-transparent w-auto btn bg-gradient-primary p-2 m-0 h6'onClick={() => handleOpenModal('Yeni istifadəçi yarat', 'lg', { config: configGenerator.generateUserData('add'), initialData: '' })}> Yenisini yarat </Button>
+                                <Button asButton={true} classList='border-0 bg-transparent w-auto btn bg-gradient-primary p-2 m-0 h6' onClick={() => handleOpenModal('Yeni istifadəçi yarat', 'lg', { config: configGenerator.generateUserData('add'), initialData: '' })}> Yenisini yarat </Button>
                             </div>
                             <div className="table-responsive">
                                 <div className="dataTable-wrapper dataTable-loading no-footer sortable fixed-height fixed-columns">
                                     <div className="dataTable-top">
                                         <div className="dataTable-dropdown">
                                             <label>
-                                                <select defaultValue='5' className="dataTable-selector">
+                                                <select defaultValue={dataSelectOption} className="dataTable-selector" onChange={handleChangeTableSelector}>
                                                     <option value="5">5</option>
                                                     <option value="10">10</option>
-                                                    <option value="15">15</option>
-                                                    <option value="20">20</option>
                                                     <option value="25">25</option>
+                                                    <option value="50">50</option>
+                                                    <option value="100">100</option>
                                                 </select> məlumat hər səhifədə
                                             </label>
                                         </div>
@@ -179,49 +193,14 @@ function Users() {
                                         </table>
                                     </div>
                                     <div className="dataTable-bottom">
-                                        <div className="dataTable-info">Ümumi: {sortedData.length - 1 || 0}</div>
+                                        <div className="dataTable-info">Ümumi: {data.length || 0}</div>
                                         <nav className="dataTable-pagination">
-                                            <ul className="dataTable-pagination-list">
-                                                <li className="pager">
-                                                    <Button data-page="1">
-                                                        <FontAwesomeIcon icon={faChevronLeft} />
-                                                    </Button>
-                                                </li>
-                                                <li className="active">
-                                                    <Button data-page="1">1</Button>
-                                                </li>
-                                                <li className="">
-                                                    <Button data-page="2">2</Button>
-                                                </li>
-                                                <li className="">
-                                                    <Button data-page="3">3</Button>
-                                                </li>
-                                                <li className="">
-                                                    <Button data-page="4">4</Button>
-                                                </li>
-                                                <li className="">
-                                                    <Button data-page="5">5</Button>
-                                                </li>
-                                                <li className="">
-                                                    <Button data-page="6">6</Button>
-                                                </li>
-                                                <li className="">
-                                                    <Button data-page="7">7</Button>
-                                                </li>
-                                                <li className="ellipsis">
-                                                    <Button>
-                                                        <FontAwesomeIcon icon={faEllipsis} />
-                                                    </Button>
-                                                </li>
-                                                <li className="">
-                                                    <Button data-page="12">12</Button>
-                                                </li>
-                                                <li className="pager">
-                                                    <Button data-page="2">
-                                                        <FontAwesomeIcon icon={faChevronRight} />
-                                                    </Button>
-                                                </li>
-                                            </ul>
+                                            <Pagination
+                                                currentPage={currentPage}
+                                                totalCount={data.length}
+                                                pageSize={dataSelectOption}
+                                                onPageChange={(page) => setCurrentPage(page)}
+                                            />
                                         </nav>
                                     </div>
                                 </div>
