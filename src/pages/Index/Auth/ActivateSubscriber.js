@@ -25,7 +25,7 @@ function ActivateSubscriberPage() {
 
             try {
                 let response = await apiRequest({
-                    url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/${process.env.REACT_APP_SUBSCRIBER_ACTIVATE_LINK_KEY}`,
+                    url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_GLOBAL_API_ENDPOINT}/${process.env.REACT_APP_API_SUBSCRIBER_ACTIVATE}`,
                     method: 'POST',
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ token }),
@@ -53,7 +53,7 @@ function ActivateSubscriberPage() {
 
         try {
             let response = await apiRequest({
-                url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/${process.env.REACT_APP_RESEND_SUBSCRIBER_ACTIVATE_LINK_KEY}`,
+                url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_GLOBAL_API_ENDPOINT}/${process.env.REACT_APP_API_RESEND_SUBSCRIBER_ACTIVATE}`,
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ token }),

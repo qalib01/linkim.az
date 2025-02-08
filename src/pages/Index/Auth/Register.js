@@ -73,7 +73,7 @@ function RegisterPage() {
         };
 
         let response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/register`,
+            url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_GLOBAL_API_ENDPOINT}/${process.env.REACT_APP_API_AUTH_REGISTER}`,
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(userData)

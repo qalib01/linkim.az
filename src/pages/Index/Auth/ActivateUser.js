@@ -25,7 +25,7 @@ function ActivateUserPage() {
     
             try {
                 let response = await apiRequest({
-                    url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/${process.env.REACT_APP_USER_ACTIVATE_LINK_KEY}`,
+                    url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_GLOBAL_API_ENDPOINT}/${process.env.REACT_APP_API_AUTH_USER_ACTIVATE}`,
                     method: 'POST',
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ token }),
@@ -51,7 +51,7 @@ function ActivateUserPage() {
 
         try {
             let response = await apiRequest({
-                url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_API_ENDPOINT}/${process.env.REACT_APP_RESEND_USER_ACTIVATE_LINK_KEY}`,
+                url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_GLOBAL_API_ENDPOINT}/${process.env.REACT_APP_API_AUTH_RESEND_USER_ACTIVATE}`,
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: { token },

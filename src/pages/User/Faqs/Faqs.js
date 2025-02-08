@@ -24,13 +24,12 @@ function Faqs() {
     const [currentConfig, setCurrentConfig] = useState({ config: defaultTvsConfig });
     const [formKey, setFormKey] = useState(0);
 
-
     const getData = useCallback(async () => {
         setIsFetching(true);
 
         try {
             const res = await apiRequest({
-                url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_USER_API_ENDPOINT}/get-allFaqs`,
+                url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_USER_API_ENDPOINT}/${process.env.REACT_APP_API_GET_FAQS}`,
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
@@ -160,9 +159,9 @@ function Faqs() {
                                                 {sortedData ? sortedData.map((data) => (
                                                     <React.Fragment key={data.id}>
                                                         <tr>
-                                                            <td className="text-sm font-weight-normal text-center"> {data.group} </td>
-                                                            <td className="text-sm font-weight-normal text-center"> - </td>
-                                                            <td className="text-sm font-weight-normal text-center"> - </td>
+                                                            <td className="text-sm font-weight-normal text-center text-wrap"> {data.group} </td>
+                                                            <td className="text-sm font-weight-normal text-center text-wrap"> - </td>
+                                                            <td className="text-sm font-weight-normal text-center text-wrap"> - </td>
                                                             <td className="text-sm font-weight-normal text-center">
                                                                 <span className={`badge badge-sm bg-gradient-${data.active ? 'success' : 'danger'}`}> {data.active ? 'Aktiv' : 'Passiv'} </span>
                                                             </td>
@@ -180,9 +179,9 @@ function Faqs() {
                                                         </tr>
                                                         {data.faqs ? data.faqs.map((data2) => (
                                                             <tr key={data2.id}>
-                                                                <td className="text-sm font-weight-normal text-center"> - </td>
-                                                                <td className="text-sm font-weight-normal text-center"> {data2.question} </td>
-                                                                <td className="text-sm font-weight-normal text-center" > {data2.answer} </td>
+                                                                <td className="text-sm font-weight-normal text-center text-wrap"> - </td>
+                                                                <td className="text-sm font-weight-normal text-center text-wrap"> {data2.question} </td>
+                                                                <td className="text-sm font-weight-normal text-center text-wrap" > {data2.answer} </td>
                                                                 <td className="text-sm font-weight-normal text-center">
                                                                     <span className={`badge badge-sm bg-gradient-${data2.active ? 'success' : 'danger'}`}> {data2.active ? 'Aktiv' : 'Passiv'} </span>
                                                                 </td>
@@ -207,47 +206,6 @@ function Faqs() {
                                     <div className="dataTable-bottom">
                                         <div className="dataTable-info">Ümumi: {sortedData.length || 0}</div>
                                         <nav className="dataTable-pagination">
-                                            {/* <ul className="dataTable-pagination-list">
-                                                <li className="pager">
-                                                    <Button data-page="1">
-                                                        <FontAwesomeIcon icon={faChevronLeft} />
-                                                    </Button>
-                                                </li>
-                                                <li className="active">
-                                                    <Button data-page="1">1</Button>
-                                                </li>
-                                                <li className="">
-                                                    <Button data-page="2">2</Button>
-                                                </li>
-                                                <li className="">
-                                                    <Button data-page="3">3</Button>
-                                                </li>
-                                                <li className="">
-                                                    <Button data-page="4">4</Button>
-                                                </li>
-                                                <li className="">
-                                                    <Button data-page="5">5</Button>
-                                                </li>
-                                                <li className="">
-                                                    <Button data-page="6">6</Button>
-                                                </li>
-                                                <li className="">
-                                                    <Button data-page="7">7</Button>
-                                                </li>
-                                                <li className="ellipsis">
-                                                    <Button>
-                                                        <FontAwesomeIcon icon={faEllipsis} />
-                                                    </Button>
-                                                </li>
-                                                <li className="">
-                                                    <Button data-page="12">12</Button>
-                                                </li>
-                                                <li className="pager">
-                                                    <Button data-page="2">
-                                                        <FontAwesomeIcon icon={faChevronRight} />
-                                                    </Button>
-                                                </li>
-                                            </ul> */}
                                             <Pagination
                                                 currentPage={currentPage}
                                                 totalCount={data.length}

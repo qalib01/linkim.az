@@ -10,6 +10,7 @@ import { apiRequest } from "../../../utils/apiRequest";
 import Button from "../../../components/Button/Button";
 import useAuth from "../../../hooks/useAuth";
 
+
 function AboutPage() {
     const { isAuthenticated } = useAuth();
     useEffect(() => {
@@ -82,7 +83,7 @@ function Team() {
     useEffect(() => {
         async function allTeam() {
             setIsFetching(true);
-            const response = await apiRequest({ url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/team` });
+            const response = await apiRequest({ url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_GLOBAL_API_ENDPOINT}/${process.env.REACT_APP_API_GET_TEAM}` });
             setTeam(response.status === 200 && response.data);
             setIsFetching(false);
         }
@@ -188,7 +189,6 @@ function WhyUs() {
         </Section>
     )
 }
-
 
 
 export default AboutPage;

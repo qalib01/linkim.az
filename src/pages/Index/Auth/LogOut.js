@@ -12,7 +12,7 @@ function Logout() {
     const handleLogoutUser = useCallback(async (refreshToken) => {
         try {
             await apiRequest({
-                url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/logout`,
+                url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_GLOBAL_API_ENDPOINT}/${process.env.REACT_APP_API_LOGOUT}`,
                 headers: { Authorization: `Bearer ${refreshToken}` }
             });
         } catch (error) {

@@ -3,6 +3,21 @@ import { closeButton, contactFullName, contactMessage, contactSubject, faqAnswer
 export class ConfigGenerator {
     constructor(baseApiUrl) { this.baseApiUrl = baseApiUrl || `${process.env.REACT_APP_API_LINK}` }
 
+    // ! User Login Form Configs
+    userLogin(mode) {
+        const modes = {
+            add: { url: `${this.baseApiUrl}/${process.env.REACT_APP_GLOBAL_API_ENDPOINT}/${process.env.REACT_APP_API_AUTH_LOGIN}`, method: 'POST' },
+        }
+
+        return {
+            fields: [userEmail(), userLoginPassword()],
+            buttons: [submitButton()],
+            submitUrl: modes[mode]?.url || '',
+            submitMethod: modes[mode]?.method || '',
+        }
+    }
+
+    // ! 
     generateUserData(mode, id) {
         const modes = {
             add: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/add-userData`, method: 'POST' },
@@ -24,19 +39,6 @@ export class ConfigGenerator {
         return {
             contents: [(data) => <p> Sil düyməsini təsdiqi etdiyin zaman <strong> {data.name} {data.surname} </strong> istifadəçisini bir dəfəlik silmiş olacaqsan və bunun geri qayıdışı olmayacaq, daha sonra yenisini yarada bilərsən! </p>],
             buttons: [submitButton(), closeButton()],
-            submitUrl: modes[mode]?.url || '',
-            submitMethod: modes[mode]?.method || '',
-        }
-    }
-
-    userLogin(mode) {
-        const modes = {
-            add: { url: `${this.baseApiUrl}${process.env.REACT_APP_API_ENDPOINT}/login`, method: 'POST' },
-        }
-
-        return {
-            fields: [userEmail(), userLoginPassword()],
-            buttons: [submitButton()],
             submitUrl: modes[mode]?.url || '',
             submitMethod: modes[mode]?.method || '',
         }
@@ -243,9 +245,10 @@ export class ConfigGenerator {
         }
     }
 
+    // ! User Contact Form Configs
     generateContactMessage(mode) {
         const modes = {
-            send: { url: `${this.baseApiUrl}${process.env.REACT_APP_API_ENDPOINT}/contact`, method: 'post' },
+            send: { url: `${this.baseApiUrl}/${process.env.REACT_APP_GLOBAL_API_ENDPOINT}/${process.env.REACT_APP_API_POST_CONTACT}`, method: 'post' },
         }
 
         return {
