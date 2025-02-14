@@ -5,8 +5,10 @@ import UserPageLayout from './layouts/UserPageLayout';
 import Loader from './components/Loader/Loader';
 import PublicRoute from './components/ProtectedRoute/PublicRoute';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
+import { ROUTES } from './utils/routes';
 
-const withSuspense = (Component) => ( <Suspense fallback={<Loader />}> <Component /> </Suspense> );
+
+const withSuspense = (Component) => (<Suspense fallback={<Loader />}> <Component /> </Suspense>);
 const HomePage = lazy(() => import('./pages/Index/Home/Home'));
 const AboutPage = lazy(() => import('./pages/Index/About/About'));
 const ContactPage = lazy(() => import('./pages/Index/Contact/Contact'));
@@ -29,9 +31,10 @@ const Faqs = lazy(() => import('./pages/User/Faqs/Faqs'));
 const Users = lazy(() => import('./pages/User/Users/Users'));
 const UserErrorPage = lazy(() => import('./error/UserErrorPage'));
 
+
 const router = createBrowserRouter([
     {
-        path: '/',
+        path: ROUTES.HOME,
         errorElement: withSuspense(IndexErrorPage),
         id: 'pageRoot',
         children: [
@@ -41,46 +44,46 @@ const router = createBrowserRouter([
                     { index: true, element: withSuspense(HomePage) },
                 ]
             },
-            { path: ':username', element: withSuspense(UserLinks) },
+            { path: ROUTES.PUBLIC.USERNAME_SLUG, element: withSuspense(UserLinks) },
             {
-                path: 'p/',
+                path: ROUTES.PUBLIC.HOME,
                 element: withSuspense(IndexPageLayout),
                 errorElement: withSuspense(IndexErrorPage),
                 children: [
                     { index: true, element: withSuspense(HomePage) },
-                    { path: 'about', element: withSuspense(AboutPage) },
-                    { path: 'contact', element: withSuspense(ContactPage) },
-                    { path: 'logout', element: withSuspense(Logout) },
-                    { path: 'faqs', element: withSuspense(FaqPage) },
-                    { 
-                        path: 'register', 
+                    { path: ROUTES.PUBLIC.ABOUT, element: withSuspense(AboutPage) },
+                    { path: ROUTES.PUBLIC.CONTACT, element: withSuspense(ContactPage) },
+                    { path: ROUTES.PUBLIC.LOGOUT, element: withSuspense(Logout) },
+                    { path: ROUTES.PUBLIC.FAQS, element: withSuspense(FaqPage) },
+                    {
+                        path: ROUTES.PUBLIC.REGISTER,
                         element: <PublicRoute />,
                         children: [
                             { index: true, element: withSuspense(RegisterPage) }
                         ]
                     },
-                    { 
-                        path: 'login', 
+                    {
+                        path: ROUTES.PUBLIC.LOGIN,
                         element: <PublicRoute />,
                         children: [
                             { index: true, element: withSuspense(LoginPage) }
                         ]
                     },
                     {
-                        path: `${process.env.REACT_APP_RESET_PASSWORD_LINK_KEY}`,
+                        path: ROUTES.PUBLIC.RESET_PASSWORD,
                         element: <PublicRoute />,
                         children: [
                             { index: true, element: withSuspense(ResetPasswordRequestPage) },
-                            { path: ':token', element: withSuspense(ResetPasswordPage) }
+                            { path: ROUTES.PUBLIC.TOKEN_SLUG, element: withSuspense(ResetPasswordPage) }
                         ],
                     },
-                    { path: `${process.env.REACT_APP_USER_ACTIVATE_LINK_KEY}/:token`, element: withSuspense(ActivateUserPage) },
-                    { path: `${process.env.REACT_APP_SUBSCRIBER_ACTIVATE_LINK_KEY}/:token`, element: withSuspense(ActivateSubscriberPage) },
-                    { path: `${process.env.REACT_APP_UNSUBSCRIBER_LINK_KEY}/:token`, element: withSuspense(UnsubscriberPage) }
+                    { path: ROUTES.PUBLIC.USER_ACTIVATE, element: withSuspense(ActivateUserPage) },
+                    { path: ROUTES.PUBLIC.ACTIVATE_SUBSCRIPTION, element: withSuspense(ActivateSubscriberPage) },
+                    { path: ROUTES.PUBLIC.UNSUBSCRIBE, element: withSuspense(UnsubscriberPage) }
                 ],
             },
             {
-                path: 'u/',
+                path: ROUTES.PRIVATE.HOME,
                 element: <ProtectedRoute />,
                 children: [
                     {
@@ -88,20 +91,20 @@ const router = createBrowserRouter([
                         errorElement: withSuspense(UserErrorPage),
                         children: [
                             { index: true, element: withSuspense(Dashboard) },
-                            { path: 'dashboard', element: withSuspense(Dashboard) },
-                            { path: 'profile', element: withSuspense(LoggedInUser) },
+                            { path: ROUTES.PRIVATE.DASHBOARD, element: withSuspense(Dashboard) },
+                            { path: ROUTES.PRIVATE.PROFILE, element: withSuspense(LoggedInUser) },
                             {
-                              element: <ProtectedRoute allowedRoles='Admin' />,
-                              children: [
-                                {
-                                    path: 'users',
-                                    children: [
-                                        { index: true, element: withSuspense(Users) },
-                                        { path: 'profile/:id', element: withSuspense(EditableUser) },
-                                    ]
-                                },
-                                { path: 'faqs', element: withSuspense(Faqs) },
-                              ] 
+                                element: <ProtectedRoute allowedRoles={ 'Admin' } />,
+                                children: [
+                                    {
+                                        path: ROUTES.PRIVATE.USERS,
+                                        children: [
+                                            { index: true, element: withSuspense(Users) },
+                                            { path: ROUTES.PRIVATE.PROFILE_BY_ID, element: withSuspense(EditableUser) },
+                                        ]
+                                    },
+                                    { path: ROUTES.PRIVATE.FAQS, element: withSuspense(Faqs) },
+                                ],
                             },
                         ],
                     }

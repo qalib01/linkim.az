@@ -9,6 +9,7 @@ import UserFriendlyIconSvg from "../../../components/Icons/UserFriendlyIconSvg";
 import { apiRequest } from "../../../utils/apiRequest";
 import Button from "../../../components/Button/Button";
 import useAuth from "../../../hooks/useAuth";
+import { ROUTES } from "../../../utils/routes";
 
 
 function AboutPage() {
@@ -83,7 +84,7 @@ function Team() {
     useEffect(() => {
         async function allTeam() {
             setIsFetching(true);
-            const response = await apiRequest({ url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_GLOBAL_API_ENDPOINT}/${process.env.REACT_APP_API_GET_TEAM}` });
+            const response = await apiRequest({ url: `${process.env.REACT_APP_API_LINK}${ROUTES.API.GLOBAL_ENDPOINT}${ROUTES.API.TEAM}` });
             setTeam(response.status === 200 && response.data);
             setIsFetching(false);
         }
@@ -107,11 +108,7 @@ function Team() {
                         <div key={data.id} className="col-8 col-md-6 col-lg-3">
                             <div className={`mt-3 mt-md-5`}>
                                 <div className="card border-0 shadow-sm">
-                                    <img 
-                                        src={`http://localhost:1007/images/users/${data.photo}`} 
-                                        className="card-img-top rounded" 
-                                        alt={`${data.name} ${data.surname}`} 
-                                    />
+                                    <img  src={`${process.env.REACT_APP_API_LINK}${ROUTES.API.PHOTO_URL}${data.photo}`} className="card-img-top rounded" alt={`${data.name} ${data.surname}`} />
                                     <div className="card-body py-4 text-center">
                                         <p className='fw-bold'>{data.name} {data.surname}</p>
                                         <p className="card-subtitle mb-0 text-muted small">{data.profession}</p>
