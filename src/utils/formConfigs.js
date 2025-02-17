@@ -1,4 +1,5 @@
 import { closeButton, contactFullName, contactMessage, contactSubject, faqAnswer, faqButton, faqGroup, faqGroupButton, faqQuestion, order, status, submitButton, userBio, userConfirmPassword, userEmail, userLinkTitle, userLinkType, userLinkUrl, userLoginPassword, userName, userPassword, userProfilePhoto, userSurname, userUsername } from "./formElements";
+import { ROUTES } from "./routes";
 
 export class ConfigGenerator {
     constructor(baseApiUrl) { this.baseApiUrl = baseApiUrl || `${process.env.REACT_APP_API_LINK}` }
@@ -6,7 +7,7 @@ export class ConfigGenerator {
     // ! User Login Form Configs
     userLogin(mode) {
         const modes = {
-            add: { url: `${this.baseApiUrl}/${process.env.REACT_APP_GLOBAL_API_ENDPOINT}/${process.env.REACT_APP_API_AUTH_LOGIN}`, method: 'POST' },
+            add: { url: `${this.baseApiUrl}${ROUTES.API.GLOBAL_ENDPOINT}${ROUTES.API.LOGIN}`, method: 'POST' },
         }
 
         return {
@@ -20,9 +21,8 @@ export class ConfigGenerator {
     // ! 
     generateUserData(mode, id) {
         const modes = {
-            add: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/add-userData`, method: 'POST' },
-            update: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-userData/${id}`, method: 'POST' },
-            delete: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-userData/${id}`, method: 'DELETE' },
+            add: { url: `${this.baseApiUrl}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.ADD_USER}`, method: 'POST' },
+            update: { url: `${this.baseApiUrl}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.UPDATE_USER_BY_ID}${id}`, method: 'POST' },
         }
 
         return {
@@ -34,7 +34,7 @@ export class ConfigGenerator {
     }
 
     deleteUserData(mode, id) {
-        const modes = { delete: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-userData/${id}`, method: 'DELETE' } }
+        const modes = { delete: { url: `${this.baseApiUrl}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.DELETE_USER_BY_ID}${id}`, method: 'DELETE' }, }
 
         return {
             contents: [(data) => <p> Sil düyməsini təsdiqi etdiyin zaman <strong> {data.name} {data.surname} </strong> istifadəçisini bir dəfəlik silmiş olacaqsan və bunun geri qayıdışı olmayacaq, daha sonra yenisini yarada bilərsən! </p>],
@@ -46,7 +46,7 @@ export class ConfigGenerator {
 
     generateUserPhoto(mode, id) {
         const modes = {
-            update: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/upload-userPhoto/${id}`, method: 'POST' },
+            update: { url: `${this.baseApiUrl}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.UPLOAD_USER_PHOTO_BY_ID}${id}`, method: 'POST' },
         }
 
         return {
@@ -57,24 +57,24 @@ export class ConfigGenerator {
         }
     }
 
-    generateUserName(mode, id) {
-        const modes = {
-            add: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/add-userData`, method: 'POST' },
-            update: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-userData/${id}`, method: 'POST' },
-            delete: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-userData/${id}`, method: 'DELETE' },
-        }
+    // generateUserName(mode, id) {
+    //     const modes = {
+    //         add: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/add-userData`, method: 'POST' },
+    //         update: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-userData/${id}`, method: 'POST' },
+    //         delete: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-userData/${id}`, method: 'DELETE' },
+    //     }
 
-        return {
-            fields: [userUsername()],
-            buttons: [submitButton(), closeButton()],
-            submitUrl: modes[mode]?.url || '',
-            submitMethod: modes[mode]?.method || '',
-        }
-    }
+    //     return {
+    //         fields: [userUsername()],
+    //         buttons: [submitButton(), closeButton()],
+    //         submitUrl: modes[mode]?.url || '',
+    //         submitMethod: modes[mode]?.method || '',
+    //     }
+    // }
 
     generateSubscribe(mode) {
         const modes = {
-            add: { url: `${this.baseApiUrl}${process.env.REACT_APP_API_ENDPOINT}/subscribe`, method: 'POST' },
+            add: { url: `${this.baseApiUrl}${ROUTES.API.GLOBAL_ENDPOINT}${ROUTES.API.SUBSCRIBE}`, method: 'POST' },
         }
 
         return {
@@ -86,7 +86,7 @@ export class ConfigGenerator {
     }
 
     generateUserSubscription(mode, id) {
-        const modes = { add: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/subscription-activate/${id}`, method: 'post' } }
+        const modes = { add: { url: `${this.baseApiUrl}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.ACTIVATE_SUBSCRIPTION_BY_ID}${id}`, method: 'post' } }
 
         return {
             contents: [() => <p> Göndər düyməsini təsdiqi etdiyin zaman sistem abunəçiliyini qəbul etmiş olursan və növbəti mərhələdə seçdiyin abunəliklərə əsasən emaillər göndəriləcək! </p>],
@@ -98,8 +98,8 @@ export class ConfigGenerator {
 
     generateUserLinks(mode, id) {
         const modes = {
-            add: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/add-userLink/${id}`, method: 'POST' },
-            update: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-userLink/${id}`, method: 'POST' },
+            add: { url: `${this.baseApiUrl}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.ADD_USER_LINK_BY_USER_ID}${id}`, method: 'POST' },
+            update: { url: `${this.baseApiUrl}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.UPDATE_USER_LINK_BY_ID}${id}`, method: 'POST' },
         }
 
         return {
@@ -112,7 +112,7 @@ export class ConfigGenerator {
 
     deleteUserLinks(mode, id) {
         const modes = {
-            delete: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-userLink/${id}`, method: 'DELETE' },
+            delete: { url: `${this.baseApiUrl}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.DELETE_USER_LINK_BY_ID}${id}`, method: 'DELETE' },
         }
 
         return {
@@ -127,7 +127,7 @@ export class ConfigGenerator {
 
     generateUsernameAvaliability(mode) {
         const modes = {
-            find: { url: `${this.baseApiUrl}${process.env.REACT_APP_API_ENDPOINT}/check-userName`, method: 'POST' },
+            find: { url: `${this.baseApiUrl}${ROUTES.API.GLOBAL_ENDPOINT}${ROUTES.API.CHECK_USERNAME}`, method: 'POST' },
         }
 
         return {
@@ -140,7 +140,7 @@ export class ConfigGenerator {
 
     generateResetPasswordRequest(mode) {
         const modes = {
-            add: { url: `${this.baseApiUrl}${process.env.REACT_APP_API_ENDPOINT}/reset-password-request`, method: 'POST' },
+            add: { url: `${this.baseApiUrl}${ROUTES.API.GLOBAL_ENDPOINT}${ROUTES.API.RESET_PASSWORD_REQUEST}`, method: 'POST' },
         }
 
         return {
@@ -153,7 +153,7 @@ export class ConfigGenerator {
 
     generateResetPassword(mode) {
         const modes = {
-            update: { url: `${this.baseApiUrl}${process.env.REACT_APP_API_ENDPOINT}/${process.env.REACT_APP_RESET_PASSWORD_LINK_KEY}`, method: 'POST' },
+            update: { url: `${this.baseApiUrl}${ROUTES.API.GLOBAL_ENDPOINT}${ROUTES.API.RESET_PASSWORD}`, method: 'POST' },
         }
 
         return {
@@ -166,7 +166,7 @@ export class ConfigGenerator {
 
     editUserStatus(mode, id) {
         const modes = {
-            update: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/${process.env.REACT_APP_USER_ACTIVATE_LINK_KEY}/${id}`, method: 'POST' },
+            update: { url: `${this.baseApiUrl}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.ACTIVATE_USER_BY_ID}${id}`, method: 'POST' },
         }
 
         return {
@@ -193,8 +193,8 @@ export class ConfigGenerator {
 
     generateTvsData(mode) {
         const modes = {
-            faq: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/add-newFaq`, method: 'POST' },
-            group: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/add-newFaqGroup`, method: 'POST' },
+            faq: { url: `${this.baseApiUrl}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.ADD_FAQ}`, method: 'POST' },
+            group: { url: `${this.baseApiUrl}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.ADD_FAQ_GROUP}`, method: 'POST' },
         }
 
         const fields = {
@@ -212,8 +212,8 @@ export class ConfigGenerator {
 
     editTvsData(mode, id) {
         const modes = {
-            faq: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-selectedFaq/${id}`, method: 'POST' },
-            group: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-selectedFaqGroup/${id}`, method: 'POST' },
+            faq: { url: `${this.baseApiUrl}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.UPDATE_FAQ_BY_ID}${id}`, method: 'POST' },
+            group: { url: `${this.baseApiUrl}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.UPDATE_FAQ_GROUP_BY_ID}${id}`, method: 'POST' },
         }
 
         const fields = {
@@ -231,8 +231,8 @@ export class ConfigGenerator {
 
     deleteTvsData(mode, id) {
         const modes = {
-            group: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-selectedFaq/${id}`, method: 'DELETE' },
-            faq: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-selectedFaqGroup/${id}`, method: 'DELETE' },
+            group: { url: `${this.baseApiUrl}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.DELETE_FAQ_BY_ID}${id}`, method: 'DELETE' },
+            faq: { url: `${this.baseApiUrl}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.DELETE_FAQ_GROUP_BY_ID}${id}`, method: 'DELETE' },
         }
 
         return {
@@ -248,7 +248,7 @@ export class ConfigGenerator {
     // ! User Contact Form Configs
     generateContactMessage(mode) {
         const modes = {
-            send: { url: `${this.baseApiUrl}/${process.env.REACT_APP_GLOBAL_API_ENDPOINT}/${process.env.REACT_APP_API_POST_CONTACT}`, method: 'post' },
+            send: { url: `${this.baseApiUrl}${ROUTES.API.GLOBAL_ENDPOINT}${ROUTES.API.CONTACT}`, method: 'post' },
         }
 
         return {

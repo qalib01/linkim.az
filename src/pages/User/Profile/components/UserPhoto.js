@@ -5,11 +5,12 @@ import UserProfileCard from "../../../../components/Card/UserProfileCard";
 import { ConfigGenerator } from "../../../../utils/formConfigs";
 import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import PropTypes from "prop-types";
+import { ROUTES } from "../../../../utils/routes";
 
 
 function UserPhoto({ user, openModal }) {
     const configGenerator = new ConfigGenerator();
-    const userImgUrl = `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_USER_PHOTO_SERVER_URL}/${user.photo}`;
+    const userImgUrl = `${process.env.REACT_APP_API_LINK}${ROUTES.API.PHOTO_URL}${user.photo}`;
 
     return (
         <UserProfileCard classList='blur shadow-blur mx-4 mt-n6 overflow-hidden'>

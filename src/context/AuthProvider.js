@@ -1,6 +1,7 @@
 import { createContext, useCallback, useEffect, useState } from "react";
 import { apiRequest } from "../utils/apiRequest";
 import Loader from "../components/Loader/Loader";
+import { ROUTES } from "../utils/routes";
 
 const AuthContext = createContext({});
 
@@ -13,7 +14,7 @@ export const AuthProvider = ({ children }) => {
     const validateToken = useCallback(async (accessToken) => {
         try {
             const response = await apiRequest({
-                url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/validate-login`,
+                url: `${process.env.REACT_APP_API_LINK}${ROUTES.API.GLOBAL_ENDPOINT}${ROUTES.API.VALIDATE_LOGIN}`,
                 method: 'POST',
                 withCredentials: true,
                 headers: {
@@ -51,7 +52,7 @@ export const AuthProvider = ({ children }) => {
     async function refreshAccessToken() {
         try {
             const response = await apiRequest({
-                url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/refresh-token`,
+                url: `${process.env.REACT_APP_API_LINK}${ROUTES.API.GLOBAL_ENDPOINT}${ROUTES.API.REFRESH_TOKEN}`,
                 withCredentials: true,
                 method: 'GET',
             });

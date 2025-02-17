@@ -5,6 +5,7 @@ import Loader from "../../../components/Loader/Loader";
 import errorMessages from "../../../statusMessages/error";
 import { useEffect, useState } from "react";
 import Alert from "../../../components/Alert/Alert";
+import { ROUTES } from "../../../utils/routes";
 
 const EditableUser = () => {
     const { id } = useParams();
@@ -18,7 +19,7 @@ const EditableUser = () => {
             setIsFetching(true);
             try {
                 const response = await apiRequest({
-                    url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_USER_API_ENDPOINT}/get-selectedUser/${id}`,
+                    url: `${process.env.REACT_APP_API_LINK}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.GET_USER_BY_ID}${id}`,
                     method: "GET",
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,

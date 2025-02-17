@@ -9,6 +9,7 @@ import Modal from "../../../components/Modal/Modal";
 import Alert from "../../../components/Alert/Alert";
 import errorMessages from "../../../statusMessages/error";
 import Pagination from "../../../components/Pagination/Pagination";
+import { ROUTES } from "../../../utils/routes";
 
 
 function Faqs() {
@@ -29,7 +30,7 @@ function Faqs() {
 
         try {
             const res = await apiRequest({
-                url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_USER_API_ENDPOINT}/${process.env.REACT_APP_API_GET_FAQS}`,
+                url: `${process.env.REACT_APP_API_LINK}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.GET_FAQS}`,
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,

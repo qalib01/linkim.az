@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { apiRequest } from "../../../../utils/apiRequest";
 import errorMessages from "../../../../statusMessages/error";
 import PropTypes from "prop-types";
+import { ROUTES } from "../../../../utils/routes";
 
 
 const UserSubscription = ({ user, openModal, setSubmitStatus }) => {
@@ -23,7 +24,7 @@ const UserSubscription = ({ user, openModal, setSubmitStatus }) => {
         setIsFetching(true);
         try {
             const response = await apiRequest({
-                url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_USER_API_ENDPOINT}/get-allSubscribeOptions`,
+                url: `${process.env.REACT_APP_API_LINK}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.GET_SUBSCRIBE_OPTIONS}`,
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -59,7 +60,7 @@ const UserSubscription = ({ user, openModal, setSubmitStatus }) => {
     const saveSubscriptionChanges = useCallback(async () => {
         try {
             const response = await apiRequest({
-                url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_USER_API_ENDPOINT}/update-selectedSubscriber/${user.subscription.id}`,
+                url: `${process.env.REACT_APP_API_LINK}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.UPDATE_SUBSCRIBER_BY_ID}${user.subscription.id}`,
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -98,7 +99,7 @@ const UserSubscription = ({ user, openModal, setSubmitStatus }) => {
                     {subscribeOption.group}
                 </h6>
                 <ul className="list-group">
-                    {subscribeOption.options.map((option) => (
+                    {subscribeOption && subscribeOption.options.map((option) => (
                         <li className="list-group-item border-0 px-0 pb-0" key={option.id}>
                             <div className="form-check form-switch ps-0">
                                 <input

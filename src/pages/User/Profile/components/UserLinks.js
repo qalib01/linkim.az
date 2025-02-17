@@ -13,6 +13,7 @@ import SortableItem from "./SortableItem";
 import { useCallback, useMemo, useState } from "react";
 import { apiRequest } from "../../../../utils/apiRequest";
 import PropTypes from "prop-types";
+import { ROUTES } from "../../../../utils/routes";
 
 
 function UserLinks({ user, setUser, onClose, openModal, setSubmitStatus }) {
@@ -61,7 +62,7 @@ function UserLinks({ user, setUser, onClose, openModal, setSubmitStatus }) {
 
         try {
             const response = await apiRequest({
-                url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_USER_API_ENDPOINT}/update-userLinks-order`,
+                url: `${process.env.REACT_APP_API_LINK}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.UPDATE_USER_LINKS_ORDER}`,
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
@@ -89,7 +90,7 @@ function UserLinks({ user, setUser, onClose, openModal, setSubmitStatus }) {
             <UserProfileCard classList='max-height-400 overflow-x-hidden'>
                 <CardHeader title='Linklər'>
                     {
-                        newUpdatedLinks.length > 0 ? (
+                        newUpdatedLinks && newUpdatedLinks.length > 0 ? (
                             <>
                                 <Button asButton={true} onClick={handleReset} classList='border-0 bg-transparent w-auto btn bg-gradient-primary p-2 m-0'>Sıfırla</Button>
                                 <Button asButton={true} onClick={handleSubmit} classList='border-0 bg-transparent w-auto btn bg-gradient-primary p-2 m-0'>Yadda saxla</Button>

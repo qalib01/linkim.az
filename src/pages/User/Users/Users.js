@@ -12,6 +12,7 @@ import { ConfigGenerator } from "../../../utils/formConfigs";
 import Alert from "../../../components/Alert/Alert";
 import errorMessages from "../../../statusMessages/error";
 import Pagination from "../../../components/Pagination/Pagination";
+import { ROUTES } from "../../../utils/routes";
 
 
 function Users() {
@@ -31,7 +32,7 @@ function Users() {
 
         try {
             const res = await apiRequest({
-                url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_USER_API_ENDPOINT}/get-allUsers`,
+                url: `${process.env.REACT_APP_API_LINK}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.GET_USERS}`,
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,

@@ -12,15 +12,45 @@ const ROUTES = {
         RESEND_USER_ACTIVATE: '/auth/resend-user-activate',
         RESET_PASSWORD: '/auth/reset-password',
 
+        VALIDATE_LOGIN: '/auth/validate-login',
+        REFRESH_TOKEN: '/auth/refresh-token',
+        RESET_PASSWORD_REQUEST: '/auth/reset-password-request',
+        CHECK_USERNAME: '/check-userName',
+        UPDATE_USER_LINKS_ORDER: '/update-userLinks-order',
+
+        ADD_USER_LINK_BY_USER_ID: '/add-userLink/',
+        UPDATE_USER_LINK_BY_ID: '/update-userLink/',
+        DELETE_USER_LINK_BY_ID: '/delete-userLink/',
+        ADD_USER: '/add-user',
+        UPDATE_USER_BY_ID: '/update-user/',
+        DELETE_USER_BY_ID: '/delete-user/',
+        UPLOAD_USER_PHOTO_BY_ID: '/upload-userPhoto/',
+
+        GET_USERS: '/get-users',
+        GET_USER_BY_ID: '/get-user/',
+        ACTIVATE_USER_BY_ID: '/activate-user/',
+
         SUBSCRIBE_ACTIVATE: '/subscribe-activate',
+        ACTIVATE_SUBSCRIPTION_BY_ID: '/subscription-activate/',
         RESEND_SUBSCRIBE_ACTIVATE: '/resend-subscribe-activate',
+        SUBSCRIBE: '/subscribe',
         UNSUBSCRIBE: '/unsubscribe',
+        GET_SUBSCRIBE_OPTIONS: '/get-subscribeOptions',
+        UPDATE_SUBSCRIBER_BY_ID: '/update-subscriber/',
 
         PHOTO_URL: '/images/users/',
 
         FAQS: '/faqs',
         TEAM: '/team',
         CONTACT: '/contact',
+
+        GET_FAQS: '/get-faqs',
+        ADD_FAQ: '/add-faq',
+        ADD_FAQ_GROUP: '/add-faqGroup',
+        UPDATE_FAQ_BY_ID: '/update-faq/',
+        UPDATE_FAQ_GROUP_BY_ID: '/update-faqGroup/',
+        DELETE_FAQ_BY_ID: '/delete-faq/',
+        DELETE_FAQ_GROUP_BY_ID: '/delete-faqGroup/',
     },
     PUBLIC: {
         HOME: 'p/',
