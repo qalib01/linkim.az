@@ -7,6 +7,7 @@ import Loader from "../../../components/Loader/Loader";
 import Section from "../../../components/Section/Section";
 import Button from "../../../components/Button/Button";
 import errorMessages from "../../../statusMessages/error";
+import { ROUTES } from "../../../utils/routes";
 
 
 function ActivateSubscriberPage() {
@@ -25,7 +26,7 @@ function ActivateSubscriberPage() {
 
             try {
                 let response = await apiRequest({
-                    url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_GLOBAL_API_ENDPOINT}/${process.env.REACT_APP_API_SUBSCRIBER_ACTIVATE}`,
+                    url: `${process.env.REACT_APP_API_LINK}${ROUTES.API.GLOBAL_ENDPOINT}${ROUTES.API.SUBSCRIBE_ACTIVATE}`,
                     method: 'POST',
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ token }),
@@ -53,7 +54,7 @@ function ActivateSubscriberPage() {
 
         try {
             let response = await apiRequest({
-                url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_GLOBAL_API_ENDPOINT}/${process.env.REACT_APP_API_RESEND_SUBSCRIBER_ACTIVATE}`,
+                url: `${process.env.REACT_APP_API_LINK}${ROUTES.API.GLOBAL_ENDPOINT}${ROUTES.API.RESEND_SUBSCRIBE_ACTIVATE}`,
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ token }),

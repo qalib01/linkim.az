@@ -5,6 +5,7 @@ import { apiRequest } from '../../../utils/apiRequest';
 import Accordion from '../../../components/Accordion/Accordion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
+import { ROUTES } from '../../../utils/routes';
 
 
 function FaqPage() {
@@ -22,7 +23,7 @@ function FaqPage() {
             setIsFetching(true);
 
             try {
-                const response = await apiRequest({ url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/faqs` });
+                const response = await apiRequest({ url: `${process.env.REACT_APP_API_LINK}${ROUTES.API.GLOBAL_ENDPOINT}${ROUTES.API.FAQS}` });
                 setGroups(response.status === 200 && response.data);
             } catch (error) {
                 console.error(error)

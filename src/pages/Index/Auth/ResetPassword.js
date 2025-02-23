@@ -6,6 +6,7 @@ import { apiRequest } from "../../../utils/apiRequest";
 import Form from "../../../components/Form/Form";
 import { ConfigGenerator } from "../../../utils/formConfigs";
 import errorMessages from "../../../statusMessages/error";
+import { ROUTES } from "../../../utils/routes";
 
 
 function ResetPasswordRequestPage() {
@@ -21,7 +22,7 @@ function ResetPasswordRequestPage() {
         const handleValidateToken = async () => {
             try {
                 let res = await apiRequest({
-                    url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/validate-token`,
+                    url: `${process.env.REACT_APP_API_LINK}${ROUTES.API.GLOBAL_ENDPOINT}${ROUTES.API.VALIDATE_TOKEN}`,
                     method: 'POST',
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ token })

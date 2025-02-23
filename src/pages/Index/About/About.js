@@ -104,8 +104,8 @@ function Team() {
             <div className="row flex-row-scroll">
                 { isFetching && <p> Məlumatlar yüklənir! </p> }
                 {
-                    !isFetching && team.length > 0 ? team.map((data) => (
-                        <div key={data.id} className="col-8 col-md-6 col-lg-3">
+                    !isFetching && team.length > 0 ? team.map((data, index) => (
+                        <div key={index} className="col-8 col-md-6 col-lg-3">
                             <div className={`mt-3 mt-md-5`}>
                                 <div className="card border-0 shadow-sm">
                                     <img  src={`${process.env.REACT_APP_API_LINK}${ROUTES.API.PHOTO_URL}${data.photo}`} className="card-img-top rounded" alt={`${data.name} ${data.surname}`} />

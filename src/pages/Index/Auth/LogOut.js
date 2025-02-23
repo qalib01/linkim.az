@@ -2,6 +2,7 @@ import { useNavigate } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import { useCallback, useEffect } from "react";
 import { apiRequest } from "../../../utils/apiRequest";
+import { ROUTES } from "../../../utils/routes";
 
 
 function Logout() {
@@ -12,7 +13,7 @@ function Logout() {
     const handleLogoutUser = useCallback(async (refreshToken) => {
         try {
             await apiRequest({
-                url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_GLOBAL_API_ENDPOINT}/${process.env.REACT_APP_API_LOGOUT}`,
+                url: `${process.env.REACT_APP_API_LINK}${ROUTES.API.GLOBAL_ENDPOINT}${ROUTES.API.LOGOUT}`,
                 headers: { Authorization: `Bearer ${refreshToken}` }
             });
         } catch (error) {

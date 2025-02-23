@@ -7,6 +7,7 @@ import Loader from "../../../components/Loader/Loader";
 import Section from "../../../components/Section/Section";
 import Button from "../../../components/Button/Button";
 import errorMessages from "../../../statusMessages/error";
+import { ROUTES } from "../../../utils/routes";
 
 
 function UnsubscriberPage() {
@@ -24,7 +25,7 @@ function UnsubscriberPage() {
 
             try {
                 let response = await apiRequest({
-                    url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/${process.env.REACT_APP_UNSUBSCRIBER_LINK_KEY}`,
+                    url: `${process.env.REACT_APP_API_LINK}${ROUTES.API.GLOBAL_ENDPOINT}${ROUTES.API.UNSUBSCRIBE}`,
                     method: 'POST',
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ token }),

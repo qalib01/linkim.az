@@ -13,10 +13,12 @@ const ROUTES = {
         RESET_PASSWORD: '/auth/reset-password',
 
         VALIDATE_LOGIN: '/auth/validate-login',
+        VALIDATE_TOKEN: '/auth/validate-token',
         REFRESH_TOKEN: '/auth/refresh-token',
         RESET_PASSWORD_REQUEST: '/auth/reset-password-request',
         CHECK_USERNAME: '/check-userName',
         UPDATE_USER_LINKS_ORDER: '/update-userLinks-order',
+        USER_DATA: '/user-data/',
 
         ADD_USER_LINK_BY_USER_ID: '/add-userLink/',
         UPDATE_USER_LINK_BY_ID: '/update-userLink/',
@@ -66,7 +68,7 @@ const ROUTES = {
         ACTIVATE_SUBSCRIPTION: 'activate-subscriber/:token',
         UNSUBSCRIBE: 'unsubscribe/:token',
         TOKEN_SLUG: ':token',
-        USERNAME_SLUG: ':token',
+        USERNAME_SLUG: ':username',
     },
     PRIVATE: {
         HOME: 'u/',

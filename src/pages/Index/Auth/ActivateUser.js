@@ -7,6 +7,7 @@ import Loader from "../../../components/Loader/Loader";
 import Section from "../../../components/Section/Section";
 import Button from "../../../components/Button/Button";
 import errorMessages from "../../../statusMessages/error";
+import { ROUTES } from "../../../utils/routes";
 
 
 function ActivateUserPage() {
@@ -25,7 +26,7 @@ function ActivateUserPage() {
     
             try {
                 let response = await apiRequest({
-                    url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_GLOBAL_API_ENDPOINT}/${process.env.REACT_APP_API_AUTH_USER_ACTIVATE}`,
+                    url: `${process.env.REACT_APP_API_LINK}${ROUTES.API.GLOBAL_ENDPOINT}${ROUTES.API.USER_ACTIVATE}`,
                     method: 'POST',
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ token }),
@@ -51,7 +52,7 @@ function ActivateUserPage() {
 
         try {
             let response = await apiRequest({
-                url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_GLOBAL_API_ENDPOINT}/${process.env.REACT_APP_API_AUTH_RESEND_USER_ACTIVATE}`,
+                url: `${process.env.REACT_APP_API_LINK}${ROUTES.API.GLOBAL_ENDPOINT}${ROUTES.API.RESEND_USER_ACTIVATE}`,
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: { token },

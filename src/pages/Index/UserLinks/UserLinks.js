@@ -1,7 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import classes from './UserLinks.module.scss'
 import ThreeDotsIconSvg from "../../../components/Icons/ThreeDotsIconSvg";
-import CloseIconSvg from "../../../components/Icons/CloseIconSvg";
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import LinkIconSvg from "../../../components/Icons/LinkIconSvg";
@@ -18,7 +17,9 @@ import Loader from "../../../components/Loader/Loader";
 import Error from "../../../error/UserErrorPage";
 import useAuth from "../../../hooks/useAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsis, faHome } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsis, faHome, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { ROUTES } from "../../../utils/routes";
+import Button from "../../../components/Button/Button";
 
 
 function UserLinks() {
@@ -35,7 +36,7 @@ function UserLinks() {
         async function userLinks() {
             setIsFetching(true);
             const response = await apiRequest({
-                url: `${process.env.REACT_APP_API_LINK}${process.env.REACT_APP_API_ENDPOINT}/user-data/${username}`,
+                url: `${process.env.REACT_APP_API_LINK}${ROUTES.API.GLOBAL_ENDPOINT}${ROUTES.API.USER_DATA}${username}`,
                 method: 'GET',
                 headers: { "Content-Type": "application/json" },
             });
@@ -62,7 +63,7 @@ function UserLinks() {
         return <Error />
     }
 
-    const userImgUrl = `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_USER_PHOTO_SERVER_URL}/${userData.photo}`;
+    const userImgUrl = `${process.env.REACT_APP_API_LINK}${ROUTES.API.PHOTO_URL}${userData.photo}`;
     const data = {
         title: `${userData.name} ${userData.surname}`,
         url: `${process.env.REACT_APP_PROJECT_LINK}/${userData.username}`
@@ -75,7 +76,7 @@ function UserLinks() {
                 <section className={classes.background}>
                     <div className={classes.container}>
                         <div className={classes.topbar}>
-                            <Link to={ isAuthenticated ? '/u/' : '/' }>
+                            <Link to={isAuthenticated ? '/u/' : '/'}>
                                 <FontAwesomeIcon icon={faHome} color="#fff" />
                             </Link>
                             <button onClick={() => openShareDialog('link')}>
@@ -156,7 +157,9 @@ function ShareDialogBox({ onClose, data, type }) {
         <div className={classes.overlay}>
             <div className={classes.dialog}>
                 <div className={classes.header}>
-                    <button onClick={onClose}> <CloseIconSvg /> </button>
+                    <Button asButton={true} classList='btn-close text-dark p-0 m-0' onClick={onClose}>
+                        <FontAwesomeIcon icon={faXmark} size='2x' />
+                    </Button>
                 </div>
                 <div className={classes.body}>
                     <div className={classes.content}>

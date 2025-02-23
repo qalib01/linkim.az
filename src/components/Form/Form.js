@@ -241,7 +241,6 @@ function Form({ config, initialData, onClose, attributes, onConfigChange }) {
 
 Form.propTypes = {
     config: PropTypes.object.isRequired,
-    onClose: PropTypes.func.isRequired,
 }
 
 export default Form;

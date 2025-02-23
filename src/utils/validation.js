@@ -18,6 +18,11 @@ export function isValidURL(value) {
     return urlRegex.test(value);
 }
 
+export function isBlockedWord(value) {
+    const blockedWords = ['admin', 'support', 'system', 'root', 'staff'];
+    return blockedWords.includes(value.toLowerCase().trim());
+}
+
 export function isValidPassword(value) {
     const urlRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
     return urlRegex.test(value);
