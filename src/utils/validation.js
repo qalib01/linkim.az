@@ -1,5 +1,5 @@
 export function isValidEmail(value) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     return emailRegex.test(value);
 }
 
@@ -9,9 +9,14 @@ export function isNotEmpty(value) {
 }
 
 export function isValidUsername(value) {
-    const usernameRegex = /^[0-9a-z_.]+$/;
+    const usernameRegex = /^(?!.*[_.]{2})(?![_.])(?!.*\d{7,})([a-zA-Z0-9._]{3,12})(?<![_.])$/;
     return usernameRegex.test(value);
 };
+
+export function isMobileNumber(value) {
+    const mobilRegex = /^(?:\+994|0)?(50|51|55|70|77|99)\d{7}$/;
+    return mobilRegex.test(value)
+}
 
 export function isValidURL(value) {
     const urlRegex = /^(https?:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/[^\s]*)?$/;
@@ -24,8 +29,8 @@ export function isBlockedWord(value) {
 }
 
 export function isValidPassword(value) {
-    const urlRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
-    return urlRegex.test(value);
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}[\]:;<>,.?/~\\-])[A-Za-z\d!@#$%^&*()_+{}[\]:;<>,.?/~\\-]{8,64}$/;
+    return passwordRegex.test(value);
 }
 
 export function isBoolean(value) {

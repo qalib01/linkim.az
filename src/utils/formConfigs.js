@@ -57,20 +57,20 @@ export class ConfigGenerator {
         }
     }
 
-    // generateUserName(mode, id) {
-    //     const modes = {
-    //         add: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/add-userData`, method: 'POST' },
-    //         update: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-userData/${id}`, method: 'POST' },
-    //         delete: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-userData/${id}`, method: 'DELETE' },
-    //     }
+    generateUserName(mode, id) {
+        const modes = {
+            add: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/add-userData`, method: 'POST' },
+            update: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-userData/${id}`, method: 'POST' },
+            delete: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-userData/${id}`, method: 'DELETE' },
+        }
 
-    //     return {
-    //         fields: [userUsername()],
-    //         buttons: [submitButton(), closeButton()],
-    //         submitUrl: modes[mode]?.url || '',
-    //         submitMethod: modes[mode]?.method || '',
-    //     }
-    // }
+        return {
+            fields: [userUsername()],
+            buttons: [submitButton(), closeButton()],
+            submitUrl: modes[mode]?.url || '',
+            submitMethod: modes[mode]?.method || '',
+        }
+    }
 
     generateSubscribe(mode) {
         const modes = {

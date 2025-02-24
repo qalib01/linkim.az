@@ -1,4 +1,4 @@
-import { hasMaxTrimedLength, hasMinLength, isBlockedWord, isEqualsToOtherValue, isNotEmpty, isValidEmail, isValidPassword, isValidURL, isValidUsername } from "./validation";
+import { hasMaxTrimedLength, hasMinLength, isBlockedWord, isEqualsToOtherValue, isMobileNumber, isNotEmpty, isValidEmail, isValidPassword, isValidURL, isValidUsername } from "./validation";
 const maxDataLength = 300;
 const maxRows = 3;
 const usernameMinLength = 3;
@@ -97,8 +97,8 @@ const userUsername = (props) => {
         placeholder: 'İstifadəçi adın',
         maxLength: usernameMaxLength,
         value: (data) => data?.username || '',
-        validation: (data) => isNotEmpty(data) && isValidUsername(data) && hasMinLength(data, usernameMinLength) && hasMaxTrimedLength(data, usernameMaxLength) && !isBlockedWord(data),
-        info: `İstifadəçi adı balaca hərflə, minimum ${usernameMinLength}, maksimum ${usernameMaxLength} xarakter olmalı və xüsusi işarələr istifadə olmamalıdır. Nümunə: link, link01, link_01, link.01`,
+        validation: (data) => isNotEmpty(data) && isValidUsername(data) && hasMinLength(data, usernameMinLength) && hasMaxTrimedLength(data, usernameMaxLength) && !isBlockedWord(data) && !isMobileNumber(data),
+        info: `İstifadəçi adı balaca hərflə, minimum ${usernameMinLength}, maksimum ${usernameMaxLength} xarakter olmalı və xüsusi işarələr istifadə olmamalıdır. _ və . istifadə oluna bilər ancaq istifadəçi adının əvvəlində olmasına və mobil nömrələrin yazılmasına icazə verilmir. Nümunə: link, link01, link_01, link.01`,
         required: true,
         disabled: (data) => !!data?.username,
         readOnly: (data) => !!data?.username,
