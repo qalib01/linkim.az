@@ -1,4 +1,4 @@
-import { closeButton, contactFullName, contactMessage, contactSubject, faqAnswer, faqButton, faqGroup, faqGroupButton, faqQuestion, order, status, submitButton, userBio, userConfirmPassword, userEmail, userLinkTitle, userLinkType, userLinkUrl, userLoginPassword, userName, userPassword, userProfilePhoto, userSurname, userUsername } from "./formElements";
+import { closeButton, contactFullName, contactMessage, contactSubject, coverColorButton, coverPhotoButton, faqAnswer, faqButton, faqGroup, faqGroupButton, faqQuestion, order, status, submitButton, userBio, userConfirmPassword, userCoverColor, userCoverPhoto, userEmail, userLinkTitle, userLinkType, userLinkUrl, userLoginPassword, userName, userPassword, userProfilePhoto, userSurname, userUsername } from "./formElements";
 import { ROUTES } from "./routes";
 
 export class ConfigGenerator {
@@ -57,11 +57,42 @@ export class ConfigGenerator {
         }
     }
 
+    chooseUserCoverOption(mode) {
+        const modes = {}
+
+        return {
+            contents: [() => <p> Zəhmət olmasa, yaratmaq istədiyin formu aşağıdan seçim edərək davam edəsən! </p>],
+            fields: [coverPhotoButton({ grid: { col: 6 }, config: 'photo' }), coverColorButton({ grid: { col: 6 }, config: 'color' })],
+            buttons: [closeButton()],
+            submitUrl: modes[mode]?.url || '',
+            submitMethod: modes[mode]?.method || '',
+        }
+    }
+
+    generateUserCoverData(mode, id) {
+        const modes = {
+            photo: { url: `${this.baseApiUrl}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.UPLOAD_USER_COVER_BY_ID}${id}`, method: 'POST' },
+            color: { url: `${this.baseApiUrl}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.UPLOAD_USER_COVER_BY_ID}${id}`, method: 'POST' },
+        }
+
+        const fields = {
+            photo: [userCoverPhoto()],
+            color: [userCoverColor()],
+        }
+
+        return {
+            fields: fields[mode],
+            buttons: [submitButton(), closeButton()],
+            submitUrl: modes[mode]?.url || '',
+            submitMethod: modes[mode]?.method || '',
+        }
+    }
+
     generateUserName(mode, id) {
         const modes = {
-            add: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/add-userData`, method: 'POST' },
-            update: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/update-userData/${id}`, method: 'POST' },
-            delete: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}/delete-userData/${id}`, method: 'DELETE' },
+            add: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}${ROUTES.API.ADD_USER_DATA_BY_ID}`, method: 'POST' },
+            update: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}${ROUTES.API.UPDATE_USER_DATA_BY_ID}${id}`, method: 'POST' },
+            delete: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}${ROUTES.API.DELETE_USER_DATA_BY_ID}${id}`, method: 'DELETE' },
         }
 
         return {

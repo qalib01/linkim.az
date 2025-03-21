@@ -107,7 +107,7 @@ function UserLinks({ user, setUser, onClose, openModal, setSubmitStatus }) {
                         <SortableContext items={user.userLinks || []} strategy={verticalListSortingStrategy}>
                             <ListGroupParent>
                                 {user.userLinks?.length > 0 ? user.userLinks?.map((data) => (
-                                    <SortableItem key={data.id} data={data} openModal={openModal} onClose={onClose} />
+                                    <SortableItem key={data.id} data={data} openModal={openModal} />
                                 )) : <p> Məlumat yoxdur! </p>}
                             </ListGroupParent>
                         </SortableContext>
@@ -121,7 +121,6 @@ function UserLinks({ user, setUser, onClose, openModal, setSubmitStatus }) {
 UserLinks.propTypes = {
     user: PropTypes.object.isRequired,
     setUser: PropTypes.func.isRequired,
-    onClose: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
     setSubmitStatus: PropTypes.func.isRequired,
 };

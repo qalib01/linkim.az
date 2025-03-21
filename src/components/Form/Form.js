@@ -16,14 +16,21 @@ import PropTypes from 'prop-types';
 
 const generateInputs = (fields, initialData) => {
     const formData = {};
+
     return fields.map((field) => {
         const validationFn = (value) => {
             if (field.id === 'confirmPassword') return field.validation(value, formData.password);
             return field.validation(value);
         };
 
+        // const inputHook = useInput(
+        //     initialData[field.id] || null,
+        //     validationFn,
+        //     field.transform || ((value) => value)
+        // );
+
         const inputHook = useInput(
-            initialData[field.id] || null,
+            initialData?.[field.id] ?? '',
             validationFn,
             field.transform || ((value) => value)
         );
@@ -63,12 +70,14 @@ function Form({ config, initialData, onClose, attributes, onConfigChange }) {
             const input = inputs[field.id];
             const value = field.type === 'file' ? input.fileRef.current?.files[0] : input.value;
 
+
             if (config?.submitUrl?.includes('contact') || config?.submitUrl?.includes('reset-password')) {
                 formData[field.id] = value;
-            } else if (value !== initialData[field.id]) {
+            } else if (value !== initialData?.[field.id] ?? undefined) {
                 formData[field.id] = value;
             }
         });
+        console.log(formData)
 
         if (!config?.submitUrl?.includes('login') && formData.password !== formData.confirmPassword) {
             setIsLoading(false);
@@ -181,7 +190,13 @@ function Form({ config, initialData, onClose, attributes, onConfigChange }) {
                                     type={field.type}
                                     name={field.name}
                                     asButton={field.asButton}
-                                    onClick={() => onConfigChange(field.config)}
+                                    onClick={() => {
+                                        if (field.config) {
+                                            onConfigChange(field.config);
+                                        } else {
+                                            console.error('Config is not defined!')
+                                        }
+                                    }}
                                     className={`border-0 bg-transparent btn bg-gradient-primary p-2 m-0 h6 ${field.classList}`}
                                 >
                                     {field.label}

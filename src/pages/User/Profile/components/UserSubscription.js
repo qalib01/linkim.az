@@ -167,7 +167,6 @@ const UserSubscription = ({ user, openModal, setSubmitStatus }) => {
 
 UserSubscription.propTypes = {
     user: PropTypes.object.isRequired,
-    onClose: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
     setSubmitStatus: PropTypes.func.isRequired,
 };

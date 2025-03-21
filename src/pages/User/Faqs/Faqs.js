@@ -21,7 +21,7 @@ function Faqs() {
     const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
     const [modalConfig, setModalConfig] = useState(null);
     const configGenerator = new ConfigGenerator();
-    const defaultTvsConfig = configGenerator.chooseTvsOption('choose');
+    const defaultTvsConfig = configGenerator.chooseTvsOption();
     const [currentConfig, setCurrentConfig] = useState({ config: defaultTvsConfig });
     const [formKey, setFormKey] = useState(0);
 
@@ -52,7 +52,6 @@ function Faqs() {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-
         getData();
     }, [getData]);
 
@@ -79,7 +78,7 @@ function Faqs() {
         })
     }
 
-    const handleConfigChange = (newConfig) => {
+    function handleConfigChange(newConfig) {
         setCurrentConfig({ config: configGenerator.generateTvsData(newConfig) });
         setFormKey(prevSate => prevSate + 1);
     }

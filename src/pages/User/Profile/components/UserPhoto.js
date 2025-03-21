@@ -10,7 +10,7 @@ import { ROUTES } from "../../../../utils/routes";
 
 function UserPhoto({ user, openModal }) {
     const configGenerator = new ConfigGenerator();
-    const userImgUrl = `${process.env.REACT_APP_API_LINK}${ROUTES.API.PHOTO_URL}${user.photo}`;
+    const userImgUrl = `${process.env.REACT_APP_API_LINK}${ROUTES.API.PHOTO_URL}${user.profilePhoto}`;
 
     return (
         <UserProfileCard classList='blur shadow-blur mx-4 mt-n6 overflow-hidden'>
@@ -46,7 +46,6 @@ function UserPhoto({ user, openModal }) {
 
 UserPhoto.propTypes = {
     user: PropTypes.object.isRequired,
-    onClose: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
 }
 

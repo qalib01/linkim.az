@@ -19,6 +19,9 @@ const ROUTES = {
         CHECK_USERNAME: '/check-userName',
         UPDATE_USER_LINKS_ORDER: '/update-userLinks-order',
         USER_DATA: '/user-data/',
+        ADD_USER_DATA_BY_ID: '/add-userData/',
+        UPDATE_USER_DATA_BY_ID: '/update-userData/',
+        DELETE_USER_DATA_BY_ID: '/delete-userData/',
 
         ADD_USER_LINK_BY_USER_ID: '/add-userLink/',
         UPDATE_USER_LINK_BY_ID: '/update-userLink/',
@@ -27,6 +30,7 @@ const ROUTES = {
         UPDATE_USER_BY_ID: '/update-user/',
         DELETE_USER_BY_ID: '/delete-user/',
         UPLOAD_USER_PHOTO_BY_ID: '/upload-userPhoto/',
+        UPLOAD_USER_COVER_BY_ID: '/upload-userCover/',
 
         GET_USERS: '/get-users',
         GET_USER_BY_ID: '/get-user/',

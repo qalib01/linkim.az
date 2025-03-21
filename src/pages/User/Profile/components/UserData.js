@@ -55,7 +55,6 @@ function UserData({ user, openModal, setSubmitStatus }) {
 
 UserData.propTypes = {
     user: PropTypes.object.isRequired,
-    onClose: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
     setSubmitStatus: PropTypes.func.isRequired,
 }

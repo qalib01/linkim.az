@@ -50,7 +50,6 @@ const SortableItem = ({ data, openModal }) => {
 SortableItem.propTypes = {
     data: PropTypes.object.isRequired,
     openModal: PropTypes.func.isRequired,
-    onClose: PropTypes.func.isRequired,
 }
 
 export default SortableItem;

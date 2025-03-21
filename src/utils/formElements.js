@@ -160,6 +160,31 @@ const userProfilePhoto = (props) => {
     };
 }
 
+const userCoverPhoto = (props) => {
+    return {
+        id: 'coverPhoto',
+        name: 'coverPhoto',
+        label: 'Qapaq şəkili',
+        type: 'file',
+        validation: (data) => data,
+        accept: 'image/png, image/jpeg, image/jpg',
+        required: true,
+        ...props,
+    };
+}
+
+const userCoverColor = (props) => {
+    return {
+        id: 'coverColor',
+        name: 'coverColor',
+        label: 'Qapaq rəngi',
+        type: 'color',
+        validation: (data) => data,
+        required: true,
+        ...props,
+    };
+}
+
 const userLoginPassword = (props) => {
     return {
         id: 'password',
@@ -168,6 +193,36 @@ const userLoginPassword = (props) => {
         label: 'Şifrə',
         placeholder: 'Şifrə',
         validation: (data) => hasMinLength(data, 8) && isNotEmpty(data) && isValidPassword(data),
+        ...props,
+    };
+}
+
+const coverPhotoButton = (props) => {
+    return {
+        id: 'photo',
+        name: 'photo',
+        type: 'button',
+        label: 'Şəkil yarat',
+        asButton: true,
+        value: () => '',
+        validation: (data) => data,
+        required: true,
+        classList: 'w-100',
+        ...props,
+    };
+}
+
+const coverColorButton = (props) => {
+    return {
+        id: 'color',
+        name: 'color',
+        type: 'button',
+        label: 'Rəng yarat',
+        asButton: true,
+        value: () => '',
+        validation: (data) => data,
+        required: true,
+        classList: 'w-100',
         ...props,
     };
 }
@@ -380,4 +435,4 @@ const closeButton = (props) => {
 
 
 
-export { status, order, userName, userSurname, userEmail, userUsername, userPassword, userConfirmPassword, userBio, userProfilePhoto, userLoginPassword, userLinkUrl, userLinkTitle, userLinkType, faqQuestion, faqAnswer, faqGroup, faqButton, faqGroupButton, contactFullName, contactSubject, contactMessage, submitButton, closeButton }
+export { status, order, userName, userSurname, userEmail, userUsername, userPassword, userConfirmPassword, userBio, userProfilePhoto, userCoverPhoto, userCoverColor, coverPhotoButton, coverColorButton, userLoginPassword, userLinkUrl, userLinkTitle, userLinkType, faqQuestion, faqAnswer, faqGroup, faqButton, faqGroupButton, contactFullName, contactSubject, contactMessage, submitButton, closeButton }
