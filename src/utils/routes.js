@@ -19,9 +19,9 @@ const ROUTES = {
         CHECK_USERNAME: '/check-userName',
         UPDATE_USER_LINKS_ORDER: '/update-userLinks-order',
         USER_DATA: '/user-data/',
-        ADD_USER_DATA_BY_ID: '/add-userData/',
-        UPDATE_USER_DATA_BY_ID: '/update-userData/',
-        DELETE_USER_DATA_BY_ID: '/delete-userData/',
+        ADD_USER_DATA_BY_ID: '/add-user/',
+        UPDATE_USER_DATA_BY_ID: '/update-user/',
+        DELETE_USER_DATA_BY_ID: '/delete-user/',
 
         ADD_USER_LINK_BY_USER_ID: '/add-userLink/',
         UPDATE_USER_LINK_BY_ID: '/update-userLink/',

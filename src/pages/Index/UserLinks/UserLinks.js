@@ -63,7 +63,8 @@ function UserLinks() {
         return <Error />
     }
 
-    const userImgUrl = `${process.env.REACT_APP_API_LINK}${ROUTES.API.PHOTO_URL}${userData.photo}`;
+    const userImgUrl = `${process.env.REACT_APP_API_LINK}${ROUTES.API.PHOTO_URL}${userData.profilePhoto}`;
+    const coverColor = userData?.userCover?.find(cover => cover.type === 'color');
     const data = {
         title: `${userData.name} ${userData.surname}`,
         url: `${process.env.REACT_APP_PROJECT_LINK}/${userData.username}`
@@ -73,7 +74,7 @@ function UserLinks() {
         <>
             <MetaIndex />
             {userData &&
-                <section className={classes.background}>
+                <section className={classes.background} style={{ backgroundColor: coverColor?.data }}>
                     <div className={classes.container}>
                         <div className={classes.topbar}>
                             <Link to={isAuthenticated ? '/u/' : '/'}>

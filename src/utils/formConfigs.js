@@ -90,9 +90,9 @@ export class ConfigGenerator {
 
     generateUserName(mode, id) {
         const modes = {
-            add: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}${ROUTES.API.ADD_USER_DATA_BY_ID}`, method: 'POST' },
-            update: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}${ROUTES.API.UPDATE_USER_DATA_BY_ID}${id}`, method: 'POST' },
-            delete: { url: `${this.baseApiUrl}${process.env.REACT_APP_USER_API_ENDPOINT}${ROUTES.API.DELETE_USER_DATA_BY_ID}${id}`, method: 'DELETE' },
+            add: { url: `${this.baseApiUrl}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.ADD_USER_DATA_BY_ID}`, method: 'POST' },
+            update: { url: `${this.baseApiUrl}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.UPDATE_USER_DATA_BY_ID}${id}`, method: 'POST' },
+            delete: { url: `${this.baseApiUrl}${ROUTES.API.USER_ENDPOINT}${ROUTES.API.DELETE_USER_DATA_BY_ID}${id}`, method: 'DELETE' },
         }
 
         return {
