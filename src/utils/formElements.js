@@ -50,7 +50,7 @@ const userName = (props) => {
         maxLength: 20,
         placeholder: 'Adın',
         value: (data) => data?.name || '',
-        validation: (data) => isNotEmpty(data),
+        validation: (data) => isNotEmpty(data) && isValidUsername(data) && hasMinLength(data, usernameMinLength) && hasMaxTrimedLength(data, usernameMaxLength) && !isBlockedWord(data) && !isMobileNumber(data),
         required: true,
         ...props,
     };

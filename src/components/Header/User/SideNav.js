@@ -1,6 +1,5 @@
 import { Link, NavLink, useLocation } from "react-router-dom";
 import LogoSvg from "../../Icons/LogoSvg";
-import ShopIconSvg from "../../Icons/ShopIconSvg";
 import useSideNav from "../../../hooks/useSideNav";
 import Button from "../../Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -41,7 +40,6 @@ function SideNav() {
                     <li className="nav-item">
                         <NavLink className={({ isActive }) => location.pathname === '/u/' || isActive ? `nav-link mb-2 active` : `nav-link mb-2`} onClick={() => isSmallScreen && setIsSideNavOpen(false)} to='/u/dashboard'>
                             <div className="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <ShopIconSvg />
                                 <FontAwesomeIcon icon={faHouse} />
                             </div>
                             <span className="nav-link-text ms-1">Dashboard</span>

@@ -5,12 +5,12 @@ import UserProfileCard from "../../../../components/Card/UserProfileCard";
 import { ConfigGenerator } from "../../../../utils/formConfigs";
 import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import PropTypes from "prop-types";
-import { ROUTES } from "../../../../utils/routes";
+// import { ROUTES } from "../../../../utils/routes";
 
 
 function UserPhoto({ user, openModal }) {
     const configGenerator = new ConfigGenerator();
-    const userImgUrl = `${process.env.REACT_APP_API_LINK}${ROUTES.API.PHOTO_URL}${user.profilePhoto}`;
+    // const userImgUrl = `${process.env.REACT_APP_API_LINK}${ROUTES.API.PHOTO_URL}${user.profilePhoto}`;
 
     return (
         <UserProfileCard classList='blur shadow-blur mx-4 mt-n6 overflow-hidden'>
@@ -20,7 +20,7 @@ function UserPhoto({ user, openModal }) {
                         <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => openModal('İstifadəçi şəklini dəyiş', 'md', { config: configGenerator.generateUserPhoto('update', user.id), initialData: user })} style={{ fontSize: '16px' }}>
                             <div className="avatar-container">
                                 <div className={`avatar ${window.innerWidth > 425 ? 'avatar-xl' : 'avatar-xxl'} position-relative`}>
-                                    <img src={userImgUrl} alt="Profil şəkili" className="border-radius-lg shadow-sm" />
+                                    <img src={user.profilePhoto} alt="Profil şəkili" className="border-radius-lg shadow-sm" />
                                 </div>
                                 <div className="edit-icon">
                                     <FontAwesomeIcon icon={faPencilAlt} />
