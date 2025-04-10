@@ -10,6 +10,7 @@ function UserCover({ user, openModal }) {
     const defaultCoverConfig = configGenerator.chooseUserCoverOption();
     const coverColor = user?.userCover?.find(cover => cover.type === 'color');
     const coverPhoto = user?.userCover?.find(cover => cover.type === 'photo');
+    console.log(coverColor)
 
     return (
         <Button
@@ -20,11 +21,10 @@ function UserCover({ user, openModal }) {
         >
             <div className="cover-container">
                 <div className="page-header min-height-300 max-height-400 border-radius-xl mt-4">
-                    {coverColor !== undefined && (
-                        <span className={`mask opacity-10 ${coverColor === undefined && 'bg-gradient-primary'}`} style={{ backgroundColor: coverColor?.data }}></span>
-                    )}
-                    {coverPhoto !== undefined && (
+                    {coverPhoto !== undefined ? (
                         <img src={coverPhoto.data} className="w-100" alt={`${user.name} ${user.surname}`} />
+                    ) : (
+                        <span className={`mask opacity-10 ${coverColor === undefined && 'bg-gradient-primary'}`} style={{ backgroundColor: coverColor?.data }}></span>
                     )}
                 </div>
                 <div className="edit-icon">

@@ -9,6 +9,7 @@ import Alert from "../../../components/Alert/Alert";
 import { apiRequest } from "../../../utils/apiRequest";
 import Button from "../../../components/Button/Button";
 import errorMessages from "../../../statusMessages/error";
+import { ROUTES } from "../../../utils/routes";
 
 
 function RegisterPage() {
@@ -73,7 +74,7 @@ function RegisterPage() {
         };
 
         let response = await apiRequest({
-            url: `${process.env.REACT_APP_API_LINK}/${process.env.REACT_APP_GLOBAL_API_ENDPOINT}/${process.env.REACT_APP_API_AUTH_REGISTER}`,
+            url: `${process.env.REACT_APP_API_LINK}${ROUTES.API.GLOBAL_ENDPOINT}${ROUTES.API.REGISTER}`,
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(userData)
