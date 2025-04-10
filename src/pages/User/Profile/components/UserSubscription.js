@@ -127,7 +127,7 @@ const UserSubscription = ({ user, openModal, setSubmitStatus }) => {
     return (
         <div className="col-12 col-xl-4">
             <UserProfileCard classList="max-height-400 overflow-x-hidden">
-                <CardHeader title="Abunəlik məlumatları">
+                <CardHeader title="Abunəlik">
                     {user.subscription && (
                         <Button
                             disabled={!hasChanges}

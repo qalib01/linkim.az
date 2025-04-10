@@ -21,7 +21,7 @@ function UserData({ user, openModal, setSubmitStatus }) {
     return (
         <div className="col-12 col-xl-4">
             <UserProfileCard classList='max-height-400 overflow-x-hidden'>
-                <CardHeader title='Profil məlumatları'>
+                <CardHeader title='Profil'>
                     <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => openModal('İstifadəçi məlumatları', 'lg', { config: configGenerator.generateUserData('update', user.id), initialData: user })} style={{ fontSize: '16px' }}>
                         <FontAwesomeIcon icon={faUserEdit} />
                     </Button>

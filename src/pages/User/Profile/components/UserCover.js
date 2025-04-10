@@ -10,7 +10,6 @@ function UserCover({ user, openModal }) {
     const defaultCoverConfig = configGenerator.chooseUserCoverOption();
     const coverColor = user?.userCover?.find(cover => cover.type === 'color');
     const coverPhoto = user?.userCover?.find(cover => cover.type === 'photo');
-    console.log(coverColor)
 
     return (
         <Button
