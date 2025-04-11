@@ -77,7 +77,6 @@ function Form({ config, initialData, onClose, attributes, onConfigChange }) {
                 formData[field.id] = value;
             }
         });
-        console.log(formData)
 
         if (!config?.submitUrl?.includes('login') && formData.password !== formData.confirmPassword) {
             setIsLoading(false);

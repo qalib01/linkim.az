@@ -38,7 +38,7 @@ function Profile({ user, setUser }) {
         <>
             <div className="container-fluid">
                 <UserCover user={user} openModal={handleOpenModal} />
-                <UserPhoto user={user} openModal={handleOpenModal} />
+                <UserPhoto user={user} openModal={handleOpenModal} closeModal={handleCloseModal} />
             </div>
 
             <div className="container-fluid py-4">

@@ -3,13 +3,14 @@ import Button from "../../../../components/Button/Button";
 import CardBody from "../../../../components/Card/CardBody";
 import UserProfileCard from "../../../../components/Card/UserProfileCard";
 import { ConfigGenerator } from "../../../../utils/formConfigs";
-import { faPencilAlt, faQrcode } from "@fortawesome/free-solid-svg-icons";
+import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import PropTypes from "prop-types";
+import UserQr from "./UserQr";
 
 
 function UserPhoto({ user, openModal }) {
     const configGenerator = new ConfigGenerator();
-    const coverColor = user?.userCover?.find(cover => cover.type === 'color');
+
 
     return (
         <UserProfileCard classList='blur shadow-blur mx-4 mt-n6 overflow-hidden'>
@@ -37,11 +38,7 @@ function UserPhoto({ user, openModal }) {
                             </p> */}
                         </div>
                     </div>
-                    <div className="col-auto my-auto" title='Hesabın üçün QR kod yarat'>
-                        <Button classList='border-0 bg-transparent w-auto' asButton={true} onClick={() => openModal('İstifadəçi QR kodu yarat', 'md', { config: configGenerator.generateUserPhoto('update', user.id), initialData: user })}>
-                            <FontAwesomeIcon icon={faQrcode} style={{ fontSize: '24px' }} color={ coverColor ? coverColor.data : '#344767' } />
-                        </Button>
-                    </div>
+                    <UserQr user={user} />
                 </div>
             </CardBody>
         </UserProfileCard>
